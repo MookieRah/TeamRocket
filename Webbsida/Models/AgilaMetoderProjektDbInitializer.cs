@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Remoting.Channels;
 using DatabaseObjects;
 using FizzWare.NBuilder;
 using Microsoft.AspNet.Identity;
@@ -102,6 +107,16 @@ namespace Webbsida.Models
                     .With(n => n.Status = (Faker.RandomNumber.Next(0, 2) == 1) ? "Pending" : "Confirmed")
                 .Build();
 
+            var dummyImages = new List<string>
+            {
+                @"\Content\EventImages\Mewtwo1.png",
+                @"\Content\EventImages\Mewtwo2.jpg",
+                @"\Content\EventImages\Mewtwo3.jpg",
+                @"\Content\EventImages\Mewtwo4.jpg",
+                @"\Content\EventImages\Pysduck.png"
+            };
+
+
             foreach (var @event in events)
             {
                 var randomEventUser = eventUsers.ElementAt(_random.Next(0, eventUsers.Count));
@@ -112,6 +127,9 @@ namespace Webbsida.Models
                 }
 
                 randomEventUser.IsOwner = true;
+
+
+                @event.ImagePath = dummyImages.ElementAt(_random.Next(0, dummyImages.Count()));
             }
 
             foreach (var eventUser in eventUsers)
