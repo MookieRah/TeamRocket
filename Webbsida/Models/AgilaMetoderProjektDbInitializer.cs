@@ -49,6 +49,9 @@ namespace Webbsida.Models
                 }
             }
 
+            // TODO: GET UNIQUE profileID for each created user!!!!
+            var uniqueUserList = profiles.ToArray();
+
             // ADMINUSER
             if (!context.Users.Any(u => u.UserName == "admin@admin.com"))
             {
@@ -58,25 +61,45 @@ namespace Webbsida.Models
                 {
                     UserName = "admin@admin.com",
                     Email = "admin@admin.com",
-                    Profile = Pick<Profile>.RandomItemFrom(profiles)
+                    Profile = uniqueUserList[0],
+                    //Pick<Profile>.RandomItemFrom(profiles)
                 };
 
                 manager.Create(user, "password");
                 manager.AddToRole(user.Id, "Admin");
             }
 
+            // USERUSER
+            if (!context.Users.Any(u => u.UserName == "user@user.com"))
+            {
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new UserManager<ApplicationUser>(store);
+                var user = new ApplicationUser
+                {
+                    UserName = "user@user.com",
+                    Email = "user@user.com",
+                    Profile = uniqueUserList[1],
+                    //Pick<Profile>.RandomItemFrom(profiles)
+                };
+
+                manager.Create(user, "password");
+                manager.AddToRole(user.Id, "User");
+            }
+
+
+            // THE REST OF THE USERS
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
 
-            var users = new List<ApplicationUser>();
-            for (int i = 0; i < 19; i++)
+            for (int index = 2; index < 19; index++)
             {
+                var profile = uniqueUserList[index];
                 var tempEmail = Faker.Internet.Email();
                 var userToInsert = new ApplicationUser
                 {
                     UserName = tempEmail,
                     Email = tempEmail,
-                    Profile = Pick<Profile>.RandomItemFrom(profiles)
+                    Profile = profile
                 };
                 userManager.Create(userToInsert, "password");
                 userManager.AddToRole(userToInsert.Id, "User");
