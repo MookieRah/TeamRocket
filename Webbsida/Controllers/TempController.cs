@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DatabaseObjects;
+using Microsoft.AspNet.Identity;
 using Webbsida.Models;
 
 namespace Webbsida.Controllers
@@ -24,6 +25,11 @@ namespace Webbsida.Controllers
         // GET: Temp/Details/5
         public ActionResult Details(int? id)
         {
+            var test = User.Identity.GetUserName();
+            var test2 = User.Identity.GetUserId();
+            //TODO: Use the UserManager now to get all the account-data!!!
+
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
