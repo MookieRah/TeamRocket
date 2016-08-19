@@ -49,7 +49,7 @@ namespace Webbsida.Models
                 }
             }
 
-            // TODO: GET UNIQUE profileID for each created user!!!!
+            
             var uniqueUserList = profiles.ToArray();
 
             // ADMINUSER
