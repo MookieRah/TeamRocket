@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -19,107 +20,21 @@ namespace Webbsida.Controllers
         // GET: Temp
         public ActionResult Index()
         {
+            // -> Example of at least one way to interact with asp.net IDENTITY userdata:
+            var loggedInUserId = User.Identity.GetUserId();
+            var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+
+            string phone = string.Empty;
+            if (loggedInUser != null)
+            {
+                phone = loggedInUser.PhoneNumber;
+                loggedInUser.PhoneNumber = "123456";
+                db.SaveChanges();
+
+                Debug.WriteLine($"Old phone nr: {phone}");
+                Debug.WriteLine($"New phone nr: {loggedInUser.PhoneNumber}");
+            }
             return View(db.Profiles.ToList());
-        }
-
-        // GET: Temp/Details/5
-        public ActionResult Details(int? id)
-        {
-            var test = User.Identity.GetUserName();
-            var test2 = User.Identity.GetUserId();
-            //TODO: Use the UserManager now to get all the account-data!!!
-
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Profile profile = db.Profiles.Find(id);
-            if (profile == null)
-            {
-                return HttpNotFound();
-            }
-            return View(profile);
-        }
-
-        // GET: Temp/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Temp/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,DateOfBirth,IsPrivate")] Profile profile)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Profiles.Add(profile);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(profile);
-        }
-
-        // GET: Temp/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Profile profile = db.Profiles.Find(id);
-            if (profile == null)
-            {
-                return HttpNotFound();
-            }
-            return View(profile);
-        }
-
-        // POST: Temp/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,DateOfBirth,IsPrivate")] Profile profile)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(profile).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(profile);
-        }
-
-        // GET: Temp/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Profile profile = db.Profiles.Find(id);
-            if (profile == null)
-            {
-                return HttpNotFound();
-            }
-            return View(profile);
-        }
-
-        // POST: Temp/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Profile profile = db.Profiles.Find(id);
-            db.Profiles.Remove(profile);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
