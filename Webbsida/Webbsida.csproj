@@ -295,7 +295,7 @@
     <Content Include="Content\EventImages\Mewtwo3.jpg" />
     <Content Include="Content\EventImages\Mewtwo4.jpg" />
     <Content Include="Content\EventImages\Psyduck.png" />
-    <Content Include="Content\scripts\geoScripts.js" />
+    <Content Include="Scripts\site\geoScripts.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
