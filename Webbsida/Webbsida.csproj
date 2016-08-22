@@ -204,6 +204,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\GeoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\TempController.cs" />
@@ -294,6 +295,7 @@
     <Content Include="Content\EventImages\Mewtwo3.jpg" />
     <Content Include="Content\EventImages\Mewtwo4.jpg" />
     <Content Include="Content\EventImages\Psyduck.png" />
+    <Content Include="Scripts\site\geoScripts.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -348,6 +350,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Temp\Index.cshtml" />
+    <Content Include="Views\Geo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
