@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.Design;
 using DatabaseObjects;
+using Webbsida.Models;
 
 namespace Webbsida.Controllers
 {
@@ -17,8 +18,8 @@ namespace Webbsida.Controllers
         // GET: Event
         public ActionResult Index()
         {
-            var entreas = new Event();
-            return View(entreas);
+            ApplicationDbContext _db = new ApplicationDbContext();
+            return View(_db);
         }
 
         //public ActionResult GetEvent(int id)
