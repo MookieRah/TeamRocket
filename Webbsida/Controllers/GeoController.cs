@@ -18,6 +18,12 @@ namespace Webbsida.Controllers
             return View();
         }
 
+        // GET: GeoPicker
+        public ActionResult GeoPicker()
+        {
+            return View();
+        }
+
         [System.Web.Mvc.HttpGet]
         public JsonResult GetEventsToJson()
         {

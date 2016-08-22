@@ -13,8 +13,8 @@ namespace Webbsida.Models
     // -> Use DropCreateDatabaseIfModelChanges if you want db-data to persist between builds!
     //
 
-    //public class AgilaMetoderProjektDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
-    public class AgilaMetoderProjektDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
+    public class AgilaMetoderProjektDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
+    //public class AgilaMetoderProjektDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
     {
         private readonly RandomGenerator _randomGenerator = new RandomGenerator();
         private readonly Random _random = new Random();
