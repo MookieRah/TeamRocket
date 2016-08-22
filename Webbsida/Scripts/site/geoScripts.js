@@ -1,11 +1,13 @@
 ﻿var map;
-
+//var userCoordinates;
 
 function initMap(userLat, userLong) {
     map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: userLat, lng: userLong },
         zoom: 8
     });
+
+    getEventsFromGeoController();
 }
 
 function getUserLocation() {
@@ -29,8 +31,9 @@ function OnSuccess(position) {
     var userCurrentLat = position.coords.latitude;
     var userCurrentLong = position.coords.longitude;
 
+    //userCoordinates = position.coords;
+
     initMap(userCurrentLat, userCurrentLong);
-    getEventsFromGeoController();
 }
 
 function OnError(error) {
@@ -53,7 +56,6 @@ function OnError(error) {
 
     //Could not get user location, center map on nigeria
     initMap(10, 10);
-    getEventsFromGeoController();
 }
 
 function getEventsFromGeoController() {
@@ -106,10 +108,10 @@ function initGeoPickerMap(userLat, userLong) {
         zoom: 10
     });
 
-    google.maps.event.addListener(map, 'click', function(event) {                
+    google.maps.event.addListener(map, "click", function(event) {                
         //Get the location that the user clicked.
         var clickedLocation = event.latLng;
-        //If the marker hasn't been added.
+        //If the marker hasn"t been added.
         if (userMarker === false) {
             //Create the marker.
             userMarker = new google.maps.Marker({
@@ -118,24 +120,24 @@ function initGeoPickerMap(userLat, userLong) {
                 draggable: true //make it draggable
             });
             //Listen for drag events!
-            google.maps.event.addListener(userMarker, 'dragend', function (event) {
+            google.maps.event.addListener(userMarker, "dragend", function (event) {
                 markerLocation();
             });
         } else{
             //Marker has already been added, so just change its location.
             userMarker.setPosition(clickedLocation);
         }
-        //Get the marker's location.
+        //Get the marker"s location.
         markerLocation();
     });
 }
 
-//This function will get the marker's current location and then add the lat/long
+//This function will get the marker"s current location and then add the lat/long
 //values to our textfields so that we can save the location.
 function markerLocation() {
     //Get location.
     var currentLocation = userMarker.getPosition();
     //Add lat and lng values to a field that we can save.
-    document.getElementById('lat').value = currentLocation.lat(); //latitude
-    document.getElementById('lng').value = currentLocation.lng(); //longitude
+    document.getElementById("lat").value = currentLocation.lat(); //latitude
+    document.getElementById("lng").value = currentLocation.lng(); //longitude
 }
