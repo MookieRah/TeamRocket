@@ -12,9 +12,10 @@ function getUserLocation() {
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(OnSuccess, OnError, {
-            enableHighAccuracy: true,
-            maximumAge: 5000,
-            timeout: 1000
+            //Default values below:
+            enableHighAccuracy: false,
+            timeout: Infinity,
+            maximumAge: 0
         });
 
 
@@ -109,20 +110,20 @@ function initGeoPickerMap(userLat, userLong) {
         //Get the location that the user clicked.
         var clickedLocation = event.latLng;
         //If the marker hasn't been added.
-        if(marker === false){
+        if (userMarker === false) {
             //Create the marker.
-            marker = new google.maps.Marker({
+            userMarker = new google.maps.Marker({
                 position: clickedLocation,
                 map: map,
                 draggable: true //make it draggable
             });
             //Listen for drag events!
-            google.maps.event.addListener(marker, 'dragend', function(event){
+            google.maps.event.addListener(userMarker, 'dragend', function (event) {
                 markerLocation();
             });
         } else{
             //Marker has already been added, so just change its location.
-            marker.setPosition(clickedLocation);
+            userMarker.setPosition(clickedLocation);
         }
         //Get the marker's location.
         markerLocation();
@@ -133,7 +134,7 @@ function initGeoPickerMap(userLat, userLong) {
 //values to our textfields so that we can save the location.
 function markerLocation() {
     //Get location.
-    var currentLocation = marker.getPosition();
+    var currentLocation = userMarker.getPosition();
     //Add lat and lng values to a field that we can save.
     document.getElementById('lat').value = currentLocation.lat(); //latitude
     document.getElementById('lng').value = currentLocation.lng(); //longitude
