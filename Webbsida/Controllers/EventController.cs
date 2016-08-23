@@ -12,24 +12,20 @@ namespace Webbsida.Controllers
     public class EventController : Controller
     {
         ApplicationDbContext _db = new ApplicationDbContext();
-
-        public EventController()
-        {
-        }
-
-        // GET: Event
+        
         public ActionResult Index()
         {
             return View(_db);
         }
 
+        // GET: Event
         public ActionResult GetEvent(int id)
         {
+            //Create a Event Data holder
             var eventData = _db.Events.Find(id);
-            //var UsersData = _db.Profiles.Find(id);
+            //Creating a Model usning the Event Data holer
             var result= new EventViewModel
             {   
-                //Firstname = UsersData.FirstName.Where(),
                 EventName = eventData.Name,
                 Description = eventData.Description,
                 StartDate = eventData.StartDate,
@@ -41,18 +37,6 @@ namespace Webbsida.Controllers
                 Price = eventData.Price
 
             };
-            //Event ViewEvent = new Event();
-            //List<ViewEvent> list = null;
-            //try
-            //{
-
-            //}
-            //catch (Exception)
-            //{
-
-            //    throw;
-            //}
-
             return View(result);
         }
     }
