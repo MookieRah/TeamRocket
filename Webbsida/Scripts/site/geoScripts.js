@@ -141,3 +141,26 @@ function markerLocation() {
     document.getElementById("lat").value = currentLocation.lat(); //latitude
     document.getElementById("lng").value = currentLocation.lng(); //longitude
 }
+
+
+// Request coordinates from address in a form-field
+function requestCoordinatesFromAddress() {
+    //debugger;
+    var getAddressFormValue = "tvistevägen, umeå";
+    $.ajax({
+        type: "POST",
+        url: "Geo/RequestCoordinatesFromAddress",
+        data: { address: getAddressFormValue },
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            debugger;
+
+        },
+        error: function (response) {
+            alert("Error with requestCoordinatesFromAddress!");
+        }
+    });
+
+}
