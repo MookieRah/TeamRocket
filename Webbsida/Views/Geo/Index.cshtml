@@ -1,0 +1,23 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Geo";
+}
+
+<h2>GeoCoding</h2>
+
+<div id="map"></div>
+
+@section Scripts {
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=getUserLocation"
+    async defer></script>
+    <script src="~/Scripts/site/geoScripts.js"></script>
+    <script>
+        $(function () {
+            // async callback from googleapis above...
+        });
+    </script>
+    
+}
+

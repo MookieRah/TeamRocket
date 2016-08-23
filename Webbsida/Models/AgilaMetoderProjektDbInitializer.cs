@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Migrations;
 using System.Linq;
 using DatabaseObjects;
 using FizzWare.NBuilder;
@@ -13,51 +13,21 @@ namespace Webbsida.Models
     // -> Use DropCreateDatabaseIfModelChanges if you want db-data to persist between builds!
     //
 
-    //public class AgilaMetoderProjektDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
-    public class AgilaMetoderProjektDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
+    public class AgilaMetoderProjektDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
+    //public class AgilaMetoderProjektDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
     {
         private readonly RandomGenerator _randomGenerator = new RandomGenerator();
         private readonly Random _random = new Random();
 
+        private UserStore<ApplicationUser> _userStore;
+        private UserManager<ApplicationUser> _userManager;
+
+
         protected override void Seed(ApplicationDbContext context)
         {
-            // USERS AND ROLES
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            string[] roleNames = { "Admin", "User" };
-            foreach (var roleName in roleNames)
-            {
-                if (!roleManager.RoleExists(roleName))
-                {
-                    roleManager.Create(new IdentityRole(roleName));
-                }
-            }
-
-            if (!context.Users.Any(u => u.UserName == "admin@admin.com"))
-            {
-                var store = new UserStore<ApplicationUser>(context);
-                var manager = new UserManager<ApplicationUser>(store);
-                var user = new ApplicationUser { UserName = "admin@admin.com", Email = "admin@admin.com" };
-
-                manager.Create(user, "password");
-                manager.AddToRole(user.Id, "Admin");
-            }
-
-            if (!(context.Users.Any(u => u.UserName == "user@user.com")))
-            {
-                var userStore = new UserStore<ApplicationUser>(context);
-                var userManager = new UserManager<ApplicationUser>(userStore);
-                var userToInsert = new ApplicationUser
-                {
-                    UserName = "user@user.com",
-                    Email = "user@user.com",
-                    //TODO: profile-connection...
-                    //Profile = xxx
-                };
-                userManager.Create(userToInsert, "password");
-                userManager.AddToRole(userToInsert.Id, "User");
-            }
-
-            context.SaveChanges();
+            //Setup userstore&manager
+            _userStore = new UserStore<ApplicationUser>(context);
+            _userManager = new UserManager<ApplicationUser>(_userStore);
 
 
             // Profiles
@@ -74,6 +44,71 @@ namespace Webbsida.Models
             foreach (var profile in profiles)
                 context.Profiles.Add(profile);
             context.SaveChanges();
+
+
+            // ROLES
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            string[] roleNames = { "Admin", "User" };
+            foreach (var roleName in roleNames)
+            {
+                if (!roleManager.RoleExists(roleName))
+                {
+                    roleManager.Create(new IdentityRole(roleName));
+                }
+            }
+
+
+            var uniqueUserList = profiles.ToArray();
+
+            // ADMINUSER
+            if (!context.Users.Any(u => u.UserName == "admin@admin.com"))
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = "admin@admin.com",
+                    Email = "admin@admin.com",
+                    Profile = uniqueUserList[0],
+                    PhoneNumber = Faker.Phone.Number(),
+                    //Pick<Profile>.RandomItemFrom(profiles)
+                };
+
+                _userManager.Create(user, "password");
+                _userManager.AddToRole(user.Id, "Admin");
+            }
+
+            // USERUSER
+            if (!context.Users.Any(u => u.UserName == "user@user.com"))
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = "user@user.com",
+                    Email = "user@user.com",
+                    Profile = uniqueUserList[1],
+                    PhoneNumber = Faker.Phone.Number(),
+                };
+
+                _userManager.Create(user, "password");
+                _userManager.AddToRole(user.Id, "User");
+            }
+
+
+            // THE REST OF THE USERS
+            for (int index = 2; index < uniqueUserList.Length; index++)
+            {
+                var profile = uniqueUserList[index];
+                var tempEmail = Faker.Internet.Email();
+                var userToInsert = new ApplicationUser
+                {
+                    UserName = tempEmail,
+                    Email = tempEmail,
+                    Profile = profile,
+                    PhoneNumber = Faker.Phone.Number(),
+                };
+                _userManager.Create(userToInsert, "password");
+                _userManager.AddToRole(userToInsert.Id, "User");
+            }
+            context.SaveChanges();
+
 
 
             // Events
@@ -102,6 +137,16 @@ namespace Webbsida.Models
                     .With(n => n.Status = (Faker.RandomNumber.Next(0, 2) == 1) ? "Pending" : "Confirmed")
                 .Build();
 
+            var dummyImages = new List<string>
+            {
+                @"\Content\EventImages\Mewtwo1.png",
+                @"\Content\EventImages\Mewtwo2.jpg",
+                @"\Content\EventImages\Mewtwo3.jpg",
+                @"\Content\EventImages\Mewtwo4.jpg",
+                @"\Content\EventImages\Pysduck.png"
+            };
+
+
             foreach (var @event in events)
             {
                 var randomEventUser = eventUsers.ElementAt(_random.Next(0, eventUsers.Count));
@@ -112,6 +157,9 @@ namespace Webbsida.Models
                 }
 
                 randomEventUser.IsOwner = true;
+
+
+                @event.ImagePath = dummyImages.ElementAt(_random.Next(0, dummyImages.Count()));
             }
 
             foreach (var eventUser in eventUsers)
