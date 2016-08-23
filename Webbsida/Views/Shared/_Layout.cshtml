@@ -23,7 +23,8 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("CREATEDB", "Index", "Temp")</li>
-                    <li>@Html.ActionLink("GeoLoc", "Index", "Geo")</li>
+                    <li>@Html.ActionLink("GeoLoc/CACHE", "Index", "Geo")</li>
+                    <li>@Html.ActionLink("GeoPicker/NOCACHE", "GeoPicker", "Geo")</li>
 
                 </ul>
                 @Html.Partial("_LoginPartial")
