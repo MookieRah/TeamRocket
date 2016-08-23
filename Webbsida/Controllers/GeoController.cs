@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -26,6 +27,12 @@ namespace Webbsida.Controllers
             return View();
         }
 
+        // GET: Debug
+        public ActionResult Debug()
+        {
+            return View();
+        }
+
         [System.Web.Mvc.HttpGet]
         public JsonResult GetEventsToJson()
         {
@@ -47,34 +54,71 @@ namespace Webbsida.Controllers
         [HttpGet]
         public JsonResult RequestCoordinatesFromAddress(string address)
         {
-            //var requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false", Uri.EscapeDataString(address));
+            var requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false", Uri.EscapeDataString(address));
 
-            //var request = WebRequest.Create(requestUri);
-            //var response = request.GetResponse();
-            //var xdoc = XDocument.Load(response.GetResponseStream());
+            var request = WebRequest.Create(requestUri);
+            var response = request.GetResponse();
+            var xdoc = XDocument.Load(response.GetResponseStream());
 
-            //var result = xdoc.Element("GeocodeResponse").Element("result");
+            var coordinatesResult = new Coordinate();
 
-            //if (result != null)
-            //{
-            //    var locationElement = result.Element("geometry").Element("location");
-            //    var lat = locationElement.Element("lat").Value;
-            //    var lng = locationElement.Element("lng").Value;
+            var result = xdoc.Element("GeocodeResponse").Element("result");
 
-            //    Console.WriteLine($"lat: {lat}, long: {lng}");
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Could not find that city.");
-            //}
-
-            var result = new Coordinate()
+            if (result != null)
             {
-                Latitude = 666,
-                Longitude = 777
-            };
+                var locationElement = result.Element("geometry").Element("location");
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+                coordinatesResult.Latitude = locationElement.Element("lat").Value;
+                coordinatesResult.Longitude = locationElement.Element("lng").Value;
+            }
+            else
+            {
+                coordinatesResult.Latitude = "error";
+                coordinatesResult.Longitude = "error";
+            }
+
+
+            return Json(coordinatesResult, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public JsonResult RequestAddressFromCoordinates(double lat, double lon)
+        {
+            var requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?latlng={0},{1}&sensor=false", 
+                Uri.EscapeDataString(lat.ToString(CultureInfo.InvariantCulture)), Uri.EscapeDataString(lon.ToString(CultureInfo.InvariantCulture)));
+
+
+            string addressResult = string.Empty;
+
+            using (WebClient wc = new WebClient())
+            {
+                string result = wc.DownloadString(requestUri);
+                var xmlElm = XElement.Parse(result);
+                var status = (from elm in xmlElm.Descendants()
+                              where
+                                elm.Name == "status"
+                              select elm).FirstOrDefault();
+                if (status.Value.ToLower() == "ok")
+                {
+                    var res = (from elm in xmlElm.Descendants()
+                               where
+                                elm.Name == "formatted_address"
+                               select elm).FirstOrDefault();
+
+                    addressResult = res.Value;
+                }
+            }
+
+
+            return Json(addressResult, JsonRequestBehavior.AllowGet);
+        }
+
+    }
+
+    // TODO: MOVE THIS, only debug
+    public struct Coordinate
+    {
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
     }
 }

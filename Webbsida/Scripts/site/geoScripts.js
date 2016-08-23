@@ -1,4 +1,5 @@
 ﻿var map;
+var geocoder;
 //var userCoordinates;
 
 function initMap(userLat, userLong) {
@@ -59,7 +60,6 @@ function OnError(error) {
 }
 
 function getEventsFromGeoController() {
-    //debugger;
     var allEvents;
     $.ajax({
         type: "GET",
@@ -80,7 +80,7 @@ function getEventsFromGeoController() {
 
 }
 
-function addEventMarker(name, lat, long){
+function addEventMarker(name, lat, long) {
 
     var marker = new google.maps.Marker
     (
@@ -95,11 +95,12 @@ function addEventMarker(name, lat, long){
 
 
 
-// GeoPicker
+//
+// -> GeoPicker
+//
 var userMarker = false; ////Has the user plotted their location marker? 
 function geoPicker() {
     initGeoPickerMap(63.8, 20.3);
-
 }
 
 function initGeoPickerMap(userLat, userLong) {
@@ -108,7 +109,7 @@ function initGeoPickerMap(userLat, userLong) {
         zoom: 10
     });
 
-    google.maps.event.addListener(map, "click", function(event) {                
+    google.maps.event.addListener(map, "click", function (event) {
         //Get the location that the user clicked.
         var clickedLocation = event.latLng;
         //If the marker hasn"t been added.
@@ -123,7 +124,7 @@ function initGeoPickerMap(userLat, userLong) {
             google.maps.event.addListener(userMarker, "dragend", function (event) {
                 markerLocation();
             });
-        } else{
+        } else {
             //Marker has already been added, so just change its location.
             userMarker.setPosition(clickedLocation);
         }
@@ -144,23 +145,84 @@ function markerLocation() {
 
 
 // Request coordinates from address in a form-field
+// The insane way (extra roundtrip to the server)
 function requestCoordinatesFromAddress() {
-    //debugger;
-    var getAddressFormValue = "tvistevägen, umeå";
-    $.ajax({
-        type: "POST",
-        url: "Geo/RequestCoordinatesFromAddress",
-        data: { address: getAddressFormValue },
-        contentType: "application/json;charset=utf-8",
-        dataType: "json",
-        success: function (data) {
+    var getAddressFormValue = $("#input_address").val();
 
-            debugger;
+    $.get("RequestCoordinatesFromAddress", "address=" + getAddressFormValue, function (data) {
+        alert(data.Latitude + ":" + data.Longitude);
+    });
 
-        },
-        error: function (response) {
-            alert("Error with requestCoordinatesFromAddress!");
+}
+
+
+// Make the marker move to the address inputted.
+// (The sane way)
+function setMarkerByUserInputAddress() {
+
+    if (geocoder == null) {
+        geocoder = new google.maps.Geocoder();
+    }
+    geocoder.geocode({ "address": $("#input_address").val() }, function (results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location);
+
+            if (userMarker === false) {
+                //Create the marker.
+                userMarker = new google.maps.Marker({
+                    position: results[0].geometry.location,
+                    map: map,
+                    draggable: true //make it draggable
+                });
+                //Listen for drag events!
+                google.maps.event.addListener(userMarker, "dragend", function(event) {
+                    markerLocation();
+                });
+            } else {
+                userMarker.setPosition(results[0].geometry.location);
+            }
+
+            markerLocation();
+        }
+        else {
+            alert("Geocode was not successful for the following reason: " + status);
+        }
+    });
+}
+
+function getAddressFromCoordinates() {
+
+    if (geocoder == null) {
+        geocoder = new google.maps.Geocoder();
+    }
+
+    var input = $("#lat").val() + "," + $("#lng").val();
+    var latlngStr = input.split(',', 2);
+    var latlng = { lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1]) };
+
+
+    geocoder.geocode({ 'location': latlng }, function (results, status) {
+        if (status === 'OK') {
+            if (results[1]) {
+                alert(results[0].formatted_address);
+            } else {
+                window.alert('No results found');
+            }
+        } else {
+            window.alert('Geocoder failed due to: ' + status);
         }
     });
 
+}
+
+// Server-side = wild roundtrip, DONT USE
+function getAddressFromCoordinatesSERVERSIDE() {
+    //debugger;
+    var lat = $("#lat").val();
+    var lon = $("#lng").val();
+
+
+    $.get("RequestAddressFromCoordinates", "lat=" + lat +"&lon=" + lon, function (data) {
+        alert(data.addressResult);
+    });
 }
