@@ -11,6 +11,8 @@ namespace Webbsida.Controllers
 {
     public class EventController : Controller
     {
+        ApplicationDbContext _db = new ApplicationDbContext();
+
         public EventController()
         {
         }
@@ -18,23 +20,40 @@ namespace Webbsida.Controllers
         // GET: Event
         public ActionResult Index()
         {
-            ApplicationDbContext _db = new ApplicationDbContext();
             return View(_db);
         }
 
-        //public ActionResult GetEvent(int id)
-        //{
-        //   Event ViewEvent = new Event();
-        //    List<ViewEvent> list = null;
-        //    try
-        //    {
-                
-        //    }
-        //    catch (Exception)
-        //    {
-                
-        //        throw;
-        //    }
-        //}
+        public ActionResult GetEvent(int id)
+        {
+            var eventData = _db.Events.Find(id);
+            //var UsersData = _db.Profiles.Find(id);
+            var result= new EventViewModel
+            {   
+                //Firstname = UsersData.FirstName.Where(),
+                EventName = eventData.Name,
+                Description = eventData.Description,
+                StartDate = eventData.StartDate,
+                EndDate = eventData.EndDate,
+                Latitude = eventData.Latitude,
+                Longitude = eventData.Longitude,
+                MaxSignups = eventData.MaxSignups,
+                MinSignups = eventData.MinSignups,
+                Price = eventData.Price
+
+            };
+            //Event ViewEvent = new Event();
+            //List<ViewEvent> list = null;
+            //try
+            //{
+
+            //}
+            //catch (Exception)
+            //{
+
+            //    throw;
+            //}
+
+            return View(result);
+        }
     }
 }
