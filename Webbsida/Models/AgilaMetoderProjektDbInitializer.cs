@@ -143,7 +143,7 @@ namespace Webbsida.Models
                 @"\Content\EventImages\Mewtwo2.jpg",
                 @"\Content\EventImages\Mewtwo3.jpg",
                 @"\Content\EventImages\Mewtwo4.jpg",
-                @"\Content\EventImages\Pysduck.png"
+                @"\Content\EventImages\Psyduck.png"
             };
 
 

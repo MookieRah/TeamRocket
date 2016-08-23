@@ -352,6 +352,7 @@
     <Content Include="Views\Temp\Index.cshtml" />
     <Content Include="Views\Geo\Index.cshtml" />
     <Content Include="Views\Geo\GeoPicker.cshtml" />
+    <Content Include="Views\Home\_EventSummary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
