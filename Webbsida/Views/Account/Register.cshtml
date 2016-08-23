@@ -45,11 +45,28 @@
     </div>
 
     <div class="form-group">
+        @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+        </div>
+    </div>
+
+    @*<div class="form-group">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DateOfBirth)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.DateOfBirth, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker", placeholder = "DD/MM/YYYY", maxlength = "100" })
+            @Html.ValidationMessageFor(model => model.DateOfBirth)
+        </div>
+    </div>*@
+
+    @*<div class="form-group">
         @Html.LabelFor(m => m.DateOfBirth, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.DateOfBirth, new { @class = "form-control" })
         </div>
-    </div>
+    </div>*@
 
 
     <div class="form-group">
