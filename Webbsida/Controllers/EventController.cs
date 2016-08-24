@@ -20,11 +20,15 @@ namespace Webbsida.Controllers
         // GET: Event
         public ActionResult GetEvent(int id)
         {
-            //Create a Event Data holder
+            //Create a Data holders
             var eventData = _db.Events.Find(id);
+            
+            
             //Creating a Model usning the Event Data holer
             var result= new EventViewModel
-            {   
+            {
+                
+                ImagePath = eventData.ImagePath,
                 EventName = eventData.Name,
                 Description = eventData.Description,
                 StartDate = eventData.StartDate,
@@ -37,6 +41,15 @@ namespace Webbsida.Controllers
 
             };
             return View(result);
+        }
+
+        public ActionResult GetSpotsLeft(int id)
+        {
+            var result1 = _db.EventUsers.Local.Count(s => s.EventId == id);
+            var maxSignups = _db.Events.Find(id).MaxSignups;
+            if (maxSignups == null) return PartialView((int?) null);
+            var result = maxSignups.Value - result1;
+            return PartialView("GetSpotsLeft", result);
         }
     }
 }

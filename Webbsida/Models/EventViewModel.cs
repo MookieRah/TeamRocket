@@ -20,6 +20,7 @@ namespace Webbsida.Models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public int PhoneNumber { get; set; }
+        public string ImagePath { get; set; }
         
 
     }

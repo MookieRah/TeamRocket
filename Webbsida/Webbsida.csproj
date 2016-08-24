@@ -355,6 +355,7 @@
     <Content Include="Views\Geo\Index.cshtml" />
     <Content Include="Views\Geo\GeoPicker.cshtml" />
     <Content Include="Views\Event\GetEvent.cshtml" />
+    <Content Include="Views\Event\GetSpotsLeft.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
