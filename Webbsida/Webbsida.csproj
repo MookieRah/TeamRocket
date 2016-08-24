@@ -480,6 +480,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Temp\Index.cshtml" />
     <Content Include="Views\Geo\Index.cshtml" />
+    <Content Include="Views\Geo\GeoPicker.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

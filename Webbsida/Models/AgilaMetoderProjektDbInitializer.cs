@@ -180,14 +180,14 @@ namespace Webbsida.Models
 
         private double GenerateRandomLatitude()
         {
-            //63.000-64.000
-            return Math.Round(63f + _random.NextDouble(), 3);
+            //63.710-63.900
+            return Math.Round(63f + _random.Next(710,901) / 1000f, 3);
         }
 
         private double GenerateRandomLongitude()
         {
-            //20.000-21.000
-            return Math.Round(21f + _random.NextDouble(), 3);
+            //20.000-20.550
+            return Math.Round(20f + _random.Next(0, 551) / 1000f, 3);
         }
 
         private DateTime GenerateRandomBirthDate()
