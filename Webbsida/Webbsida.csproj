@@ -309,6 +309,7 @@
     <Content Include="Content\EventImages\Psyduck.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\site\geoScriptsV2.js" />
     <Content Include="Scripts\site\geoScripts.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
