@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -147,21 +148,30 @@ namespace Webbsida.Controllers
                     LastName = model.LastName,
                     IsPrivate = true
                 };
-
+                var newPhoneNumber = new AddPhoneNumberViewModel
+                {
+                    Number = model.PhoneNumber
+                };
 
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
                     Email = model.Email,
-                    Profile = newProfile
+                    Profile = newProfile,
+                    PhoneNumber = newPhoneNumber.Number,
+                    PhoneNumberConfirmed = true
+                   
                 };
 
 
                 var result = await UserManager.CreateAsync(user, model.Password);
+         
                 if (result.Succeeded)
                 {
+                    
                     await SignInManager.SignInAsync(user, false, false);
-
+            
+               
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

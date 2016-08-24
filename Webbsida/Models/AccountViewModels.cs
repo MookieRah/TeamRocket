@@ -85,7 +85,10 @@ namespace Webbsida.Models
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime DateOfBirth { get; set; }   
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy/MM/dd}")]
+        public DateTime DateOfBirth { get; set; }
+        public string PhoneNumber { get; set; } 
     }
 
     public class ResetPasswordViewModel
