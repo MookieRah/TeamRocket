@@ -1,5 +1,10 @@
-﻿@model DatabaseObjects.Event
+﻿@model Webbsida.ViewModels.IndexEventViewModel
 
 <div id="EventSummary">
-    <img src=@Model.ImagePath />
+    <img src=@Model.ImagePath>
+
+    <div id="EventText">
+        <h1>@Model.Name</h1>
+        <p>@Model.GetPartialDescription(25)</p>
+    </div>
 </div>

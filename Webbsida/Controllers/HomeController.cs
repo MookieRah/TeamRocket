@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Webbsida.Models;
+using Webbsida.ViewModels;
 
 namespace Webbsida.Controllers
 {
@@ -13,7 +14,9 @@ namespace Webbsida.Controllers
 
         public ActionResult Index()
         {
-            var events = _db.Events.ToList();
+            var eventDbos = _db.Events.ToList();
+
+            var events = eventDbos.Select(eventDbo => new IndexEventViewModel(eventDbo)).ToList();
 
             return View(events);
         }
