@@ -1,0 +1,59 @@
+﻿
+
+#EventSummary 
+{
+    max-height: 500px;
+    max-width: 265px;
+
+    width: 265px;
+
+    display: inline-block;
+
+    margin-top: 1em;
+    margin-right: 1em;
+    padding: 0;
+    
+    background: #f2f2f2;
+
+    box-shadow: 2px 2px 1px #d3d3d3;
+
+    vertical-align: text-top;
+}
+
+#EventSummary > * 
+{
+    vertical-align: middle;
+}
+
+#EventSummary img 
+{
+    max-height: inherit;
+    max-width: inherit;
+
+    min-width: 100%;
+    min-height: 100%;
+
+    margin: 0;
+    padding: 0;
+}
+
+#EventText 
+{
+    padding: 0 1em;
+    width: 100%;
+}
+
+#EventText h1 
+{
+    font-size: 1.5em;
+    align-content: center;
+    padding-top:5px;
+    margin: 0;
+    font-weight: bold;
+}
+
+#EventText p 
+{
+    max-width: inherit;
+    font-style: italic;
+}

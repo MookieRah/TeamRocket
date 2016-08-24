@@ -1,4 +1,10 @@
-﻿@{
+﻿@model List<Webbsida.ViewModels.IndexEventViewModel>
+
+@{
     ViewBag.Title = "Home Page";
 }
 
+@foreach (var @event in Model)
+{
+    @Html.Partial("_EventSummary", @event)
+}
