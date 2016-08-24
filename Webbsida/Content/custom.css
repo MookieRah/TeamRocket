@@ -1,4 +1,11 @@
-﻿
+﻿@font-face 
+{
+    font-family: 'coiny';
+    src: url('/fonts/coiny-regular-webfont.woff');
+    src: url('/fonts/coiny-regular-webfont.woff2');
+    font-weight: normal;
+    font-style: normal;
+}
 
 #EventSummary 
 {
@@ -45,6 +52,7 @@
 
 #EventText h1 
 {
+    font-family: 'coiny';
     font-size: 1.5em;
     align-content: center;
     padding-top:5px;
