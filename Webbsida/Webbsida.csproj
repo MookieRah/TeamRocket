@@ -317,8 +317,12 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="bin\Webbsida.dll.config" />
-    <Content Include="fonts\coiny-regular-webfont.woff" />
-    <Content Include="fonts\coiny-regular-webfont.woff2" />
+    <Content Include="fonts\coiny-regular-webfont.woff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\coiny-regular-webfont.woff2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
