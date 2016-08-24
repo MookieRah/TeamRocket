@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using DatabaseObjects;
 
@@ -49,9 +50,46 @@ namespace Webbsida.ViewModels
 
         public string ImagePath { get; set; }
 
+        /// <summary>
+        /// This method returns a partial description based on the description of the event.
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns></returns>
         public string GetPartialDescription(int num)
         {
-            return new string(Description.ToCharArray(0, num)) + "...";
+            int wordCount = 10;
+            var partialDescription = "";
+
+            do
+            {
+                partialDescription = "";
+
+                var rawMatches = Regex.Matches(Description, GetRegExPattern(wordCount));
+
+                if (rawMatches.Count > 0)
+                {
+                    partialDescription =
+                        rawMatches.Cast<object>()
+                            .Where(rawMatch => !string.IsNullOrWhiteSpace(rawMatch.ToString()))
+                            .Aggregate(partialDescription, (current, rawMatch) => current + rawMatch.ToString() + " ");
+                }
+                else
+                {
+                    partialDescription = "No description available.";
+                }
+
+                wordCount--;
+
+                var test = partialDescription.Length;
+            } while (partialDescription.Length > num || wordCount < 1);
+
+
+            //If there are any regex matches, they are added to the partial description.
+
+            //Since there is a whitespace after every regex match, I remove the last white space and then add the elipses.
+            return (partialDescription.Remove(partialDescription.Length - 2)) + "...";
         }
+
+        public string GetRegExPattern(int num) => @"^(\w+\s+){1," + num + "}";
     }
 }

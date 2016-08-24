@@ -317,6 +317,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="bin\Webbsida.dll.config" />
+    <Content Include="fonts\coiny-regular-webfont.woff" />
+    <Content Include="fonts\coiny-regular-webfont.woff2" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
