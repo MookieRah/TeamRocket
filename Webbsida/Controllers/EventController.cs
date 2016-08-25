@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using DatabaseObjects;
+using Microsoft.ApplicationInsights.WindowsServer;
 using Webbsida.Models;
 using Webbsida.ViewModels;
 
@@ -25,6 +26,14 @@ namespace Webbsida.Controllers
         {
             return View();
         }
+
+        // GET: Events/Details
+        public ActionResult Details(int id)
+        {
+            var result = db.Events.SingleOrDefault(n => n.Id == id);
+            return View(result);
+        }
+
 
         // POST: Events/Create
         [HttpPost]
@@ -61,6 +70,8 @@ namespace Webbsida.Controllers
 
             return RedirectToAction("Index");
         }
+
+
 
         protected override void Dispose(bool disposing)
         {

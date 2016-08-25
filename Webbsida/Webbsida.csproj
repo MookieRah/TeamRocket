@@ -309,7 +309,7 @@
     <Content Include="Content\EventImages\Psyduck.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\site\geoScripts.js" />
+    <Content Include="Scripts\site\geoScriptsV2.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -375,6 +375,7 @@
     <Content Include="Views\Home\_EventSummary.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\Event\Create.cshtml" />
+    <Content Include="Views\Event\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

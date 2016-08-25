@@ -27,13 +27,7 @@ namespace Webbsida.Controllers
             return View();
         }
 
-        // GET: Debug
-        public ActionResult Debug()
-        {
-            return View();
-        }
-
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public JsonResult GetEventsToJson()
         {
             List<Event> result = new List<Event>();
@@ -47,6 +41,25 @@ namespace Webbsida.Controllers
                     Name = @event.Name
                 });
             }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetSingleEventToJson(int id)
+        {
+            var eventInDb = db.Events.SingleOrDefault(n => n.Id == id);
+
+            if (eventInDb == null)
+                return Json(null, JsonRequestBehavior.AllowGet);
+
+            var result = new Event()
+            {
+                Longitude = eventInDb.Longitude,
+                Latitude = eventInDb.Latitude,
+                Name = eventInDb.Name
+            };
+
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -84,7 +97,7 @@ namespace Webbsida.Controllers
         [HttpGet]
         public JsonResult RequestAddressFromCoordinates(double lat, double lon)
         {
-            var requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?latlng={0},{1}&sensor=false", 
+            var requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?latlng={0},{1}&sensor=false",
                 Uri.EscapeDataString(lat.ToString(CultureInfo.InvariantCulture)), Uri.EscapeDataString(lon.ToString(CultureInfo.InvariantCulture)));
 
 
