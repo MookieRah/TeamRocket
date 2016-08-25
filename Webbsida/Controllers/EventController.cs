@@ -35,8 +35,16 @@ namespace Webbsida.Controllers
 
             // TODO: Make sure this path will be correct in the db!!
             var path = Path.Combine(Server.MapPath("/Content/EventImages/"), ev.Image.FileName);
-            ev.Image.SaveAs(path);
-
+            var FileExtension = Path.GetExtension(ev.Image.FileName).ToLower();
+            if (FileExtension==".png" || FileExtension == ".jpg" || FileExtension == ".gif" || FileExtension == ".jpeg" || FileExtension == ".jpe" || FileExtension == ".jfif")
+            { 
+                ev.Image.SaveAs(path);
+            }
+            else
+            {
+                // return JavaScript(alert("We don't accept your filetype"));
+                return Content("<script language='javascript' type='text/javascript'>alert('We dont accept your filetype In this time we only accepting .png');</script>");
+            }
             // TODO: Connect with path instead.
             string pathToSaveInDb = @"\Content\EventImages\" + ev.Image.FileName;
             // Shall update filetype
