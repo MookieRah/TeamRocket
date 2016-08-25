@@ -39,7 +39,7 @@ namespace Webbsida.Controllers
 
             // TODO: Connect with path instead.
             string pathToSaveInDb = @"\Content\EventImages\" + ev.Image.FileName;
-            
+            // Shall update filetype
 
             var res = new Event()
             {
