@@ -36,7 +36,7 @@ namespace Tests
 
             // ACT
             var numberOfOwnedEvents = db.EventUsers.Count(n => n.IsOwner);
-            var numberOfEventsWithOwner = db.Events.Select(n => n.Owner);
+            var numberOfEventsWithOwner = db.EventUsers.Where(x => x.IsOwner).Select(x => x.Profile).Count();
 
             // ASSERT
             Assert.AreEqual(numberOfOwnedEvents, numberOfEventsWithOwner);
