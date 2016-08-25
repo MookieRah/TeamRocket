@@ -27,12 +27,6 @@ namespace Webbsida.Controllers
             return View();
         }
 
-        // GET: Debug
-        public ActionResult Debug()
-        {
-            return View();
-        }
-
         [System.Web.Mvc.HttpGet]
         public JsonResult GetEventsToJson()
         {
