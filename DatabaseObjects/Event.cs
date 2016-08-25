@@ -27,9 +27,12 @@ namespace DatabaseObjects
 
         public decimal? Price { get; set; }
 
-        public Profile GetOwner()
+        public Profile Owner
         {
-            return EventUsers.Where(x => x.IsOwner == true).Select(x => x.Profile).FirstOrDefault();
+            get
+            {
+                return EventUsers.Where(x => x.IsOwner == true).Select(x => x.Profile).FirstOrDefault();
+            }
         }
 
         public string ImagePath { get; set; }
