@@ -123,8 +123,8 @@
 
 @section Scripts {
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=geoPicker"></script>
     <script src="~/Scripts/site/geoScriptsV2.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=GoogleMapsEventController.initPickerMap"></script>
     <script>
         $(function () {
             // Cache-hack!?
@@ -136,7 +136,7 @@
             //});
 
             document.getElementById('setMarkerFromAddressButton').addEventListener('click', function () {
-                setMarkerByUserInputAddress();
+                GoogleMapsEventController.setMarkerByUserInputAddress();
             });
         });
     </script>
