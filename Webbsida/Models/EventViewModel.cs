@@ -21,7 +21,7 @@ namespace Webbsida.Models
         public double Longitude { get; set; }
         public string PhoneNumber { get; set; }
         public string ImagePath { get; set; }
-        
-
+        //TODO Delete ID for asome Idea
+        public int Id { get; set; }
     }
 }
