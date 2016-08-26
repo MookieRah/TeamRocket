@@ -22,12 +22,28 @@ namespace Webbsida.Controllers
         {
             //Create a Data holders
             var eventData = _db.Events.Find(id);
+
+            var lePhone = _db.Users
+                .Where(s => s.Profile.Id == id)
+                .Select(p => p.PhoneNumber).SingleOrDefault();
+
+            var eventUserData = _db.EventUsers
+                .Where(d => d.EventId == id)
+                .Select(g => g.EventId).FirstOrDefault();
+
+            var userDataFirstName =
+                _db.Profiles.Where(d => d.Id == eventUserData).Select(f => f.FirstName).SingleOrDefault();
+            var userDataLastName =
+                _db.Profiles.Where(d => d.Id == eventUserData).Select(f => f.LastName).SingleOrDefault();
+
             
             
             //Creating a Model usning the Event Data holer
             var result= new EventViewModel
             {
-                
+                Firstname = userDataFirstName,
+                LastName = userDataLastName,
+                PhoneNumber = lePhone,
                 ImagePath = eventData.ImagePath,
                 EventName = eventData.Name,
                 Description = eventData.Description,
