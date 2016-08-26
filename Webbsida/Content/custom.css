@@ -65,30 +65,19 @@ a{color:#0060aa}
 
 #EventSummaryContainer 
 {
-    display: flex;
+    display: inline-flex;
     flex-flow: row wrap;
     justify-content: space-between;
-    align-content: flex-start;
 }
 
 #EventSummary 
 {
-    max-height: 50%;
-    max-width: 23%;
-
-    width: 265px;
-
+    max-width: 24%;
     display: inline-block;
-
+    border: 1px solid #c9c9c9;
     margin-top: 2em;
-
-    padding: 0;
-    
-    background: #f2f2f2;
-
     box-shadow: 2px 2px 1px #d3d3d3;
-
-    vertical-align: text-top;
+    flex-flow: row wrap;
 }
 
 #EventSummary > * 
@@ -98,12 +87,8 @@ a{color:#0060aa}
 
 #EventSummary img 
 {
-    max-height: inherit;
     max-width: inherit;
-
     min-width: 100%;
-    min-height: 100%;
-
     margin: 0;
     padding: 0;
 }
