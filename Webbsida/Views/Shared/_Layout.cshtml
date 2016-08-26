@@ -20,7 +20,7 @@
                 <div class="navbar-brand">
                     <ul>
                         <li>@Html.ActionLink("Eventalizer","Index","Home")</li>
-                        @if (ViewBag.Title == "Index")
+                        @if (string.Equals(ViewBag.Title, "Index"))
                         {
                             <li>
                                 <div id="EventSearch">
