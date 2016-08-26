@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework;
 using Webbsida.Models;
+using NUnit.Framework;
 
 namespace Tests
 {
