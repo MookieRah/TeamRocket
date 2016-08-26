@@ -73,6 +73,7 @@ a{color:#0060aa}
 #EventSummary 
 {
     max-width: 24%;
+    max-height: 50%;
     display: inline-block;
     border: 1px solid #c9c9c9;
     margin-top: 2em;
