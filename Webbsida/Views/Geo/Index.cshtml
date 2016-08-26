@@ -10,12 +10,13 @@
 
 @section Scripts {
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=getUserLocation"
+    <script src="~/Scripts/site/geoScriptsV2.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=GoogleMapsEventController.initAllEventsDisplayingMap"
     async defer></script>
-    <script src="~/Scripts/site/geoScripts.js"></script>
     <script>
         $(function () {
-            // async callback from googleapis above...
+            var url = "/Geo/Index/";
+            $.get(url, { query: null });
         });
     </script>
     

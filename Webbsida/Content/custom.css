@@ -1,0 +1,116 @@
+﻿@font-face 
+{
+    font-family: 'coiny';
+    src: url('/fonts/coiny-regular-webfont.woff');
+    src: url('/fonts/coiny-regular-webfont.woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+a{color:#0060aa}
+
+/*Controls the background of all the navbars*/
+.navbar { background-color: #0060aa }
+
+/*Controls the login links.*/
+#registerLink, #loginLink { color: white; font-size: 1.25em; }
+
+/*This overrides the css of the div that holds the logo, login, and other navigation.*/
+.navbar-brand 
+{
+    margin: 40px 0 30px 0;
+    padding: 0;
+}
+
+.navbar-brand ul 
+{
+    list-style-type: none;
+    margin-left: 12px;
+    padding: 0;
+    overflow: visible;
+    color: white;
+}
+
+.navbar-brand li 
+{
+    float: left;
+    margin: 0 2em 0 0;
+    padding: 0;
+}
+
+.navbar-brand a
+{
+    color: white;
+    text-decoration: none;
+    font-family: 'coiny';
+    font-size: 4em;
+}
+
+#EventSearch { margin-top: 5px; }
+
+.navbar-brand:visited { color: white !important }
+.navbar-default-color { color: white !important }
+.navbar-inverse { color : #00bfff !important }
+
+
+/*This overrides the css of the login information.*/
+.navbar-collapse { margin: 3em 0 0 0; }
+.navbar-collapse a {color:white}
+
+/*This overrides the css of the body content.*/
+.body-content 
+{
+    margin-top: 60px;
+}
+
+#EventSummaryContainer 
+{
+    display: inline-flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+#EventSummary 
+{
+    max-width: 24%;
+    max-height: 50%;
+    display: inline-block;
+    border: 1px solid #c9c9c9;
+    margin-top: 2em;
+    box-shadow: 2px 2px 1px #d3d3d3;
+    flex-flow: row wrap;
+}
+
+#EventSummary > * 
+{
+    vertical-align: middle;
+}
+
+#EventSummary img 
+{
+    max-width: inherit;
+    min-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#EventText 
+{
+    padding: 0 1em;
+    width: 100%;
+}
+
+#EventText h1 
+{
+    font-size: 1.5em;
+    align-content: center;
+    padding-top:5px;
+    margin: 0;
+    font-weight: bold;
+}
+
+#EventText p 
+{
+    max-width: inherit;
+    font-style: italic;
+}
