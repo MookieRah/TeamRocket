@@ -207,6 +207,7 @@
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\GeoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JavascriptResult.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\TempController.cs" />
     <Compile Include="Global.asax.cs">
