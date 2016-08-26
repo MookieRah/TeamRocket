@@ -214,6 +214,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AgilaMetoderProjektDbInitializer.cs" />
+    <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -306,9 +307,12 @@
     <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\Event\Create.cshtml" />
     <Content Include="Views\Event\Details.cshtml" />
+    <Content Include="Views\Event\GetEvent.cshtml" />
+    <Content Include="Views\Event\GetSpotsLeft.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Profile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
