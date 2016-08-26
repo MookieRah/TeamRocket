@@ -59,6 +59,7 @@ namespace Webbsida.Controllers
             return View(result);
         }
 
+
         public ActionResult GetSpotsLeft(int id)
         {
             var result1 = _db.EventUsers.Local.Count(s => s.EventId == id);
