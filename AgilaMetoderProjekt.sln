@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webbsida", "Webbsida\Webbsi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseObjects", "DatabaseObjects\DatabaseObjects.csproj", "{CA371E0E-8CE3-4E02-BB2D-5782C86FF8C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{DA64A197-95A2-4E3B-955C-C0EA8BCF86D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CA371E0E-8CE3-4E02-BB2D-5782C86FF8C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA371E0E-8CE3-4E02-BB2D-5782C86FF8C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA371E0E-8CE3-4E02-BB2D-5782C86FF8C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA64A197-95A2-4E3B-955C-C0EA8BCF86D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA64A197-95A2-4E3B-955C-C0EA8BCF86D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA64A197-95A2-4E3B-955C-C0EA8BCF86D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA64A197-95A2-4E3B-955C-C0EA8BCF86D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
