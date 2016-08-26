@@ -55,7 +55,7 @@ var GoogleMapsEventController = function () {
     // Three different main entry points when you want to use a map:
     // 1. Start with a map displaying ALL events
     // TODO: Just list active events?
-    var initAllEventsDisplayingMap = function() {
+    var initAllEventsDisplayingMap = function () {
 
         getUserPosition();
 
@@ -71,14 +71,14 @@ var GoogleMapsEventController = function () {
             //data: { userId: Id },
             contentType: "application/json;charset=utf-8",
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
 
-                $.each(data, function(id, event) {
+                $.each(data, function (id, event) {
                     addEventMarker(event.Name, event.Latitude, event.Longitude);
                 });
 
             },
-            error: function(response) {
+            error: function (response) {
                 alert("Could not retrieve data from server!");
             }
         });
@@ -89,9 +89,13 @@ var GoogleMapsEventController = function () {
     // 2. Map displaying single event
     var initSingleEventDisplayingMap = function () {
 
-        //TODO: get hidden field holding id of the event here!
 
         var eventId = $("#Id").val();
+        // TODO: No need for wild roundtrip to server, just get the data from the view in jQuery!?
+        // ALTOUGH, might set this on hold, maybe you want a singelEventMap without having to feed data?
+        //var latitude = $("#latitude");
+        //var longitude = $("#longitude");
+        //var name = $("#name");
 
         $.ajax({
             type: "GET",
@@ -129,7 +133,7 @@ var GoogleMapsEventController = function () {
     }
 
     // 3. Start with a pickermap
-    var initPickerMap = function() {
+    var initPickerMap = function () {
 
         getUserPosition();
 
@@ -138,7 +142,7 @@ var GoogleMapsEventController = function () {
             zoom: 10
         });
 
-        google.maps.event.addListener(map, "click", function(event) {
+        google.maps.event.addListener(map, "click", function (event) {
             //Get the location that the user clicked.
             var clickedLocation = event.latLng;
             //If the marker hasn't been added.
@@ -150,7 +154,7 @@ var GoogleMapsEventController = function () {
                     draggable: true //make it draggable
                 });
                 //Listen for drag events!
-                google.maps.event.addListener(userMarker, "dragend", function(event) {
+                google.maps.event.addListener(userMarker, "dragend", function (event) {
                     markerLocation();
                 });
             } else {
@@ -162,6 +166,82 @@ var GoogleMapsEventController = function () {
         });
     };
 
+
+    // 4. Distance calculations
+    // When you get your results, start looping trough them and calculate distances,
+    // return a sorted array
+
+    var getEventsWithDistance = new function () {
+
+        // TODO: If this fails return!
+        getUserPosition();
+
+        //var queryString = "lat=" + localStorage.getItem("pos_lat") + "?long=" + localStorage.getItem("pos_long");
+        var result = [];
+        $.get("/api/GeoData", function (data) {
+
+            $.each(data, function (id, event) {
+
+                // TODO: Sorting value NOT CORRECT
+                result.push({
+                    key: event.Id,
+                    value: getDistance({ lat: localStorage.getItem("pos_lat"), lng: localStorage.getItem("pos_long") },
+                    { lat: event.Latitude, lng: event.Longitude }
+                    )
+                });
+
+            });
+
+            console.log(result); // original dictionary
+            console.log(sortJsObject(result)); // sorted array
+
+            return sortJsObject(result);
+
+        });
+
+        function sortJsObject(dict) {
+
+            var keys = [];
+            for (var key in dict) {
+                keys[keys.length] = key;
+            }
+
+            var values = [];
+            for (var i = 0; i < keys.length; i++) {
+                values[values.length] = dict[keys[i]];
+            }
+
+            var sortedValues = values.sort(sortNumber);
+            //alert(sortedValues);
+
+            //console.log(sortedValues);
+            return sortedValues;
+        }
+
+        // this is needed to sort values as integers
+        function sortNumber(a, b) {
+            return a - b;
+        }
+
+        // used in distance calculation getDistance
+        var rad = function (x) {
+            return x * Math.PI / 180;
+        };
+
+        var getDistance = function (p1, p2) {
+            var R = 6378137; // Earth’s mean radius in meter
+            var dLat = rad(p2.lat - p1.lat);
+            var dLong = rad(p2.lng - p1.lng);
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(rad(p1.lat)) * Math.cos(rad(p2.lat)) *
+              Math.sin(dLong / 2) * Math.sin(dLong / 2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = R * c;
+            return d; // returns the distance in meter
+        };
+
+    };
+    // END DISTANCE
 
     function setMarkerByUserInputAddress() {
 
@@ -216,7 +296,8 @@ var GoogleMapsEventController = function () {
         initAllEventsDisplayingMap: initAllEventsDisplayingMap,
         initSingleEventDisplayingMap: initSingleEventDisplayingMap,
         initPickerMap: initPickerMap,
-        setMarkerByUserInputAddress: setMarkerByUserInputAddress
+        setMarkerByUserInputAddress: setMarkerByUserInputAddress,
+        getEventsWithDistance: getEventsWithDistance
     };
 
 }();
