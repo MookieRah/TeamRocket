@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DatabaseObjects;
 using Webbsida.Models;
+using Webbsida.ViewModels;
 
 namespace Webbsida.Controllers
 {
     public class EventController : Controller
     {
         ApplicationDbContext _db = new ApplicationDbContext();
-        
+
         public ActionResult Index()
         {
             return View(_db);
@@ -59,6 +61,42 @@ namespace Webbsida.Controllers
             return View(result);
         }
 
+
+        // POST: Events/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(CreateEventViewModel ev)
+        {
+            // TODO: Model-Validation (and optional file uploaded)!
+
+            // TODO: Make sure this path will be correct in the db!!
+            var path = Path.Combine(Server.MapPath("/Content/EventImages/"), ev.Image.FileName);
+            ev.Image.SaveAs(path);
+
+            // TODO: Connect with path instead.
+            string pathToSaveInDb = @"\Content\EventImages\" + ev.Image.FileName;
+
+
+            var res = new Event()
+            {
+                Name = ev.Name,
+                Description = ev.Description,
+                StartDate = ev.StartDate,
+                EndDate = ev.EndDate,
+                MinSignups = ev.MinSignups,
+                MaxSignups = ev.MaxSignups,
+                Price = ev.Price,
+                Latitude = ev.Latitude,
+                Longitude = ev.Longitude,
+
+                ImagePath = pathToSaveInDb
+            };
+
+            _db.Events.Add(res);
+            _db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
 
         public ActionResult GetSpotsLeft(int id)
         {
