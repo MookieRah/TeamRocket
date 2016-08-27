@@ -22,6 +22,8 @@ namespace Webbsida.Controllers.api
         {
             // TODO: Don't include events to far away (a couple of degrees maybe)
             // TODO: Don't include inactive events
+
+            // TODO: Try the Distance calc serverside instead!
             var fromDb = db.Events;
             var results = new List<EventApiViewModel>();
             foreach (var happening in fromDb)

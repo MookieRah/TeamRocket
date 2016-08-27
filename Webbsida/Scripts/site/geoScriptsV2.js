@@ -169,7 +169,7 @@ var GoogleMapsEventController = function () {
 
     // 4. Distance calculations
     // When you get your results, start looping trough them and calculate distances,
-    // return a sorted array
+    // return a sorted dictionary!
 
     var getEventsWithDistance = new function () {
 
@@ -193,7 +193,7 @@ var GoogleMapsEventController = function () {
             });
 
             console.log(result); // original dictionary
-            console.log(sortJsObject(result)); // sorted array
+            console.log(sortJsObject(result)); // sorted dict
 
             return sortJsObject(result);
 
