@@ -18,25 +18,58 @@ namespace Webbsida.Controllers.api
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/GeoData
-        public IEnumerable<EventApiViewModel> GetEvents()
+        public List<EventApiViewModel> GetEvents(string latitude, string longitude)
         {
-            // TODO: Don't include events to far away (a couple of degrees maybe)
+            // TODO: Don't include events to far away (a couple of degrees off maybe)
             // TODO: Don't include inactive events
 
-            // TODO: Try the Distance calc serverside instead!
             var fromDb = db.Events;
-            var results = new List<EventApiViewModel>();
+            var resultDict = new Dictionary<int, double>();
             foreach (var happening in fromDb)
             {
-                results.Add(new EventApiViewModel()
+                resultDict.Add(
+                    happening.Id,
+                    GetDistance(
+                        new Point() { Latitude = double.Parse(latitude), Longitude = double.Parse(longitude) },
+                        new Point() { Latitude = happening.Latitude, Longitude = happening.Longitude }
+                        ));
+            }
+
+            var returnData = new List<EventApiViewModel>();
+            foreach (var keyValuePair in resultDict.OrderBy(n => n.Value))
+            {
+                returnData.Add(new EventApiViewModel()
                 {
-                    Id = happening.Id,
-                    Name = happening.Name,
-                    Latitude = happening.Latitude,
-                    Longitude = happening.Longitude
+                    Id = keyValuePair.Key,
+                    Distance = keyValuePair.Value
                 });
             }
-            return results.AsEnumerable();
+
+            return returnData;
+        }
+
+        private double ToRad(double input)
+        {
+            return input * Math.PI / 180;
+        }
+
+        private double GetDistance(Point p1, Point p2)
+        {
+            var R = 6378137; // Earth’s mean radius in meter
+            var dLat = ToRad(p2.Latitude - p1.Latitude);
+            var dLong = ToRad(p2.Longitude - p1.Longitude);
+            var a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+              Math.Cos(ToRad(p1.Latitude)) * Math.Cos(ToRad(p2.Latitude)) *
+              Math.Sin(dLong / 2) * Math.Sin(dLong / 2);
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            var d = R * c;
+            return d; // returns the distance in meter
+        }
+
+        public struct Point
+        {
+            public double Latitude { get; set; }
+            public double Longitude { get; set; }
         }
 
         //// GET: api/GeoData/5
@@ -135,12 +168,17 @@ namespace Webbsida.Controllers.api
 
     public class EventApiViewModel
     {
-        [Key]
         public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        public double Distance { get; set; }
     }
+
+    //public class EventApiViewModel
+    //{
+    //    public int Id { get; set; }
+
+    //    public string Name { get; set; }
+
+    //    public double Latitude { get; set; }
+    //    public double Longitude { get; set; }
+    //}
 }
