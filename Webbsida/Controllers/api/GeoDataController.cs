@@ -20,17 +20,28 @@ namespace Webbsida.Controllers.api
         // GET: api/GeoData
         public List<EventApiViewModel> GetEvents(string latitude, string longitude)
         {
-            // TODO: Don't include events to far away (a couple of degrees off maybe)
-            // TODO: Don't include inactive events
+            // TODO: Test the logic in this webapi-controller!
+            double latitudeParsed;
+            double longitudeParsed;
+            if (!double.TryParse(latitude, out latitudeParsed))
+                return new List<EventApiViewModel>(); //TODO: error handling
+            if (!double.TryParse(longitude, out longitudeParsed))
+                return new List<EventApiViewModel>(); //TODO: error handling
 
-            var fromDb = db.Events;
+
+            var fromDb = db.Events
+                .Where(n => n.Latitude < latitudeParsed + 1 && n.Latitude > latitudeParsed - 1)
+                .Where(n => n.Longitude < longitudeParsed + 1 && n.Longitude > longitudeParsed - 1)
+                .Where(n => n.StartDate > DateTime.Now)
+                .Select(n => new {n.Id, n.Latitude, n.Longitude});
+
             var resultDict = new Dictionary<int, double>();
             foreach (var happening in fromDb)
             {
                 resultDict.Add(
                     happening.Id,
                     GetDistance(
-                        new Point() { Latitude = double.Parse(latitude), Longitude = double.Parse(longitude) },
+                        new Point() { Latitude = latitudeParsed, Longitude = longitudeParsed },
                         new Point() { Latitude = happening.Latitude, Longitude = happening.Longitude }
                         ));
             }
