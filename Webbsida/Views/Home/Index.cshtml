@@ -1,11 +1,24 @@
-﻿@model List<Webbsida.ViewModels.IndexEventViewModel>
+﻿@using (Html.BeginForm("Index", "Home", FormMethod.Post,
+    new {enctype = "multipart/form-data", id = "positionForm"}))
+{
+    @Html.Hidden("latitude", new { id = "latitude"});
+    @Html.Hidden("longitude", new { id = "longitude" });
 
-@{
-    ViewBag.Title = "Index";
 }
-<div id="EventSummaryContainer">
-    @foreach (var @event in Model)
-    {
-        @Html.Partial("_EventSummary", @event)
-    }
-</div>
+
+
+@section Scripts {
+    <script>
+        $(function () {
+            // TODO: As the geoScriptsV2.js gets run anyways atm, this call is not really
+            // necessary as of now, but it of course SHOULD BE!
+            GoogleMapsEventController.getUserPosition();
+
+            // TODO: Post locaton to Home/Index
+            $("#latitude").val(localStorage.getItem("pos_lat"));
+            $("#longitude").val(localStorage.getItem("pos_long"));
+            $("#positionForm").submit();
+        });
+    </script>
+
+}
