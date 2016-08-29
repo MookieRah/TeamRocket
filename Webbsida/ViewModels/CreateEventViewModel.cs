@@ -22,14 +22,15 @@ namespace Webbsida.ViewModels
         [StringLength(600, ErrorMessage = "The description can olny be between 25 and 600 character"), MinLength(25, ErrorMessage = "The description can olny be between 25 and 600 character")]
         public string Description { get; set; }
 
-        //[StringLength(600, ErrorMessage = "The description can olny be between 25 and 600 character"), MinLength(25, ErrorMessage = "The description can olny be between 25 and 600 character")]
+        [Required(ErrorMessage = "required")]
         public DateTime StartDate { get; set; }
 
+        [Required(ErrorMessage = "required")]
         public DateTime EndDate { get; set; }
 
 
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        public float Latitude { get; set; }
+        public float Longitude { get; set; }
 
         public int? MaxSignups { get; set; }
         public int? MinSignups { get; set; }
