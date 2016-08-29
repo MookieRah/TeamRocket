@@ -170,12 +170,13 @@
     <h2>Account Settings</h2>
     <tr>
             <td>
-
-                @Html.Display(Model.Profiles.FirstName)
+                NAE:
+                @Html.DisplayFor(n => n.Profiles.FirstName)
             </td>
-            <td>
-                @Html.Display(Model.Profiles.LastName)
-            </td>
+        <td>
+            LASTNAME
+            @Html.Display(Model.Profiles.LastName)
+        </td>
             @*<td>
                 @Html.Display(Model.ApplicationUsers.PhoneNumber)
             </td>
