@@ -189,7 +189,9 @@ var GoogleMapsEventController = function () {
     // 6.
     var setMarkerByUserInputAddress = function() {
 
-        geocoder = new google.maps.Geocoder();
+        if (!geocoder) {
+            geocoder = new google.maps.Geocoder();
+        }
 
         geocoder.geocode({ "address": $("#input_address").val() }, function(results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
@@ -224,8 +226,33 @@ var GoogleMapsEventController = function () {
         //Add lat and lng values to a field that we can save.
         document.getElementById("Latitude").value = currentLocation.lat(); //latitude
         document.getElementById("Longitude").value = currentLocation.lng(); //longitude
+
+        getAddressFromCoordinates();
     }
 
+    function getAddressFromCoordinates() {
+
+        if (!geocoder) {
+            geocoder = new google.maps.Geocoder();
+        }
+
+        var input = $("#Latitude").val() + "," + $("#Longitude").val();
+        var latlngStr = input.split(',', 2);
+        var latlng = { lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1]) };
+
+        geocoder.geocode({ 'location': latlng }, function (results, status) {
+            if (status === 'OK') {
+                if (results[1]) {
+                    $("#input_address").val(results[0].formatted_address);
+                } else {
+                    $("#input_address").val("Okänd adress");
+                }
+            } else {
+                window.alert('Geocoder failed due to: ' + status);
+            }
+        });
+
+    }
 
     // THIS IS THE PUBLIC METHODS THAT GETS EXPOSED,
     // Call them in the script tag for the googleMaps api, like so :
