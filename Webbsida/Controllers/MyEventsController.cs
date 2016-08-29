@@ -61,14 +61,26 @@ namespace Webbsida.Controllers
             if (loggedInUser.Profile.Id != null)
             {
                 //results.Profiles.FirstName(db3.Profiles.Where(x => x.Id == loggedInUser.Profile.Id).SingleOrDefault());
-                var y =db3.Profiles.Where(x => x.Id == loggedInUser.Profile.Id).SingleOrDefault();
+                var y = db.Profiles.SingleOrDefault(x => x.Id == loggedInUser.Profile.Id);
 
-                results.Profiles.FirstName = y.FirstName;
-                results.Profiles.LastName = y.LastName;
+                var temp = new Profile()
+                {
+                    FirstName = y.FirstName,
+                    LastName =  y.LastName
+                };
+
+                results.Profiles = temp;
+
+
                 //results.Profiles.LastName.Equals(db3.Profiles.Where(x => x.Id == loggedInUser.Profile.Id).SingleOrDefault());
-                //var z = db3.Users.Where(x => x.Id == loggedUserId.ToString()).SingleOrDefault();
-
-                //results.ApplicationUsers.Email= z.Email;
+                var z = db.Users.SingleOrDefault(x => x.Id == loggedUserId.ToString());
+                var temp2 = new ApplicationUser()
+                {
+                    Email = z.Email,
+                    PhoneNumber = z.PhoneNumber,
+                };
+                results.ApplicationUsers = temp2;
+                //results.ApplicationUsers.Email = z.Email;
                 //results.ApplicationUsers.PhoneNumber = z.PhoneNumber;
                 //results.ApplicationUsers.Email.Equals(db3.Users.Where(x => Int32.Parse(x.Id) == loggedInUser.Profile.Id).SingleOrDefault());
             }
