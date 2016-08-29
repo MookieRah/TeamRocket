@@ -60,7 +60,7 @@ namespace Webbsida.Controllers
             //Account settings 
             if (loggedInUser.Profile.Id != null)
             {
-                //results.Profiles.FirstName(db3.Profiles.Where(x => x.Id == loggedInUser.Profile.Id).SingleOrDefault());
+                results.Profiles.Equals(db3.Profiles.Where(x => x.Id == loggedInUser.Profile.Id).SingleOrDefault());
                 var y =db3.Profiles.Where(x => x.Id == loggedInUser.Profile.Id).SingleOrDefault();
 
                 results.Profiles.FirstName = y.FirstName;
