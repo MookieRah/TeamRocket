@@ -99,14 +99,21 @@
         </dd>
 
     </dl>
-
+    @*<div>
+        <section id="SpotsLeft">
+            @Html.Partial("GetSpotsLeft")
+        </section>
+    </div>*@
+    
 
     <div id="SpotsCounter">
         <script type="text/javascript">
 
         </script>
+        
         <button type="button">Book</button>
     </div>
+
     @Html.HiddenFor(n => n.Id)
     <div id="map">
       
