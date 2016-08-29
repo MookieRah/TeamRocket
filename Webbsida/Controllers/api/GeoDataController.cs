@@ -20,6 +20,9 @@ namespace Webbsida.Controllers.api
         // GET: api/GeoData
         public List<EventApiViewModel> GetEvents(string latitude, string longitude)
         {
+            // TODO: TEMPFIX until after lunch 160829
+            if (string.IsNullOrEmpty(latitude) || string.IsNullOrEmpty(longitude))
+                return new List<EventApiViewModel>();
             // TODO: Don't include events to far away (a couple of degrees off maybe)
             // TODO: Don't include inactive events
 
