@@ -16,15 +16,19 @@ namespace Webbsida.ViewModels
 
         public virtual List<EventUser> EventUsers { get; set; }
 
-        [StringLength(25, ErrorMessage = "The eventnamne can olny be between 8 and 25 character"), MinLength(8, ErrorMessage = "The eventnamne can olny be between 8 and 50 character")]
+        [Display(Name ="Namn")]
+        [StringLength(25, ErrorMessage = "Eventnamnet kan endast vara mellan 8 och 25 tecken"), MinLength(8, ErrorMessage = "Eventnamnet kan endast vara mellan 8 och 25 tecken")]
         public string Name { get; set; }
 
-        [StringLength(600, ErrorMessage = "The description can olny be between 25 and 600 character"), MinLength(25, ErrorMessage = "The description can olny be between 25 and 600 character")]
+        [Display(Name = "Beskrivning")]
+        [StringLength(600, ErrorMessage = "Beskrivningen kan bara vara mellan 25 och 600 tecken"), MinLength(25, ErrorMessage = "Beskrivningen kan bara vara mellan 25 och 600 tecken")]
         public string Description { get; set; }
 
+        [Display(Name = "Starttid")]
         [Required(ErrorMessage = "required")]
         public DateTime StartDate { get; set; }
 
+        [Display(Name = "Sluttid")]
         [Required(ErrorMessage = "required")]
         public DateTime EndDate { get; set; }
 
@@ -32,9 +36,15 @@ namespace Webbsida.ViewModels
         public float Latitude { get; set; }
         public float Longitude { get; set; }
 
+
+        [Display(Name = "Max antal")]
         public int? MaxSignups { get; set; }
+
+        [Display(Name = "Minst antal")]
         public int? MinSignups { get; set; }
 
+
+        [Display(Name = "Eventkostnad")]
         public decimal? Price { get; set; }
 
         [DataType(DataType.Upload)]
