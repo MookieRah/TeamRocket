@@ -20,6 +20,7 @@ namespace Webbsida.Controllers.api
         // GET: api/GeoData
         public List<EventApiViewModel> GetEvents(string latitude, string longitude)
         {
+            // TODO: Major bug with the geoLocation javascripts, all functions run on every page!!!!
             // TODO: Test the logic in this webapi-controller!
             double latitudeParsed;
             double longitudeParsed;
