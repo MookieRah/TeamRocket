@@ -23,6 +23,8 @@ namespace Webbsida.Controllers
             // -> Example of at least one way to interact with asp.net IDENTITY userdata:
             var loggedInUserId = User.Identity.GetUserId();
             var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+            
+
 
             string phone = string.Empty;
             if (loggedInUser != null)
