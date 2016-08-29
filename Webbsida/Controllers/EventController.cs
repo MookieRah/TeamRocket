@@ -18,7 +18,7 @@ namespace Webbsida.Controllers
 
         public ActionResult Index()
         {
-            return View(db);
+            return View(db.Events.ToList());
         }
 
         // GET: Events/Create

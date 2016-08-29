@@ -64,6 +64,24 @@
             </div>
         </div>
 
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <h4>Choose the location on the map, or fill in the adress below:</h4>
+                <div id="map"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="input_address">Address: (optional)</label>
+                <input type="text" id="input_address" class="form-control" />
+                <a id="setMarkerFromAddressButton" class="btn btn-default">Set Event Coordinates to this adress!</a>
+            </div>
+        </div>
+
+
+
         <div class="form-group">
             @Html.LabelFor(model => model.MaxSignups, htmlAttributes: new {@class = "control-label col-md-2"})
             <div class="col-md-10">
@@ -110,3 +128,25 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+
+@section Scripts {
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=GoogleMapsEventController.initPickerMap"></script>
+    <script>
+        $(function () {
+            // Cache-hack!?
+            var url = "Index";
+            $.get(url, { query: null });
+
+            //document.getElementById('getAddressButton').addEventListener('click', function () {
+            //    getAddressFromCoordinates();
+            //});
+
+            document.getElementById('setMarkerFromAddressButton').addEventListener('click', function () {
+                GoogleMapsEventController.setMarkerByUserInputAddress();
+            });
+        });
+    </script>
+
+}

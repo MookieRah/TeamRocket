@@ -49,6 +49,9 @@ var GoogleMapsEventController = function () {
     function setUserLocation(lat, long) {
         localStorage.setItem("pos_lat", lat);
         localStorage.setItem("pos_long", long);
+
+        APICALL POST
+
     }
 
 
@@ -224,8 +227,8 @@ var GoogleMapsEventController = function () {
         //Get location.
         var currentLocation = userMarker.getPosition();
         //Add lat and lng values to a field that we can save.
-        document.getElementById("lat").value = currentLocation.lat(); //latitude
-        document.getElementById("lng").value = currentLocation.lng(); //longitude
+        document.getElementById("Latitude").value = currentLocation.lat(); //latitude
+        document.getElementById("Longitude").value = currentLocation.lng(); //longitude
     }
 
 
