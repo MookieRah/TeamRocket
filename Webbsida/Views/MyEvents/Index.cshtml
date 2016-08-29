@@ -1,0 +1,190 @@
+﻿@using Webbsida.Models
+@model Webbsida.Models.EventViewModel
+
+
+@{
+    ViewBag.Title = "My Events";
+}
+
+<h2>My Events</h2>
+
+@{var headerMetadata = Model.Events.FirstOrDefault();}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => headerMetadata.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerMetadata.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerMetadata.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerMetadata.EndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerMetadata.Latitude)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerMetadata.Longitude)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerMetadata.MaxSignups)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerMetadata.MinSignups)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerMetadata.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerMetadata.ImagePath)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Events)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Latitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Longitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxSignups)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinSignups)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImagePath)
+            </td>
+           
+        </tr>
+    }
+</table>
+
+    @{
+        ViewBag.Title = "My Booked Events";
+    }
+<h2>My Booked Events</h2>
+
+
+@{var headerdata = Model.BookedEvents.FirstOrDefault();}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => headerdata.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerdata.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerdata.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerdata.EndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerdata.Latitude)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerdata.Longitude)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerdata.MaxSignups)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerdata.MinSignups)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerdata.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => headerdata.ImagePath)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.BookedEvents)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Latitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Longitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxSignups)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinSignups)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImagePath)
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+    @{
+        ViewBag.Title = "Account Settings";
+    }
+
+    <h2>Account Settings</h2>
+    <tr>
+            <td>
+
+                @Html.Display(Model.Profiles.FirstName)
+            </td>
+            <td>
+                @Html.Display(Model.Profiles.LastName)
+            </td>
+            @*<td>
+                @Html.Display(Model.ApplicationUsers.PhoneNumber)
+            </td>
+            <td>
+                @Html.Display(Model.ApplicationUsers.Email)
+            </td>*@
+
+            <td>
+                    @Html.ActionLink("Edit", "Edit", new { id= Model.Profiles.Id })
+
+            </td>
+        </tr>
