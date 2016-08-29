@@ -49,9 +49,6 @@ var GoogleMapsEventController = function () {
     function setUserLocation(lat, long) {
         localStorage.setItem("pos_lat", lat);
         localStorage.setItem("pos_long", long);
-
-        APICALL POST
-
     }
 
 
