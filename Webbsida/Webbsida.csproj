@@ -497,6 +497,7 @@
     <Content Include="Views\Event\Details.cshtml" />
     <Content Include="Views\Event\GetEvent.cshtml" />
     <Content Include="Views\Event\GetSpotsLeft.cshtml" />
+    <Content Include="Views\Home\RealIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,13 @@
+﻿@model List<Webbsida.Controllers.DistanceViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div id="EventSummaryContainer">
+    @foreach (var test in Model)
+    {
+        <text>ID: </text>@test.Id
+        <text>Distance:</text>@test.Distance
+        <br/>
+    }
+</div>
