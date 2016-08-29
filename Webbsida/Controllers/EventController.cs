@@ -53,8 +53,11 @@ namespace Webbsida.Controllers
                 }
                 else
                 {
+
+                    ViewBag.Message = "You need the filetype! What we ccept is .PNG, .GIF, .JPG.";
+                    return PartialView();
                     // return JavaScript(alert("We don't accept your filetype"));
-                    return Content("<script language='javascript' type='text/javascript'>alert('We dont accept your filetype. The filetype we ccept is .PNG, .GIF, .JPG.');</script>");
+                    //return Content("<script language='javascript' type='text/javascript'>alert('We dont accept your filetype. The filetype we ccept is .PNG, .GIF, .JPG.');</script>");
                 }
 
                 // TODO: Connect with path instead.
@@ -80,7 +83,9 @@ namespace Webbsida.Controllers
             }
             else
             {
-                return Content("<script language='javascript' type='text/javascript'>alert('You need upload a file');</script>");
+                ViewBag.Message = "You need upload a file";
+                return PartialView();
+
             }
                 
 

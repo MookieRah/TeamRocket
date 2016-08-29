@@ -92,8 +92,8 @@
 
             <div class="col-md-10">
                 <label for="file">Photo:</label><br/>
-                @Html.TextBoxFor(m => m.Image, new {type = "file"})
-
+                @Html.TextBoxFor(m => m.Image, new {type = "file", required = "required" })
+                @ViewBag.Message;
 
             </div>
 
@@ -106,7 +106,7 @@
         </div>
     </div>
 }
-
+ 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
