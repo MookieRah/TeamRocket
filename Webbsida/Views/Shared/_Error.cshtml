@@ -1,0 +1,47 @@
+﻿@model Exception
+
+@if (TempData["notice"] != null)
+{
+    <h3>@TempData["notice"]</h3>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.InnerException)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StackTrace)
+        </th>
+
+        <th></th>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.InnerException)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.StackTrace)
+        </td>
+    </tr>
+</table>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TargetSite)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Source)
+        </th>
+        <th></th>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.TargetSite)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Source)
+        </td>
+    </tr>
+</table>

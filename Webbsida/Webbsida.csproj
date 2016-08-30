@@ -463,6 +463,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\site\search.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -499,13 +500,16 @@
     <Content Include="Views\Temp\Index.cshtml" />
     <Content Include="Views\Geo\Index.cshtml" />
     <Content Include="Views\Geo\GeoPicker.cshtml" />
-    <Content Include="Views\Home\_EventSummary.cshtml" />
+    <Content Include="Views\Shared\_EventSummary.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\Event\Create.cshtml" />
     <Content Include="Views\Event\Details.cshtml" />
     <Content Include="Views\Event\GetEvent.cshtml" />
     <Content Include="Views\Event\GetSpotsLeft.cshtml" />
     <Content Include="Views\Home\RealIndex.cshtml" />
+    <Content Include="Views\Home\_DisplayEventSummary.cshtml" />
+    <Content Include="Views\Shared\_Search.cshtml" />
+    <Content Include="Views\Shared\_Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

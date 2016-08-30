@@ -22,13 +22,7 @@
                         <li>@Html.ActionLink("Eventalizer","Index","Home")</li>
                         @if (string.Equals(ViewBag.Title, "Index"))
                         {
-                            <li>
-                                <div id="EventSearch">
-                                    <span class="glyphicon glyphicon-search" aria-hidden="true">
-                                        @Html.TextBox("EventSearch")
-                                    </span>
-                                </div>
-                            </li>
+                            @Html.Partial("_Search")
                         }
                     </ul>
                 </div>
