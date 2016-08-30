@@ -1,0 +1,18 @@
+﻿@model Webbsida.ViewModels.TagsNamesViewModel
+
+@if (Model.Names.Any())
+{
+    @*<option label="Events" value="" class="optionHeader"></option>*@
+    foreach (var name in Model.Names)
+    {
+        <option label=@name value=@name></option>
+    }
+}
+@if (Model.Tags.Any())
+{
+    @*<option label="Taggar" value="" class="optionHeader"></option>*@
+    foreach (var tag in Model.Tags)
+    {
+        <option label= tag value= tag></option>
+    }
+}
