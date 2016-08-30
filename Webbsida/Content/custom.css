@@ -74,6 +74,7 @@ a{color:#0060aa}
 {
     max-width: 24%;
     max-height: 50%;
+    min-width: 24%;
     display: inline-block;
     border: 1px solid #c9c9c9;
     margin-top: 2em;
@@ -84,6 +85,14 @@ a{color:#0060aa}
 #EventSummary > * 
 {
     vertical-align: middle;
+}
+
+#EventSummary a 
+{
+    text-decoration: none;
+    color: black;
+    max-width: inherit;
+    max-height: inherit;
 }
 
 #EventSummary img 

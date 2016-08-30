@@ -1,14 +1,14 @@
 ﻿@model Webbsida.ViewModels.CreateEventViewModel
 
 @{
-    ViewBag.Title = "Create new event";
+    ViewBag.Title = "Skapa nytt event";
 }
 
-<h2>Create a new Event</h2>
+<h2>Skapa ett nytt event</h2>
 
 @*<form action="" method="post" enctype="multipart/form-data">*@
 @using (Html.BeginForm("Create", "Event", FormMethod.Post,
-                new { enctype = "multipart/form-data" }))
+                                                                                                                new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -34,7 +34,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", required = "required" } })
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -42,39 +42,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", required = "required" } })
                 @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Latitude, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { @class = "form-control", id = "lat" } })
-                @Html.ValidationMessageFor(model => model.Latitude, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Longitude, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { @class = "form-control", id = "lng" } })
-                @Html.ValidationMessageFor(model => model.Longitude, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-12">
-                <h4>Choose the location on the map, or fill in the adress below:</h4>
-                <div id="map"></div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-10">
-                <label for="input_address">Address: (optional)</label>
-                <input type="text" id="input_address" class="form-control" />
-                <a id="setMarkerFromAddressButton" class="btn btn-default">Set Event Coordinates to this adress!</a>
             </div>
         </div>
 
@@ -103,42 +72,69 @@
         </div>
 
         <div class="form-group">
-
+            @Html.LabelFor(model => model.Image, htmlAttributes: new {@class = "control-label col-md-2"})
             <div class="col-md-10">
-                <label for="Image">Photo:</label><br />
-                @Html.TextBoxFor(m => m.Image, new { type = "file" })
+                @Html.TextBoxFor(m => m.Image, new {type = "file", @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.Image, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-8" id="map">
+
+            </div>
+        </div>
+
+
+        @Html.HiddenFor(model => model.Latitude)
+        @Html.ValidationMessageFor(model => model.Latitude, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.Longitude)
+        @Html.ValidationMessageFor(model => model.Longitude, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <h4>Markera vart eventet ska hållas på kartan ovan, eller fyll i en adress nedan.</h4>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="input_address" class="control-label col-md-2">Adress:</label>
+            <div class="col-md-10">
+
+                <div class="input-group">
+                    <input type="text" id="input_address" class="form-control" />
+                    <span>
+                        <button type="button" id="setMarkerFromAddressButton" class="btn btn-default">Sök denna adress!</button>
+                    </span>
+                </div>
 
 
             </div>
-
         </div>
-        <input type="submit" value="Create" class="btn btn-success" />
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Skapa event!" class="btn btn-success" />
+            </div>
+        </div>
     </div>
-    <hr />
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Tillbaka", "Index")
 </div>
 
-@section Scripts {
 
-    <script src="~/Scripts/site/geoScriptsV2.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=GoogleMapsEventController.initPickerMap"></script>
     <script>
         $(function () {
-            // Cache-hack!?
-            var url = "Index";
-            $.get(url, { query: null });
-
-            //document.getElementById('getAddressButton').addEventListener('click', function () {
-            //    getAddressFromCoordinates();
-            //});
-
             document.getElementById('setMarkerFromAddressButton').addEventListener('click', function () {
                 GoogleMapsEventController.setMarkerByUserInputAddress();
             });
         });
     </script>
-
 }

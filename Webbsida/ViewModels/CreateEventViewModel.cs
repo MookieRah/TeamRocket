@@ -14,29 +14,42 @@ namespace Webbsida.ViewModels
     {
         public int Id { get; set; }
 
-        public virtual List<EventUser> EventUsers { get; set; }
+        //public virtual List<EventUser> EventUsers { get; set; }
 
-        [StringLength(25, ErrorMessage = "The eventnamne can olny be between 8 and 25 character"), MinLength(8, ErrorMessage = "The eventnamne can olny be between 8 and 50 character")]
+        [StringLength(25, ErrorMessage = "Eventnamnet måste vara mellan 2 och 25 tecken"), MinLength(2, ErrorMessage = "Eventnamnet måste vara mellan 2 och 25 tecken")]
+        [Required(ErrorMessage = "Eventnamn krävs")]
+        [Display(Name = "Eventnamn")]
         public string Name { get; set; }
 
-        [StringLength(600, ErrorMessage = "The description can olny be between 25 and 600 character"), MinLength(25, ErrorMessage = "The description can olny be between 25 and 600 character")]
+        [StringLength(600, ErrorMessage = "Beskrivningen måste vara mellan 25 och 600 tecken"), MinLength(25, ErrorMessage = "Beskrivningen måste vara mellan 25 och 600 tecken")]
+        [Required(ErrorMessage = "Beskrivning krävs")]
+        [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
-        //[StringLength(600, ErrorMessage = "The description can olny be between 25 and 600 character"), MinLength(25, ErrorMessage = "The description can olny be between 25 and 600 character")]
+        [Required(ErrorMessage = "Du måste sätta ett startdatum")]
+        [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
 
+        [Required(ErrorMessage = "Du måste sätta ett slutdatum")]
+        [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
+        
+        [Required(ErrorMessage = "Vänligen välj vart eventet ska hållas.")]
+        public float Latitude { get; set; }
+        [Required(ErrorMessage = " ")]
+        public float Longitude { get; set; }
 
-
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-
+        [Display(Name = "Max antal deltagare")]
         public int? MaxSignups { get; set; }
+        [Display(Name = "Minsta antal deltagare")]
         public int? MinSignups { get; set; }
 
+        [Display(Name = "Eventuell kostnad")]
         public decimal? Price { get; set; }
 
+        [Required(ErrorMessage = "Vänligen välj en bild för eventet")]
         [DataType(DataType.Upload)]
+        [Display(Name = "Bild")]
         public HttpPostedFileBase Image { get; set; }
     }
 }

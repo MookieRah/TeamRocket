@@ -18,7 +18,7 @@ namespace Webbsida.Controllers
 
         public ActionResult Index()
         {
-            return View(db);
+            return View(db.Events.ToList());
         }
 
         // GET: Events/Create
@@ -81,28 +81,28 @@ namespace Webbsida.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateEventViewModel ev)
         {
-
             // TODO: Model-Validation (and optional file uploaded)!
-            if (ev.Image != null)
+
+            if (ev.Image.ContentLength > 3000000)
+                ModelState.AddModelError("", "Max 3 mb!");
+
+            if (ModelState.IsValid)
             {
+                // TODO: Use a default image if none is supplied by the user.
                 // TODO: Make sure this path will be correct in the db!!
                 var path = Path.Combine(Server.MapPath("/Content/EventImages/"), ev.Image.FileName);
-                var FileExtension = Path.GetExtension(ev.Image.FileName).ToLower();
-                if (FileExtension == ".png" || FileExtension == ".jpg" || FileExtension == ".gif" || FileExtension == ".jpeg" || FileExtension == ".jpe" || FileExtension == ".jfif")
+
+                var fileExtension = Path.GetExtension(ev.Image.FileName).ToLower();
+                if (fileExtension == ".png" || fileExtension == ".jpg" || fileExtension == ".gif" || fileExtension == ".jpeg" || fileExtension == ".jpe" || fileExtension == ".jfif")
                 {
                     ev.Image.SaveAs(path);
-                }
-                else
-                {
-                    // return JavaScript(alert("We don't accept your filetype"));
-                    return Content("<script language='javascript' type='text/javascript'>alert('We dont accept your filetype. The filetype we ccept is .PNG, .GIF, .JPG.');</script>");
-                }
+
 
                 // TODO: Connect with path instead.
                 string pathToSaveInDb = @"\Content\EventImages\" + ev.Image.FileName;
                 // Shall update filetype
 
-                var res = new Event()
+                var result = new Event()
                 {
                     Name = ev.Name,
                     Description = ev.Description,
@@ -116,16 +116,19 @@ namespace Webbsida.Controllers
 
                     ImagePath = pathToSaveInDb
                 };
-                db.Events.Add(res);
+                db.Events.Add(result);
                 db.SaveChanges();
-            }
-            else
-            {
-                return Content("<script language='javascript' type='text/javascript'>alert('You need upload a file');</script>");
+
+                return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Bilden måste vara någon av följande typer; .png, .jpg, .gif, .jpeg, .jpe, .jfif");
+                    //return Content("<script language='javascript' type='text/javascript'>alert('We dont accept your filetype. The filetype we ccept is .PNG, .GIF, .JPG.');</script>");
+                }
             }
 
-
-            return RedirectToAction("Index");
+            return View(ev);
         }
 
 
