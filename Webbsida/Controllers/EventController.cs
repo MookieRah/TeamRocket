@@ -128,10 +128,12 @@ namespace Webbsida.Controllers
             return RedirectToAction("Index");
         }
 
+
         public ActionResult GetSpotsLeft(int id)
         {
-            var result1 = db.EventUsers.Local.Count(s => s.EventId == id);
-            var maxSignups = db.Events.Find(id).MaxSignups;
+            //var result1 = db.EventUsers.Local.Count(s => s.EventId == id);
+            var result1 = db.EventUsers.Count(s => s.EventId == id);
+            var maxSignups = db.Events.Find(id).MaxSignups+1;
             if (maxSignups == null) return PartialView((int?)null);
             var result = maxSignups.Value - result1;
             return PartialView("GetSpotsLeft", result);
