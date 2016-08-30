@@ -1,76 +1,90 @@
 ﻿@using Microsoft.Ajax.Utilities
-@model Webbsida.Models.EventViewModel
-<h2>@Html.DisplayFor(model => model.EventName)</h2>
+@model Webbsida.ViewModels.GetEventViewModel
 
-<img src="@Url.Content(Model.ImagePath)" alt="Image" />
+<h2>@Html.DisplayFor(model => model.Event.EventName)</h2>
+
+<img src="@Url.Content(Model.Event.ImagePath)" alt="Image" />
 
 <div id="Main">
+
+
+    <h1>Debug:</h1>
+    <span class="alert alert-info">
+        @if (Model.LoggedInUser != null)
+        {
+            @Model.LoggedInUser.Email
+        }
+        else
+        {
+            <text>Not logged in.</text>
+        }
+    </span>
     <hr/>
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Firstname)
+            @Html.DisplayNameFor(model => model.Event.Firstname)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Firstname)
+            @Html.DisplayFor(model => model.Event.Firstname)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(model => model.Event.LastName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LastName)
+            @Html.DisplayFor(model => model.Event.LastName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Event.Description)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Event.Description)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
+            @Html.DisplayNameFor(model => model.Event.StartDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.StartDate)
+            @Html.DisplayFor(model => model.Event.StartDate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.EndDate)
+            @Html.DisplayNameFor(model => model.Event.EndDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.EndDate)
+            @Html.DisplayFor(model => model.Event.EndDate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.MaxSignups)
+            @Html.DisplayNameFor(model => model.Event.MaxSignups)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.MaxSignups)
+            @Html.DisplayFor(model => model.Event.MaxSignups)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.MinSignups)
+            @Html.DisplayNameFor(model => model.Event.MinSignups)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.MinSignups)
+            @Html.DisplayFor(model => model.Event.MinSignups)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Price)
+            @Html.DisplayNameFor(model => model.Event.Price)
         </dt>
 
         <dd>
-            @if (Model.Price != null && Model.Price != 0)
+            @if (Model.Event.Price != null && Model.Event.Price != 0)
             {
-                @Html.DisplayFor(model => model.Price)
+                @Html.DisplayFor(model => model.Event.Price)
             }
             else
             {
@@ -82,27 +96,27 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Latitude)
+            @Html.DisplayNameFor(model => model.Event.Latitude)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Latitude)
+            @Html.DisplayFor(model => model.Event.Latitude)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Longitude)
+            @Html.DisplayNameFor(model => model.Event.Longitude)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Longitude)
+            @Html.DisplayFor(model => model.Event.Longitude)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            @Html.DisplayNameFor(model => model.Event.PhoneNumber)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
+            @Html.DisplayFor(model => model.Event.PhoneNumber)
         </dd>
 
     </dl>
@@ -116,7 +130,7 @@
         <button type="button" class="btn btn-success">Anmäl dig!</button>
     </div>
 
-    @Html.HiddenFor(n => n.Id)
+    @Html.HiddenFor(n => n.Event.Id, new { id = "Id"})
     <div id="map">
 
     </div>

@@ -5,6 +5,7 @@ using System.Net;
 using System.Web.Mvc;
 using DatabaseObjects;
 using Microsoft.ApplicationInsights.WindowsServer;
+using Microsoft.AspNet.Identity;
 using Webbsida.Models;
 using Webbsida.ViewModels;
 
@@ -56,8 +57,9 @@ namespace Webbsida.Controllers
 
 
             //Creating a Model usning the Event Data holer
-            var result = new EventViewModel
+            var eventDetails = new EventDetailsViewModel()
             {
+                Id = eventData.Id,
                 Firstname = userDataFirstName,
                 LastName = userDataLastName,
                 PhoneNumber = lePhone,
@@ -71,8 +73,16 @@ namespace Webbsida.Controllers
                 MaxSignups = eventData.MaxSignups,
                 MinSignups = eventData.MinSignups,
                 Price = eventData.Price
-
             };
+            var loggedInUserId = User.Identity.GetUserId();
+            var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+
+            var result = new GetEventViewModel()
+            {
+                Event = eventDetails,
+                LoggedInUser = loggedInUser
+            };
+
             return View(result);
         }
 
