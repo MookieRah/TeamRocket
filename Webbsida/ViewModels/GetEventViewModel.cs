@@ -1,13 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System;
+using DatabaseObjects;
+using Webbsida.Models;
 
-namespace Webbsida.Models
+namespace Webbsida.ViewModels
 {
-    public class EventViewModel
+    public class GetEventViewModel
     {
+        public EventDetailsViewModel Event { get; set; }
+        public ApplicationUser LoggedInUser { get; set; }
+        public bool AlreadyBookedOnThisEvent { get; set; }
+        public bool IsOwnerOfThisEvent { get; set; }
+    }
 
+    public class EventDetailsViewModel
+    {
         public string Firstname { get; set; }
         public string LastName { get; set; }
         public string EventName { get; set; }
@@ -25,3 +31,4 @@ namespace Webbsida.Models
         public int Id { get; set; }
     }
 }
+
