@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DatabaseObjects;
 using Webbsida.Models;
 using Webbsida.ViewModels;
 
@@ -15,52 +17,73 @@ namespace Webbsida.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return View();
+            return View("RealIndex");
         }
 
-        [HttpPost]
-        public ActionResult Index(string latitude, string longitude)
+        public ActionResult GetEventsBySearch(string filter)
         {
-            double latitudeParsed;
-            double longitudeParsed;
-            if (!double.TryParse(latitude, out latitudeParsed))
-                return View("Error");
-            if (!double.TryParse(longitude, out longitudeParsed))
-                return View("Error");
+            IEnumerable<Event> rawEvents = null;
 
-
-            var fromDb = _db.Events
-                .Where(n => n.Latitude < latitudeParsed + 1 && n.Latitude > latitudeParsed - 1)
-                .Where(n => n.Longitude < longitudeParsed + 1 && n.Longitude > longitudeParsed - 1)
-                .Where(n => n.StartDate > DateTime.Now)
-                .Select(n => new { n.Id, n.Latitude, n.Longitude });
-
-            var resultDict = new Dictionary<int, double>();
-            foreach (var happening in fromDb)
+            try
             {
-                resultDict.Add(
-                    happening.Id,
-                    GetDistance(
-                        new Location() { Latitude = latitudeParsed, Longitude = longitudeParsed },
-                        new Location() { Latitude = happening.Latitude, Longitude = happening.Longitude }
-                        ));
+                rawEvents = _db.Events.Where(x => x.Name.ToLower().StartsWith(filter.ToLower())).Distinct().ToList();
+
+                var events = rawEvents.Select(rawEvent => new IndexEventViewModel(rawEvent)).ToList();
+
+                return View("_DisplayEventSummary", events);
+            }
+            catch (Exception ex)
+            {
+                TempData["notice"] = "There has been a problem.";
+
+                return PartialView("_Error", ex);
             }
 
-            var returnData = new List<DistanceViewModel>();
-            foreach (var keyValuePair in resultDict.OrderBy(n => n.Value))
-            {
-                returnData.Add(new DistanceViewModel()
-                {
-                    Id = keyValuePair.Key,
-                    Distance = keyValuePair.Value
-                });
-            }
-
-            //TODO No need to make a Dictionary here, just include the Distance in the
-            // IndexEventViewModel.cs, then sort it by Distance with linq.
-
-            return View("RealIndex", returnData);
         }
+
+        //[HttpPost]
+        //public ActionResult Index(string latitude, string longitude)
+        //{
+        //    double latitudeParsed;
+        //    double longitudeParsed;
+        //    if (!double.TryParse(latitude, out latitudeParsed))
+        //        return View("Error");
+        //    if (!double.TryParse(longitude, out longitudeParsed))
+        //        return View("Error");
+
+
+        //    var fromDb = _db.Events
+        //        .Where(n => n.Latitude < latitudeParsed + 1 && n.Latitude > latitudeParsed - 1)
+        //        .Where(n => n.Longitude < longitudeParsed + 1 && n.Longitude > longitudeParsed - 1)
+        //        .Where(n => n.StartDate > DateTime.Now)
+        //        .Select(n => new { n.Id, n.Latitude, n.Longitude });
+
+        //    var resultDict = new Dictionary<int, double>();
+        //    foreach (var happening in fromDb)
+        //    {
+        //        resultDict.Add(
+        //            happening.Id,
+        //            GetDistance(
+        //                new Location() { Latitude = latitudeParsed, Longitude = longitudeParsed },
+        //                new Location() { Latitude = happening.Latitude, Longitude = happening.Longitude }
+        //                ));
+        //    }
+
+        //    var returnData = new List<DistanceViewModel>();
+        //    foreach (var keyValuePair in resultDict.OrderBy(n => n.Value))
+        //    {
+        //        returnData.Add(new DistanceViewModel()
+        //        {
+        //            Id = keyValuePair.Key,
+        //            Distance = keyValuePair.Value
+        //        });
+        //    }
+
+        //    //TODO No need to make a Dictionary here, just include the Distance in the
+        //    // IndexEventViewModel.cs, then sort it by Distance with linq.
+
+        //    return View("RealIndex", returnData);
+        //}
 
         private double ToRad(double input)
         {

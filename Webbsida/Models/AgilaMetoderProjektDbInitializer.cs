@@ -130,7 +130,8 @@ namespace Webbsida.Models
                 new Tag {Name = "friluftsliv"},
                 new Tag {Name = "dator"},
                 new Tag {Name = "nya bekantskaper"},
-                new Tag {Name = "festival"}
+                new Tag {Name = "festival"},
+                new Tag {Name = "test"}
             };
 
             foreach (var tag in tags)
@@ -154,14 +155,6 @@ namespace Webbsida.Models
             foreach (var @event in events)
                 context.Events.Add(@event);
             context.SaveChanges();
-
-            //EventTags
-            var eventTags = Builder<EventTag>.CreateListOfSize(20)
-
-                .All()
-                    .With(n => n.Tag = Pick<Tag>.RandomItemFrom(tags))
-                    .With(n => n.Event = Pick<Event>.RandomItemFrom(events))
-                .Build();
 
 
             // EventProfiles
@@ -204,6 +197,26 @@ namespace Webbsida.Models
                 context.EventUsers.Add(eventUser);
             context.SaveChanges();
 
+            //EventTags
+            var eventTags = Builder<EventTag>.CreateListOfSize(20)
+
+                .All()
+                    .With(n => n.Tag = Pick<Tag>.RandomItemFrom(tags))
+                    .With(n => n.Event = Pick<Event>.RandomItemFrom(events))
+                .Build();
+
+            foreach (var eventTag in eventTags)
+                context.EventTags.Add(eventTag);
+            context.SaveChanges();
+
+            foreach (var @event in events)
+            {
+                @event.EventTags.Add(new EventTag
+                {
+                    Event = @event,
+                    Tag = tags.FirstOrDefault(x => x.Name == "test")
+                });
+            }
 
             base.Seed(context);
         }

@@ -1,0 +1,9 @@
+﻿@model IEnumerable<Webbsida.ViewModels.IndexEventViewModel>
+
+@foreach (var @event in Model)
+{
+    <div id="EventSummaryContainer">
+
+        @Html.Partial("_EventSummary", @event)
+    </div>    
+}
