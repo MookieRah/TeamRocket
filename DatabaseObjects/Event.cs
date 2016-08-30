@@ -12,6 +12,7 @@ namespace DatabaseObjects
         public int Id { get; set; }
 
         public virtual List<EventUser> EventUsers  { get; set; }
+        public virtual List<Tag> Tags { get; set; }
 
         public string Name { get; set; }
         public string Description { get; set; }
