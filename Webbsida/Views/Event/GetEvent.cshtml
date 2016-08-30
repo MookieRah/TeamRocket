@@ -19,7 +19,7 @@
             <text>Not logged in.</text>
         }
     </span>
-    <hr/>
+    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Event.Firstname)
@@ -124,13 +124,31 @@
         @Html.Action("GetSpotsLeft", "Event")
     </div>
 
+    @if (Model.AlreadyBookedOnThisEvent)
+    {
+        <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
+        <p class="alert alert-success">Du är bokad på eventet.</p>
+    }
+    else
+    {
 
-    <div class="form-group">
-        <br/>
-        <button type="button" class="btn btn-success">Anmäl dig!</button>
-    </div>
+        using (Html.BeginForm("BookEvent", "Event", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
 
-    @Html.HiddenFor(n => n.Event.Id, new { id = "Id"})
+            <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
+            //TODO: Make a dropdownlist with status for the booking?
+            <div class="form-group">
+                <div class="col-md-12">
+                    <button class="btn btn-success">Anmäl dig!</button>
+                </div>
+            </div>
+        }
+    }
+
+
+
+
     <div id="map">
 
     </div>
