@@ -67,11 +67,13 @@
     </div>*@
 
     <div class="form-group">
-        @Html.LabelFor(m => m.DateOfBirth, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.DateOfBirth, new {@class = "col-md-2 control-label"})
         <div class="col-md-10">
-            @Html.EditorFor(m => m.DateOfBirth, new { id="datePicker", @class = "form-control" })
+            @Html.EditorFor(m => m.DateOfBirth, new { @class = "form-control" })
         </div>
     </div>
+
+ 
 
 
     <div class="form-group">
@@ -84,22 +86,32 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-@Scripts.Render("~/bundles/jqueryui")
-@Styles.Render("~/Content/themes/base/jquery-ui.css")
+    @Scripts.Render("~/scripts")
+    @Styles.Render("~/Content/anypicker-all.min.css")
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-     $(document).ready(function () {
-         $('input[type=datetime]').datepicker({
-             dateFormat: "yy/M/dd",
-             changeMonth: true,
-             changeYear: true,
-             yearRange: "-60:+0",
-             showOtherMonths: true,
-             selectOtherMonths: true,
-             monthNamesShort: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
-         });
+        $(document).ready(function() {
+            $("#DateOfBirth").AnyPicker(
+            {
+                mode: "datetime",
+                dateTimeFormat: "yyyy/MM/dd",
+                theme: "iOS"
+            });
+        });
 
-     });
-</script>
+
+        //$(document).ready(function () {
+        //    $('input[type=datetime]').datepicker({
+        //        dateFormat: "yy/M/dd",
+        //        changeMonth: true,
+        //        changeYear: true,
+        //        yearRange: "-60:+0",
+        //        showOtherMonths: true,
+        //        selectOtherMonths: true,
+        //        monthNamesShort: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+        //    });
+
+        //});
+    </script>
 }
