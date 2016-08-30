@@ -1,12 +1,9 @@
-﻿@model Webbsida.Models.EventViewModel
-
-@{
-    ViewBag.Title = Html.DisplayFor(model => model.EventName);
-}
-
+﻿@using Microsoft.Ajax.Utilities
+@model Webbsida.Models.EventViewModel
 <h2>@Html.DisplayFor(model => model.EventName)</h2>
 
 <img src="@Url.Content(Model.ImagePath)" alt="Image" />
+
 <div id="Main">
     <hr />
     <dl class="dl-horizontal">
@@ -71,7 +68,15 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Price)
+            @if(Model.Price != null && Model.Price != 0 ) { 
+            @Html.DisplayFor(model => model.Price)}
+            else
+            {
+                <p>GRATIS!!!!</p>
+            }
+            
+            
+
         </dd>
 
         <dt>
@@ -99,20 +104,12 @@
         </dd>
 
     </dl>
-    @*<div>
-        <section id="SpotsLeft">
-            @Html.Partial("GetSpotsLeft")
-        </section>
-    </div>*@
-    
-
-    <div id="SpotsCounter">
-        <script type="text/javascript">
-
-        </script>
-        
+    <div id="Spotsleft">
+        @Html.Action("GetSpotsLeft","Event")
         <button type="button">Book</button>
     </div>
+    
+    
 
     @Html.HiddenFor(n => n.Id)
     <div id="map">

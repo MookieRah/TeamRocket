@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using DatabaseObjects;
+using System.ComponentModel.DataAnnotations;
 
 namespace Webbsida.ViewModels
 {
@@ -29,18 +30,28 @@ namespace Webbsida.ViewModels
 
         public List<EventUser> EventUsers { get; set; }
 
+        [Display(Name = "Namn")]
         public string Name { get; set; }
+
+        [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
+        [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
+
+        [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
 
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
+        [Display(Name = "Max antal deltagare")]
         public int? MaxSignups { get; set; }
+
+        [Display(Name = "Minst antal deltagare")]
         public int? MinSignups { get; set; }
 
+        [Display(Name = "Pris")]
         public decimal? Price { get; set; }
 
         public Profile GetOwner()
@@ -75,7 +86,7 @@ namespace Webbsida.ViewModels
                 }
                 else
                 {
-                    partialDescription = "No description available.";
+                    partialDescription = "Ingen beskrivning möjlig.";
                 }
 
                 wordCount--;

@@ -1,5 +1,11 @@
-﻿@model int
+﻿
 
-<div>
-    @Model
-</div>
+@using (Ajax.BeginForm("GetSpotsLeft","Event",new AjaxOptions
+{
+    HttpMethod = "GET",
+    UpdateTargetId = "Spotsleft"
+}))
+
+{<div id="Spotsleft">
+   Open Spots @Model
+</div>}
