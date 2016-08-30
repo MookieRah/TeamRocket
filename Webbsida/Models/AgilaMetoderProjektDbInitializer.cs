@@ -114,7 +114,26 @@ namespace Webbsida.Models
             context.SaveChanges();
 
 
+            //Tags
+            var tags = new List<Tag>
+            {
+                new Tag {Name = "grattis"},
+                new Tag {Name = "schack"},
+                new Tag {Name = "hund"},
+                new Tag {Name = "djur"},
+                new Tag {Name = "fest"},
+                new Tag {Name = "barn"},
+                new Tag {Name = "vuxen"},
+                new Tag {Name = "tonåring"},
+                new Tag {Name = "music"},
+                new Tag {Name = "mat"}
+            };
 
+            foreach (var tag in tags)
+            {
+                context.Tags.Add(tag);
+            }
+            
             // Events
             var events = Builder<Event>.CreateListOfSize(10)
                 .All()
@@ -130,6 +149,14 @@ namespace Webbsida.Models
             foreach (var @event in events)
                 context.Events.Add(@event);
             context.SaveChanges();
+
+            //EventTags
+            var eventTags = Builder<EventTag>.CreateListOfSize(20)
+
+                .All()
+                    .With(n => n.Tag = Pick<Tag>.RandomItemFrom(tags))
+                    .With(n => n.Event = Pick<Event>.RandomItemFrom(events))
+                .Build();
 
 
             // EventProfiles
@@ -152,6 +179,7 @@ namespace Webbsida.Models
                 pathToFile + "Psyduck.png"
             };
 
+            var grattis = context.Tags.FirstOrDefault(x => x.Name == "grattis");
 
             foreach (var @event in events)
             {
@@ -164,6 +192,8 @@ namespace Webbsida.Models
 
                 randomEventUser.IsOwner = true;
 
+                if(@event.Price == null || @event.Price == 0)
+                    @event.EventTags.Add(new EventTag {Tag = grattis, Event = @event});
 
                 @event.ImagePath = dummyImages.ElementAt(_random.Next(0, dummyImages.Count()));
             }
