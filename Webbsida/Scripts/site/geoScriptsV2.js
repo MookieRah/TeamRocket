@@ -124,7 +124,7 @@ var GoogleMapsEventController = function () {
                 });
 
                 // TODO get one event, mark it
-                addEventMarker(data.Name, data.Latitude, data.Longitude);
+                addEventMarker(data.Name, data.Latitude, data.Longitude, data.Id);
             },
             error: function (response) {
                 alert("Could not retrieve data from server!");
