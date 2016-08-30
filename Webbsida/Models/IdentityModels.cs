@@ -46,5 +46,7 @@ namespace Webbsida.Models
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<EventUser> EventUsers { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<EventTag> EventTags { get; set; }
     }
 }
