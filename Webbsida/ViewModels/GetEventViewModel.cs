@@ -9,6 +9,7 @@ namespace Webbsida.ViewModels
         public EventDetailsViewModel Event { get; set; }
         public ApplicationUser LoggedInUser { get; set; }
         public bool AlreadyBookedOnThisEvent { get; set; }
+        public bool IsOwnerOfThisEvent { get; set; }
     }
 
     public class EventDetailsViewModel

@@ -82,6 +82,7 @@ namespace Webbsida.Controllers
             {
                 Event = eventDetails,
                 AlreadyBookedOnThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id),
+                IsOwnerOfThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
                 LoggedInUser = loggedInUser
             };
 
@@ -121,6 +122,7 @@ namespace Webbsida.Controllers
 
 
         // POST: Events/Create
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateEventViewModel ev)
@@ -161,6 +163,20 @@ namespace Webbsida.Controllers
                         ImagePath = pathToSaveInDb
                     };
                     db.Events.Add(result);
+
+
+                    var loggedInUserId = User.Identity.GetUserId();
+                    var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+
+                    var eventOwner = new EventUser()
+                    {
+                        Event = result,
+                        ProfileId = loggedInUser.Profile.Id,
+                        Status = "Confirmed",
+                        IsOwner = true,
+                    };
+                    db.EventUsers.Add(eventOwner);
+
                     db.SaveChanges();
 
                     return RedirectToAction("Index");

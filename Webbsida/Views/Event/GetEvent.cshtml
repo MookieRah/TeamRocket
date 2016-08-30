@@ -124,7 +124,12 @@
         @Html.Action("GetSpotsLeft", "Event")
     </div>
 
-    @if (Model.AlreadyBookedOnThisEvent)
+    @if (Model.IsOwnerOfThisEvent)
+    {
+        <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
+        <p class="alert alert-info">Detta är ditt event.</p>
+    }
+    else if (Model.AlreadyBookedOnThisEvent)
     {
         <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
         <p class="alert alert-success">Du är bokad på eventet.</p>
