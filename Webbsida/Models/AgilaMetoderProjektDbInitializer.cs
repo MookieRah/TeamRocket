@@ -125,14 +125,19 @@ namespace Webbsida.Models
                 new Tag {Name = "barn"},
                 new Tag {Name = "vuxen"},
                 new Tag {Name = "tonåring"},
-                new Tag {Name = "music"},
-                new Tag {Name = "mat"}
+                new Tag {Name = "musik"},
+                new Tag {Name = "mat"},
+                new Tag {Name = "friluftsliv"},
+                new Tag {Name = "dator"},
+                new Tag {Name = "nya bekantskaper"},
+                new Tag {Name = "festival"}
             };
 
             foreach (var tag in tags)
             {
                 context.Tags.Add(tag);
             }
+            context.SaveChanges();
             
             // Events
             var events = Builder<Event>.CreateListOfSize(10)
@@ -191,9 +196,6 @@ namespace Webbsida.Models
                 }
 
                 randomEventUser.IsOwner = true;
-
-                if(@event.Price == null || @event.Price == 0)
-                    @event.EventTags.Add(new EventTag {Tag = grattis, Event = @event});
 
                 @event.ImagePath = dummyImages.ElementAt(_random.Next(0, dummyImages.Count()));
             }
