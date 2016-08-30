@@ -2,17 +2,17 @@
 
 @if (Model.Names.Any())
 {
-    <option label="Events" value="" class="optionHeader"></option>
+    @*<option label="Events" value="" class="optionHeader"></option>*@
     foreach (var name in Model.Names)
     {
-        <option label=@("lbl" + name) value=@name></option>
+        <option label=@name value=@name></option>
     }
 }
 @if (Model.Tags.Any())
 {
-    <option label="Taggar" value="" class="optionHeader"></option>
+    @*<option label="Taggar" value="" class="optionHeader"></option>*@
     foreach (var tag in Model.Tags)
     {
-        <option label=@("lbl" + tag) value=@tag></option>
+        <option label= tag value= tag></option>
     }
 }

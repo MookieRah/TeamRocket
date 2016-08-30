@@ -21,14 +21,16 @@ namespace Webbsida.Controllers
             return View("RealIndex");
         }
 
-        public ActionResult GetTagsAndNamesBySearch(string filter)
+        public JsonResult GetTagsAndNamesBySearch(string filter)
         {
-            var tags = _db.Tags.Where(t => t.Name.StartsWith(filter)).Select(x => x.Name).ToList();
-            var names = _db.Events.Where(n => n.Name.StartsWith(filter)).Select(x => x.Name).ToList();
+            var tags = _db.Tags.Where(t => t.Name.Contains(filter)).Select(x => x.Name).Distinct().ToList();
+            var names = _db.Events.Where(n => n.Name.Contains(filter)).Select(x => x.Name).Distinct().ToList();
 
-            var tagNames = new TagsNamesViewModel() {Names = names, Tags = tags};
+            var tagNames = new List<string>();
+            tagNames.AddRange(tags);
+            tagNames.AddRange(names);
 
-            return PartialView("_TagNames", tagNames);
+            return Json(tagNames, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetEventsBySearch(string filter)
