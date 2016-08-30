@@ -1,17 +1,6 @@
-﻿@model List<Webbsida.Controllers.DistanceViewModel>
-
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
-<div class="alert alert-danger">We are working on the distance calculations on the first page, that's why it's not looking that great right now ;)</div>
-<div>
-<img src="~/Content/TempImages/animated-work-in-progress-image-0020.gif" />
-</div>
-<div id="EventSummaryContainer">
-    @foreach (var test in Model)
-    {
-        <text>ID: </text>@test.Id
-        <text>Distance:</text>@test.Distance
-        <br/>
-    }
-</div>
+
+<div id="EventSummaryContainer"></div>
+

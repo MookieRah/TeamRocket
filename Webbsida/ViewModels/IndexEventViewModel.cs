@@ -10,22 +10,6 @@ namespace Webbsida.ViewModels
 {
     public class IndexEventViewModel
     {
-        public IndexEventViewModel(Event eventDbo)
-        {
-            this.Id = eventDbo.Id;
-            this.EventUsers = eventDbo.EventUsers;
-            this.Name = eventDbo.Name;
-            this.Description = eventDbo.Description;
-            this.StartDate = eventDbo.StartDate;
-            this.EndDate = eventDbo.EndDate;
-            this.Latitude = eventDbo.Latitude;
-            this.Longitude = eventDbo.Longitude;
-            this.MaxSignups = eventDbo.MaxSignups;
-            this.MaxSignups = eventDbo.MinSignups;
-            this.Price = eventDbo.Price;
-            this.ImagePath = eventDbo.ImagePath;
-        }
-
         public int Id { get; set; }
 
         public List<EventUser> EventUsers { get; set; }

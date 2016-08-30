@@ -187,7 +187,7 @@ namespace Webbsida.Models
                 pathToFile + "Psyduck.png"
             };
 
-            var gratts = context.Tags.FirstOrDefault(x => x.Name == "gratis");
+            //var gratis = context.Tags.FirstOrDefault(x => x.Name == "gratis");
 
             foreach (var @event in events)
             {
@@ -202,6 +202,15 @@ namespace Webbsida.Models
 
                 @event.ImagePath = dummyImages.ElementAt(_random.Next(0, dummyImages.Count()));
             }
+
+            //foreach (var @event in events)
+            //{
+            //    @event.EventTags.Add(new EventTag
+            //    {
+            //        Event = @event,
+            //        Tag = tags.FirstOrDefault(x => x.Name == "test")
+            //    });
+            //}
 
             foreach (var eventUser in eventUsers)
                 context.EventUsers.Add(eventUser);

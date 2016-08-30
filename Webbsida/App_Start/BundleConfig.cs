@@ -9,7 +9,8 @@ namespace Webbsida
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
-                "~/Scripts/site/geoScriptsV2.js"));
+                "~/Scripts/site/geoScriptsV2.js",
+                "~/Scripts/site/search.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
