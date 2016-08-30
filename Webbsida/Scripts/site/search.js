@@ -13,4 +13,6 @@ function LoadFromInput() {
     if (raw != undefined) {
         table.load(url, { query: raw });
     }
+
+    console.writeln(raw);
 }
