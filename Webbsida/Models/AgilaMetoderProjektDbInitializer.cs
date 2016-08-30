@@ -163,6 +163,9 @@ namespace Webbsida.Models
                     .With(n => n.Event = Pick<Event>.RandomItemFrom(events))
                 .Build();
 
+            foreach (var eventTag in eventTags)
+                context.EventTags.Add(eventTag);
+            context.SaveChanges();
 
             // EventProfiles
             var eventUsers = Builder<EventUser>.CreateListOfSize(20)
