@@ -5,9 +5,11 @@ var GoogleMapsEventController = function () {
     var map;
     var geocoder;
     var userMarker = false;
+    var eventMarkers = [];
+
 
     // 1. Use geolocation to try to fetch user location, if successful; invoke "onSuccess" else "onError"
-    var getUserPosition = function() {
+    var getUserPosition = function () {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(onSuccess, onError, {
                 //Default values used for now here:
@@ -74,8 +76,21 @@ var GoogleMapsEventController = function () {
             success: function (data) {
 
                 $.each(data, function (id, event) {
-                    addEventMarker(event.Name, event.Latitude, event.Longitude);
+
+                    eventMarkers.push(addEventMarker(event.Name, event.Latitude, event.Longitude, event.Id));
+
                 });
+
+                //$.each(eventMarkers, function () {
+                //    google.maps.event.addListener(marker,
+                //    'click',
+                //    function () {
+
+                //        window.location.href("/Event/GetEvent/" + data.Id);
+                //        //window.location.href = '/Branch/Details/' + id;
+                //        //infowindow.open(map, marker);
+                //    });
+                //});
 
             },
             error: function (response) {
@@ -110,7 +125,6 @@ var GoogleMapsEventController = function () {
 
                 // TODO get one event, mark it
                 addEventMarker(data.Name, data.Latitude, data.Longitude);
-
             },
             error: function (response) {
                 alert("Could not retrieve data from server!");
@@ -119,8 +133,9 @@ var GoogleMapsEventController = function () {
 
     };
 
-    function addEventMarker(name, lat, long) {
-        new google.maps.Marker
+
+    function addEventMarker(name, lat, long, id) {
+        var newMarker = new google.maps.Marker
         (
             {
                 position: new google.maps.LatLng(lat, long),
@@ -128,7 +143,17 @@ var GoogleMapsEventController = function () {
                 title: name
             }
         );
+
+        google.maps.event.addListener(newMarker,
+                    'click',
+                        function () {
+                            window.location.href = "/Event/GetEvent/" + id;
+                            //window.location.href = '/Branch/Details/' + id;
+                        });
+
+        return newMarker;
     }
+
 
     // 4. Start with a pickermap
     var initPickerMap = function () {
@@ -187,13 +212,13 @@ var GoogleMapsEventController = function () {
 
 
     // 6.
-    var setMarkerByUserInputAddress = function() {
+    var setMarkerByUserInputAddress = function () {
 
         if (!geocoder) {
             geocoder = new google.maps.Geocoder();
         }
 
-        geocoder.geocode({ "address": $("#input_address").val() }, function(results, status) {
+        geocoder.geocode({ "address": $("#input_address").val() }, function (results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
                 map.setCenter(results[0].geometry.location);
 
@@ -205,7 +230,7 @@ var GoogleMapsEventController = function () {
                         draggable: true //make it draggable
                     });
                     //Listen for drag events!
-                    google.maps.event.addListener(userMarker, "dragend", function(event) {
+                    google.maps.event.addListener(userMarker, "dragend", function (event) {
                         markerLocation();
                     });
                 } else {
