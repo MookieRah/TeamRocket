@@ -5,7 +5,7 @@
 <img src="@Url.Content(Model.ImagePath)" alt="Image" />
 
 <div id="Main">
-    <hr />
+    <hr/>
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Firstname)
@@ -68,14 +68,16 @@
         </dt>
 
         <dd>
-            @if(Model.Price != null && Model.Price != 0 ) { 
-            @Html.DisplayFor(model => model.Price)}
+            @if (Model.Price != null && Model.Price != 0)
+            {
+                @Html.DisplayFor(model => model.Price)
+            }
             else
             {
                 <p>GRATIS!!!!</p>
             }
-            
-            
+
+
 
         </dd>
 
@@ -105,18 +107,22 @@
 
     </dl>
     <div id="Spotsleft">
-        @Html.Action("GetSpotsLeft","Event")
-        <button type="button">Book</button>
+        @Html.Action("GetSpotsLeft", "Event")
     </div>
-    
-    
+
+
+    <div class="form-group">
+        <br/>
+        <button type="button" class="btn btn-success">Anmäl dig!</button>
+    </div>
 
     @Html.HiddenFor(n => n.Id)
     <div id="map">
-      
+
     </div>
 </div>
 
 @section Scripts {
     <script src="~/Scripts/site/geoScriptsV2.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=GoogleMapsEventController.initSingleEventDisplayingMap"></script>}
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=GoogleMapsEventController.initSingleEventDisplayingMap"></script>
+}
