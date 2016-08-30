@@ -68,10 +68,9 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.DateOfBirth, new {@class = "col-md-2 control-label"})
-
-
-        @Html.EditorFor(m => m.DateOfBirth, new { @class = "form-control" })
-    
+        <div class="col-md-10">
+            @Html.EditorFor(m => m.DateOfBirth, new { @class = "form-control" })
+        </div>
     </div>
 
  
@@ -96,7 +95,7 @@
             $("#DateOfBirth").AnyPicker(
             {
                 mode: "datetime",
-                dateTimeFormat: "yyyy/MM/dd hh:mm:ss",
+                dateTimeFormat: "yyyy/MM/dd",
                 theme: "iOS"
             });
         });
