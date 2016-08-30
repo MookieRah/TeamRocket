@@ -21,6 +21,16 @@ namespace Webbsida.Controllers
             return View("RealIndex");
         }
 
+        public ActionResult GetTagsAndNamesBySearch(string filter)
+        {
+            var tags = _db.Tags.Where(t => t.Name.StartsWith(filter)).Select(x => x.Name).ToList();
+            var names = _db.Events.Where(n => n.Name.StartsWith(filter)).Select(x => x.Name).ToList();
+
+            var tagNames = new TagsNamesViewModel() {Names = names, Tags = tags};
+
+            return PartialView("_TagNames", tagNames);
+        }
+
         public ActionResult GetEventsBySearch(string filter)
         {
             IEnumerable<Event> rawEvents = null;

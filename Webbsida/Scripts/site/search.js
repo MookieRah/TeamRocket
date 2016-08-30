@@ -6,7 +6,13 @@
 });
 
 function PopulateDropDown() {
-    
+    var url = "/Home/GetTagsAndNamesBySearch";
+    var table = $("#SearchDropDown");
+    var raw = $("#EventSearchBox").val();
+
+    if (raw != undefined) {
+        table.load(url, { filer: raw });
+    }
 }
 
 function LoadFromInput() {
