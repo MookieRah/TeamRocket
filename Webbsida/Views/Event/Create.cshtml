@@ -7,8 +7,7 @@
 <h2>Skapa ett nytt event</h2>
 
 @*<form action="" method="post" enctype="multipart/form-data">*@
-@using (Html.BeginForm("Create", "Event", FormMethod.Post,
-                                                                                                                new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Create", "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 

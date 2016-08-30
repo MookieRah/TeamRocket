@@ -1,10 +1,12 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using DatabaseObjects;
 using Microsoft.ApplicationInsights.WindowsServer;
+using Microsoft.AspNet.Identity;
 using Webbsida.Models;
 using Webbsida.ViewModels;
 
@@ -56,8 +58,9 @@ namespace Webbsida.Controllers
 
 
             //Creating a Model usning the Event Data holer
-            var result = new EventViewModel
+            var eventDetails = new EventDetailsViewModel()
             {
+                Id = eventData.Id,
                 Firstname = userDataFirstName,
                 LastName = userDataLastName,
                 PhoneNumber = lePhone,
@@ -71,12 +74,55 @@ namespace Webbsida.Controllers
                 MaxSignups = eventData.MaxSignups,
                 MinSignups = eventData.MinSignups,
                 Price = eventData.Price
-
             };
+            var loggedInUserId = User.Identity.GetUserId();
+            var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+
+            var result = new GetEventViewModel()
+            {
+                Event = eventDetails,
+                AlreadyBookedOnThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id),
+                IsOwnerOfThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
+                LoggedInUser = loggedInUser
+            };
+
             return View(result);
         }
 
+        [Authorize]
+        [HttpPost]
+        public ActionResult BookEvent(BookEventViewModel bevm)
+        {
+            var loggedInUserId = User.Identity.GetUserId();
+            var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+
+            if (loggedInUser == null)
+                throw new Exception("Du måste vara inloggad för att anmäla dig på ett event.");
+            //return View("Error");
+
+            var theBooking = new EventUser()
+            {
+                EventId = bevm.EventId,
+                ProfileId = loggedInUser.Profile.Id,
+                Status = "Confirmed",
+                IsOwner = false,
+            };
+
+            var alreadyBooked =
+                db.EventUsers.Any(n => n.EventId == bevm.EventId && n.ProfileId == loggedInUser.Profile.Id);
+
+            if (alreadyBooked)
+                throw new Exception("Du är redan bokad på eventet.");
+
+            db.EventUsers.Add(theBooking);
+            db.SaveChanges();
+
+            return RedirectToAction("GetEvent", new { id = bevm.EventId });
+        }
+
+
         // POST: Events/Create
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateEventViewModel ev)
@@ -98,28 +144,42 @@ namespace Webbsida.Controllers
                     ev.Image.SaveAs(path);
 
 
-                // TODO: Connect with path instead.
-                string pathToSaveInDb = @"\Content\EventImages\" + ev.Image.FileName;
-                // Shall update filetype
+                    // TODO: Connect with path instead.
+                    string pathToSaveInDb = @"\Content\EventImages\" + ev.Image.FileName;
+                    // Shall update filetype
 
-                var result = new Event()
-                {
-                    Name = ev.Name,
-                    Description = ev.Description,
-                    StartDate = ev.StartDate,
-                    EndDate = ev.EndDate,
-                    MinSignups = ev.MinSignups,
-                    MaxSignups = ev.MaxSignups,
-                    Price = ev.Price,
-                    Latitude = ev.Latitude,
-                    Longitude = ev.Longitude,
+                    var result = new Event()
+                    {
+                        Name = ev.Name,
+                        Description = ev.Description,
+                        StartDate = ev.StartDate,
+                        EndDate = ev.EndDate,
+                        MinSignups = ev.MinSignups,
+                        MaxSignups = ev.MaxSignups,
+                        Price = ev.Price,
+                        Latitude = ev.Latitude,
+                        Longitude = ev.Longitude,
 
-                    ImagePath = pathToSaveInDb
-                };
-                db.Events.Add(result);
-                db.SaveChanges();
+                        ImagePath = pathToSaveInDb
+                    };
+                    db.Events.Add(result);
 
-                return RedirectToAction("Index");
+
+                    var loggedInUserId = User.Identity.GetUserId();
+                    var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+
+                    var eventOwner = new EventUser()
+                    {
+                        Event = result,
+                        ProfileId = loggedInUser.Profile.Id,
+                        Status = "Confirmed",
+                        IsOwner = true,
+                    };
+                    db.EventUsers.Add(eventOwner);
+
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index");
                 }
                 else
                 {
@@ -136,7 +196,7 @@ namespace Webbsida.Controllers
         {
             //var result1 = db.EventUsers.Local.Count(s => s.EventId == id);
             var result1 = db.EventUsers.Count(s => s.EventId == id);
-            var maxSignups = db.Events.Find(id).MaxSignups+1;
+            var maxSignups = db.Events.Find(id).MaxSignups + 1;
             if (maxSignups == null) return PartialView((int?)null);
             var result = maxSignups.Value - result1;
             return PartialView("GetSpotsLeft", result);
