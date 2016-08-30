@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using DatabaseObjects;
@@ -26,11 +27,31 @@ namespace Webbsida.Controllers
 
             try
             {
-                rawEvents = _db.Events.Where(x => x.Name.ToLower().StartsWith(filter.ToLower())).Distinct().ToList();
+                rawEvents = filter == "" ? _db.Events.ToList() :
+                    _db.Events.Where(e => e.EventTags.Any(t => t.Tag.Name.StartsWith(filter))).ToList();
 
-                var events = rawEvents.Select(rawEvent => new IndexEventViewModel(rawEvent)).ToList();
+                var events = new List<IndexEventViewModel>();
 
-                return View("_DisplayEventSummary", events);
+                foreach (var rawEvent in rawEvents)
+                {
+                    events.Add(new IndexEventViewModel
+                    {
+                        Id = rawEvent.Id,
+                        EventUsers = rawEvent.EventUsers,
+                        Name = rawEvent.Name,
+                        Description = rawEvent.Description,
+                        StartDate = rawEvent.StartDate,
+                        EndDate = rawEvent.EndDate,
+                        Latitude = rawEvent.Latitude,
+                        Longitude = rawEvent.Longitude,
+                        Price = rawEvent.Price,
+                        ImagePath = rawEvent.ImagePath,
+                        MinSignups = rawEvent.MinSignups,
+                        MaxSignups = rawEvent.MaxSignups
+                    });
+                }
+
+                return PartialView("_DisplayEventSummary", events);
             }
             catch (Exception ex)
             {
@@ -38,7 +59,6 @@ namespace Webbsida.Controllers
 
                 return PartialView("_Error", ex);
             }
-
         }
 
         //[HttpPost]
