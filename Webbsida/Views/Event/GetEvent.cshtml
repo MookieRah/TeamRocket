@@ -50,17 +50,21 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Event.StartDate)
+            <span class="Startdate">
+                @Html.DisplayFor(model => model.Event.StartDate)
+            </span>
         </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Event.EndDate)
         </dt>
-
+        
         <dd>
-            @Html.DisplayFor(model => model.Event.EndDate)
+            <span class="Enddate">
+                @Html.DisplayFor(model => model.Event.EndDate)
+            </span>
         </dd>
-
+        
         <dt>
             @Html.DisplayNameFor(model => model.Event.MaxSignups)
         </dt>
@@ -124,6 +128,14 @@
         @Html.Action("GetSpotsLeft", "Event")
     </div>
 
+    <div class="well well-sm">
+        <span class="glyphicon glyphicon-tags">&nbsp;</span>
+        @foreach (var tag in @Model.Event.Tags)
+        {
+            <span class="label label-info">@tag.Name</span>
+        }
+    </div>
+
     @if (Model.IsOwnerOfThisEvent)
     {
         <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
@@ -162,4 +174,32 @@
 @section Scripts {
     <script src="~/Scripts/site/geoScriptsV2.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=GoogleMapsEventController.initSingleEventDisplayingMap"></script>
+
+
+
+@Scripts.Render("~/scripts")
+@Styles.Render("~/Content/anypicker-all.min.css")
+
+<script type="text/javascript">
+        $(document).ready(function() {
+            $(".Startdate").AnyPicker(
+            {
+                mode: "datetime",
+                dateTimeFormat: "yyyy/MM/dd hh:mm",
+                theme: "iOS"
+            }).prop('readonly', true);;
+        });
+
+        $(document).ready(function () {
+            $(".Enddate").AnyPicker(
+            {
+                mode: "datetime",
+                dateTimeFormat: "yyyy/MM/dd hh:mm",
+                theme: "iOS"
+            }).prop('readonly', true);;
+        });
+
+</script>
+
+
 }

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using DatabaseObjects;
 
 namespace Webbsida.ViewModels
 {
@@ -19,5 +21,7 @@ namespace Webbsida.ViewModels
         public string ImagePath { get; set; }
         //TODO Delete ID for asome Idea
         public int Id { get; set; }
+
+        public List<Tag> Tags { get; set; }
     }
 }
