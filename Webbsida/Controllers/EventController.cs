@@ -17,23 +17,9 @@ namespace Webbsida.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Events
-
         public ActionResult Index()
         {
             return View(db.Events.ToList());
-        }
-
-        // GET: Events/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // GET: Events/Details
-        public ActionResult Details(int id)
-        {
-            var result = db.Events.SingleOrDefault(n => n.Id == id);
-            return View(result);
         }
 
         // GET: Event
@@ -117,9 +103,16 @@ namespace Webbsida.Controllers
             db.EventUsers.Add(theBooking);
             db.SaveChanges();
 
+            // TODO: Make this add the booking without changing page.
             return RedirectToAction("GetEvent", new { id = bevm.EventId });
         }
 
+
+        // GET: Events/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
 
         // POST: Events/Create
         [Authorize]
