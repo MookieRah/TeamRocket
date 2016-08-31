@@ -233,21 +233,6 @@ namespace Webbsida.Controllers
             // NOTICE! Have to savechanges later!
         }
 
-        private List<EventTag> GenerateEventEventTags(List<Tag> tags, Event @event)
-        {
-            var result = new List<EventTag>();
-            foreach (var tag in tags)
-            {
-                result.Add(new EventTag()
-                {
-                    Event = @event,
-                    Tag = tag,
-                });
-            }
-
-            return result;
-        }
-
         private static List<Tag> GenerateEventTags(CreateEventViewModel evm)
         {
             var eventTags = evm.Tags.Split(',');
@@ -261,7 +246,7 @@ namespace Webbsida.Controllers
             {
                 result.Add(new Tag()
                 {
-                    Name = eventTag
+                    Name = eventTag.ToLower()
                 });
             }
 
