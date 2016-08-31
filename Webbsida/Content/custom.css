@@ -165,3 +165,9 @@ a{color:#0060aa}
     color: #0060aa;
     margin-top: 7px;
 }
+
+div #EventSummary .Borderless 
+{
+    border-style: none;
+    border: none;
+}
