@@ -22,6 +22,10 @@ a{color:#0060aa}
     padding: 0;
 }
 
+.navbar-brand input {
+    font-family: sans-serif;
+}
+
 .navbar-brand ul 
 {
     list-style-type: none;
@@ -34,7 +38,7 @@ a{color:#0060aa}
 .navbar-brand li 
 {
     float: left;
-    margin: 0 2em 0 0;
+    margin: 0 1.5em 0 0;
     padding: 0;
 }
 
@@ -44,9 +48,22 @@ a{color:#0060aa}
     text-decoration: none;
     font-family: 'coiny';
     font-size: 4em;
+    text-shadow: 2px 2px 1px #004172;
 }
 
-#EventSearch { margin-top: 5px; }
+/*#EventSearch { margin-top: 5px; }*/
+
+#EventSearchBox 
+{
+    margin: 13px 0 0 0;
+    padding: 3px 10px 0 0;
+}
+
+#SearchButton 
+{
+    margin: 0 0 0 0;
+    padding: 0 3px;
+}
 
 .navbar-brand:visited { color: white !important }
 .navbar-default-color { color: white !important }
@@ -54,8 +71,12 @@ a{color:#0060aa}
 
 
 /*This overrides the css of the login information.*/
-.navbar-collapse { margin: 3em 0 0 0; }
-.navbar-collapse a {color:white}
+.navbar-collapse { margin: 3.25em 0 0 0; }
+.navbar-collapse a 
+{ 
+    color: white;     
+    text-shadow: 2px 2px 1px #004172;
+}
 
 /*This overrides the css of the body content.*/
 .body-content 
@@ -122,4 +143,25 @@ a{color:#0060aa}
 {
     max-width: inherit;
     font-style: italic;
+}
+
+#Processing 
+{
+    margin: 25px 0;
+    display: flex;
+}
+
+#Processing img 
+{
+    width: 50px;
+    height: 50px;
+    margin-right: 1em;
+}
+
+#Processing p 
+{
+    font-family: 'coiny';
+    font-size: 2em;
+    color: #0060aa;
+    margin-top: 7px;
 }

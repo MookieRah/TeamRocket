@@ -35,12 +35,17 @@ namespace Webbsida.Controllers
 
         public ActionResult GetEventsBySearch(string filter)
         {
-            IEnumerable<Event> rawEvents = null;
+            List<Event> rawEvents = new List<Event>();
 
             try
             {
-                rawEvents = filter == "" ? _db.Events.ToList() :
-                    _db.Events.Where(e => e.EventTags.Any(t => t.Tag.Name.StartsWith(filter))).ToList();
+                var rawEventsFromTags = filter == "" ? _db.Events.ToList() : _db.Events.Where(e => e.EventTags.Any(t => t.Tag.Name.StartsWith(filter))).ToList();
+                var rawEventsFromName = filter == "" ? null : _db.Events.Where(e => e.Name.StartsWith(filter)).ToList();
+
+                rawEvents.AddRange(rawEventsFromTags);
+
+                if(rawEventsFromName != null)
+                    rawEvents.AddRange(rawEventsFromName);
 
                 var events = new List<IndexEventViewModel>();
 
@@ -71,6 +76,11 @@ namespace Webbsida.Controllers
 
                 return PartialView("_Error", ex);
             }
+        }
+
+        public ActionResult GetProcessing()
+        {
+            return PartialView("_Processing");
         }
 
         //[HttpPost]
