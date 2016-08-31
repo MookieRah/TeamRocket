@@ -21,12 +21,6 @@ namespace Webbsida.Controllers
             return View();
         }
 
-        // GET: GeoPicker
-        public ActionResult GeoPicker()
-        {
-            return View();
-        }
-
         [HttpGet]
         public JsonResult GetEventsToJson()
         {
@@ -36,6 +30,7 @@ namespace Webbsida.Controllers
             {
                 result.Add(new Event()
                 {
+                    Id = @event.Id,
                     Longitude = @event.Longitude,
                     Latitude = @event.Latitude,
                     Name = @event.Name
@@ -55,6 +50,7 @@ namespace Webbsida.Controllers
 
             var result = new Event()
             {
+                Id = eventInDb.Id,
                 Longitude = eventInDb.Longitude,
                 Latitude = eventInDb.Latitude,
                 Name = eventInDb.Name

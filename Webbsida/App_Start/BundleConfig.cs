@@ -9,7 +9,8 @@ namespace Webbsida
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
-                "~/Scripts/site/geoScriptsV2.js"));
+                "~/Scripts/site/geoScriptsV2.js",
+                "~/Scripts/site/search.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
@@ -30,14 +31,18 @@ namespace Webbsida
                                   "~/Content/bootstrap.css",
                                   "~/Content/site.css",
                                   "~/Content/custom.css"));
-            
+
             //Create bundel for jQueryUI  
             //js  
-            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                      "~/Scripts/jquery-ui-{version}.js"));
-            //css  
-            bundles.Add(new StyleBundle("~/Content/themes/base").Include(
-                   "~/Content/jquery-ui.css"));
+            //bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+            //          "~/Scripts/jquery-ui-{version}.js"));
+            ////css  
+            //bundles.Add(new StyleBundle("~/Content/themes/base").Include(
+            //       "~/Content/jquery-ui.css"));
+
+            bundles.Add(new ScriptBundle("~/scripts").Include(
+             "~/Scripts/anypicker.min.js"));
+
         }
     }
 }

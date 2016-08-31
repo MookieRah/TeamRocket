@@ -4,43 +4,38 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using DatabaseObjects;
+using System.ComponentModel.DataAnnotations;
 
 namespace Webbsida.ViewModels
 {
     public class IndexEventViewModel
     {
-        public IndexEventViewModel(Event eventDbo)
-        {
-            this.Id = eventDbo.Id;
-            this.EventUsers = eventDbo.EventUsers;
-            this.Name = eventDbo.Name;
-            this.Description = eventDbo.Description;
-            this.StartDate = eventDbo.StartDate;
-            this.EndDate = eventDbo.EndDate;
-            this.Latitude = eventDbo.Latitude;
-            this.Longitude = eventDbo.Longitude;
-            this.MaxSignups = eventDbo.MaxSignups;
-            this.MaxSignups = eventDbo.MinSignups;
-            this.Price = eventDbo.Price;
-            this.ImagePath = eventDbo.ImagePath;
-        }
-
         public int Id { get; set; }
 
         public List<EventUser> EventUsers { get; set; }
 
+        [Display(Name = "Namn")]
         public string Name { get; set; }
+
+        [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
+        [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
+
+        [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
 
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
+        [Display(Name = "Max antal deltagare")]
         public int? MaxSignups { get; set; }
+
+        [Display(Name = "Minst antal deltagare")]
         public int? MinSignups { get; set; }
 
+        [Display(Name = "Pris")]
         public decimal? Price { get; set; }
 
         public Profile GetOwner()
@@ -75,7 +70,7 @@ namespace Webbsida.ViewModels
                 }
                 else
                 {
-                    partialDescription = "No description available.";
+                    partialDescription = "Ingen beskrivning möjlig.";
                 }
 
                 wordCount--;

@@ -1,11 +1,14 @@
 ﻿@using (Html.BeginForm("Index", "Home", FormMethod.Post,
-    new {enctype = "multipart/form-data", id = "positionForm"}))
+                new { enctype = "multipart/form-data", id = "positionForm" }))
 {
-    @Html.Hidden("latitude", new { id = "latitude"});
+    @Html.Hidden("latitude", new { id = "latitude" });
     @Html.Hidden("longitude", new { id = "longitude" });
 
 }
 
+@{
+    ViewBag.Title = "Index";
+}
 
 @section Scripts {
     <script>
@@ -13,9 +16,15 @@
             // Fetch the users position and save it to localStorage!
             GoogleMapsEventController.getUserPosition();
 
-            // TODO: Post locaton to Home/Index
-            $("#latitude").val(localStorage.getItem("pos_lat"));
-            $("#longitude").val(localStorage.getItem("pos_long"));
+            // TODO: Make a real callback here!
+            if (localStorage.getItem("pos_lat") == null || localStorage.getItem("pos_long") == null) {
+                $("#latitude").val("63.825356");
+                $("#longitude").val("20.262926");
+            } else {
+                $("#latitude").val(localStorage.getItem("pos_lat"));
+                $("#longitude").val(localStorage.getItem("pos_long"));
+            }
+
             $("#positionForm").submit();
         });
     </script>

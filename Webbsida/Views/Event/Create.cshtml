@@ -7,8 +7,7 @@
 <h2>Skapa ett nytt event</h2>
 
 @*<form action="" method="post" enctype="multipart/form-data">*@
-@using (Html.BeginForm("Create", "Event", FormMethod.Post,
-                                                                                                                new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Create", "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -136,5 +135,31 @@
                 GoogleMapsEventController.setMarkerByUserInputAddress();
             });
         });
+
+    </script>
+
+    @Scripts.Render("~/scripts")
+    @Styles.Render("~/Content/anypicker-all.min.css")
+
+
+        <script type="text/javascript">
+        $(document).ready(function() {
+            $("#StartDate").AnyPicker(
+            {
+                mode: "datetime",
+                dateTimeFormat: "yyyy/MM/dd hh:mm",
+                theme: "iOS"
+            });
+        });
+
+        $(document).ready(function () {
+            $("#EndDate").AnyPicker(
+            {
+                mode: "datetime",
+                dateTimeFormat: "yyyy/MM/dd hh:mm",
+                theme: "iOS"
+            });
+        });
+
     </script>
 }
