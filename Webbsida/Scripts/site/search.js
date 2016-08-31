@@ -2,9 +2,11 @@
     var url = "/Home/GetEventsBySearch";
     var table = $("#EventSummaryContainer");
 
+    table.load("/Home/GetProcessing");
+
     table.load(url, { filter: "" });
 
-    PopulateDropDown()
+    PopulateDropDown();
 });
 
 function PopulateDropDown() {
@@ -28,35 +30,13 @@ function PopulateDropDown() {
 };
 
 
-//function PopulateDropDown() {
-//    var url = "/Home/GetTagsAndNamesBySearch";
-//    var table = $("#SearchDropDown");
-//    var raw = $("#EventSearchBox").val();
-
-//    console.log(raw);
-
-//    if (raw != undefined) {
-//        table.load(url, { filer: raw });
-//    }
-//}
-
 function LoadFromInput() {
-
     var table = $("#EventSummaryContainer");
     var raw = $("#EventSearchBox").val();
     var url = "/Home/GetEventsBySearch";
 
-    console.log(raw);
 
     if (raw != undefined) {
         table.load(url, { filter: raw });
     }
 }
-
-//function LoadFromInput() {
-
-//    var table = $("#EventSummaryContainer");
-//    var url = "/Home/GetEventsBySearch";
-
-//    table.load(url);
-//}
