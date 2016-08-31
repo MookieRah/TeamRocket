@@ -68,6 +68,16 @@ namespace Webbsida.Controllers
                     });
                 }
 
+                if (events.Count%4 != 0)
+                {
+                    int toAdd = events.Count%4;
+
+                    for (int i = 0; i < toAdd; i++)
+                    {
+                        events.Add(new IndexEventViewModel());
+                    }
+                }
+
                 return PartialView("_DisplayEventSummary", events);
             }
             catch (Exception ex)
