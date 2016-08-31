@@ -1,7 +1,7 @@
 ﻿@model Webbsida.ViewModels.IndexEventViewModel
 
 <div id="EventSummary">
-    <a href="@Url.Action("Details","Event", new {id = @Model.Id})">
+    <a href="@Url.Action("GetEvent","Event", new {id = @Model.Id})">
         <img src=@Model.ImagePath>
 
         <div id="EventText">
