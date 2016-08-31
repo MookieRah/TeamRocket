@@ -219,7 +219,6 @@ namespace Webbsida.Controllers
             var tagsToAddToDb = new List<Tag>(tagsToAdd);
             var currentTags = db.Tags.ToList();
 
-            //TODO kan bara utesluta på tag.Name!!! (string)
 
             var result = new List<Tag>();
             foreach (var tag in tagsToAddToDb.Where(n => currentTags.All(n2 => n2.Name != n.Name)))
