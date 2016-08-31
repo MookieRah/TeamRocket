@@ -134,6 +134,12 @@ namespace Webbsida.Controllers
             if (ModelState.IsValid)
             {
                 // TODO: Use a default image if none is supplied by the user.
+                var loggedInUserId = User.Identity.GetUserId();
+                var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+
+                if (loggedInUser == null)
+                    throw new Exception("Du måste vara inloggad för att skapa event!");
+
                 // TODO: Make sure this path will be correct in the db!!
                 var path = Path.Combine(Server.MapPath("/Content/EventImages/"), evm.Image.FileName);
 
@@ -142,13 +148,11 @@ namespace Webbsida.Controllers
                 {
                     evm.Image.SaveAs(path);
 
-
                     // TODO: Connect with path instead.
                     string pathToSaveInDb = @"\Content\EventImages\" + evm.Image.FileName;
-                    // Shall update filetype
 
 
-                    // TODO: BUG: ONLY returns nonexisting tags, and duplicates in that list too! ;)
+                    // TODO: Refactor this code if there is time
                     var tagsToAdd = GenerateEventTags(evm);
 
                     AddNewTagsToDb(tagsToAdd);
@@ -177,16 +181,11 @@ namespace Webbsida.Controllers
                     {
                         db.EventTags.Add(new EventTag()
                         {
-                            Tag = db.Tags.SingleOrDefault(n=> n.Name == tag.Name),
+                            Tag = db.Tags.SingleOrDefault(n => n.Name == tag.Name),
                             EventId = result.Id
                         });
                     }
 
-                    var loggedInUserId = User.Identity.GetUserId();
-                    var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
-
-                    if (loggedInUser == null)
-                        throw new Exception("Du måste vara inloggad för att skapa event!");
 
                     var eventOwner = new EventUser()
                     {
