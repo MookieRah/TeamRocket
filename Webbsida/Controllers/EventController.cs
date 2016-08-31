@@ -237,7 +237,7 @@ namespace Webbsida.Controllers
             var eventTags = evm.Tags.Split(',');
             for (int i = 0; i < eventTags.Length; i++)
             {
-                eventTags[i] = eventTags[i].Trim();
+                eventTags[i] = eventTags[i].Trim().ToLower();
             }
 
             var result = new List<Tag>();
