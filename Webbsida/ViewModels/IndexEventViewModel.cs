@@ -52,6 +52,9 @@ namespace Webbsida.ViewModels
         /// <returns></returns>
         public string GetPartialDescription(int num)
         {
+            if (Description == null)
+                return "";
+
             int wordCount = 10;
             var partialDescription = "";
 
