@@ -124,6 +124,14 @@
         @Html.Action("GetSpotsLeft", "Event")
     </div>
 
+    <div class="well well-sm">
+        <span class="glyphicon glyphicon-tags">&nbsp;</span>
+        @foreach (var tag in @Model.Event.Tags)
+        {
+            <span class="label label-info">@tag.Name</span>
+        }
+    </div>
+
     @if (Model.IsOwnerOfThisEvent)
     {
         <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />

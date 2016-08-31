@@ -47,6 +47,9 @@ namespace Webbsida.ViewModels
         [Display(Name = "Eventuell kostnad")]
         public decimal? Price { get; set; }
 
+        [Display(Name = "Taggar")]
+        public string Tags { get; set; }
+
         [Required(ErrorMessage = "Vänligen välj en bild för eventet")]
         [DataType(DataType.Upload)]
         [Display(Name = "Bild")]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -59,7 +60,12 @@ namespace Webbsida.Controllers
                 Longitude = eventData.Longitude,
                 MaxSignups = eventData.MaxSignups,
                 MinSignups = eventData.MinSignups,
-                Price = eventData.Price
+                Price = eventData.Price,
+
+                Tags = db.EventTags
+                                .Where(n => n.EventId == eventData.Id)
+                                .Select(n => n.Tag)
+                                .ToList()
             };
             var loggedInUserId = User.Identity.GetUserId();
             var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
@@ -118,48 +124,69 @@ namespace Webbsida.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CreateEventViewModel ev)
+        public ActionResult Create(CreateEventViewModel evm)
         {
             // TODO: Model-Validation (and optional file uploaded)!
 
-            if (ev.Image.ContentLength > 3000000)
+            if (evm.Image.ContentLength > 3000000)
                 ModelState.AddModelError("", "Max 3 mb!");
 
             if (ModelState.IsValid)
             {
                 // TODO: Use a default image if none is supplied by the user.
                 // TODO: Make sure this path will be correct in the db!!
-                var path = Path.Combine(Server.MapPath("/Content/EventImages/"), ev.Image.FileName);
+                var path = Path.Combine(Server.MapPath("/Content/EventImages/"), evm.Image.FileName);
 
-                var fileExtension = Path.GetExtension(ev.Image.FileName).ToLower();
+                var fileExtension = Path.GetExtension(evm.Image.FileName).ToLower();
                 if (fileExtension == ".png" || fileExtension == ".jpg" || fileExtension == ".gif" || fileExtension == ".jpeg" || fileExtension == ".jpe" || fileExtension == ".jfif")
                 {
-                    ev.Image.SaveAs(path);
+                    evm.Image.SaveAs(path);
 
 
                     // TODO: Connect with path instead.
-                    string pathToSaveInDb = @"\Content\EventImages\" + ev.Image.FileName;
+                    string pathToSaveInDb = @"\Content\EventImages\" + evm.Image.FileName;
                     // Shall update filetype
+
+
+                    // TODO: BUG: ONLY returns nonexisting tags, and duplicates in that list too! ;)
+                    var tagsToAdd = GenerateEventTags(evm);
+
+                    AddNewTagsToDb(tagsToAdd);
 
                     var result = new Event()
                     {
-                        Name = ev.Name,
-                        Description = ev.Description,
-                        StartDate = ev.StartDate,
-                        EndDate = ev.EndDate,
-                        MinSignups = ev.MinSignups,
-                        MaxSignups = ev.MaxSignups,
-                        Price = ev.Price,
-                        Latitude = ev.Latitude,
-                        Longitude = ev.Longitude,
+                        Name = evm.Name,
+                        Description = evm.Description,
+                        StartDate = evm.StartDate,
+                        EndDate = evm.EndDate,
+                        MinSignups = evm.MinSignups,
+                        MaxSignups = evm.MaxSignups,
+                        Price = evm.Price,
+                        Latitude = evm.Latitude,
+                        Longitude = evm.Longitude,
 
-                        ImagePath = pathToSaveInDb
+                        ImagePath = pathToSaveInDb,
+
                     };
-                    db.Events.Add(result);
 
+                    //Debug for just adding correct Tags to db.Tags
+                    db.Events.Add(result);
+                    db.SaveChanges();
+
+                    foreach (var tag in tagsToAdd)
+                    {
+                        db.EventTags.Add(new EventTag()
+                        {
+                            Tag = db.Tags.SingleOrDefault(n=> n.Name == tag.Name),
+                            EventId = result.Id
+                        });
+                    }
 
                     var loggedInUserId = User.Identity.GetUserId();
                     var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+
+                    if (loggedInUser == null)
+                        throw new Exception("Du måste vara inloggad för att skapa event!");
 
                     var eventOwner = new EventUser()
                     {
@@ -169,6 +196,7 @@ namespace Webbsida.Controllers
                         IsOwner = true,
                     };
                     db.EventUsers.Add(eventOwner);
+
 
                     db.SaveChanges();
 
@@ -181,9 +209,48 @@ namespace Webbsida.Controllers
                 }
             }
 
-            return View(ev);
+            return View(evm);
         }
 
+        private void AddNewTagsToDb(List<Tag> tagsToAdd)
+        {
+            //tagsToAdd is the incoming shit, with all the tags to add to EventTags in DB
+            // but the list needs to be filtered for any existing tags in db.Tags!!
+            var tagsToAddToDb = new List<Tag>(tagsToAdd);
+            var currentTags = db.Tags.ToList();
+
+
+            var result = new List<Tag>();
+            foreach (var tag in tagsToAddToDb.Where(n => currentTags.All(n2 => n2.Name != n.Name)))
+            {
+                result.Add(tag);
+            }
+
+            db.Tags.AddRange(result);
+
+
+            // NOTICE! Have to savechanges later!
+        }
+
+        private static List<Tag> GenerateEventTags(CreateEventViewModel evm)
+        {
+            var eventTags = evm.Tags.Split(',');
+            for (int i = 0; i < eventTags.Length; i++)
+            {
+                eventTags[i] = eventTags[i].Trim();
+            }
+
+            var result = new List<Tag>();
+            foreach (var eventTag in eventTags.Distinct())
+            {
+                result.Add(new Tag()
+                {
+                    Name = eventTag.ToLower()
+                });
+            }
+
+            return result;
+        }
 
         public ActionResult GetSpotsLeft(int id)
         {
