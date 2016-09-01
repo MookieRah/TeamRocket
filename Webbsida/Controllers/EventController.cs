@@ -115,6 +115,7 @@ namespace Webbsida.Controllers
 
 
         // GET: Events/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -126,14 +127,18 @@ namespace Webbsida.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateEventViewModel evm)
         {
-            // TODO: Model-Validation (and optional file uploaded)!
+            var loggedInUserId = User.Identity.GetUserId();
+            var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
 
-            if (evm.Image.ContentLength > 3000000)
-                ModelState.AddModelError("", "Max 3 mb!");
+            if (loggedInUser == null)
+                throw new Exception("Du måste vara inloggad för att skapa event!");
+
+            ValidateInput(evm);
 
             if (ModelState.IsValid)
             {
                 // TODO: Use a default image if none is supplied by the user.
+
                 // TODO: Make sure this path will be correct in the db!!
                 var path = Path.Combine(Server.MapPath("/Content/EventImages/"), evm.Image.FileName);
 
@@ -142,13 +147,11 @@ namespace Webbsida.Controllers
                 {
                     evm.Image.SaveAs(path);
 
-
                     // TODO: Connect with path instead.
                     string pathToSaveInDb = @"\Content\EventImages\" + evm.Image.FileName;
-                    // Shall update filetype
 
 
-                    // TODO: BUG: ONLY returns nonexisting tags, and duplicates in that list too! ;)
+                    // TODO: Refactor this code if there is time
                     var tagsToAdd = GenerateEventTags(evm);
 
                     AddNewTagsToDb(tagsToAdd);
@@ -177,16 +180,11 @@ namespace Webbsida.Controllers
                     {
                         db.EventTags.Add(new EventTag()
                         {
-                            Tag = db.Tags.SingleOrDefault(n=> n.Name == tag.Name),
+                            Tag = db.Tags.SingleOrDefault(n => n.Name == tag.Name),
                             EventId = result.Id
                         });
                     }
 
-                    var loggedInUserId = User.Identity.GetUserId();
-                    var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
-
-                    if (loggedInUser == null)
-                        throw new Exception("Du måste vara inloggad för att skapa event!");
 
                     var eventOwner = new EventUser()
                     {
@@ -210,6 +208,30 @@ namespace Webbsida.Controllers
             }
 
             return View(evm);
+        }
+
+        private void ValidateInput(CreateEventViewModel evm)
+        {
+            // TODO: Man kan sätta negativa MaxSignups Och MinSignups
+            if (evm.MaxSignups < 1)
+                ModelState.AddModelError("MaxSignups", "Max deltagare måste lämnas tom eller vara minst 1.");
+            if (evm.MinSignups < 1)
+                ModelState.AddModelError("MinSignups", "Min deltagare måste lämnas tom eller vara minst 1.");
+            // TODO: Man kan sätta fler MinSignups Än MaxSignups
+            if (evm.MaxSignups < evm.MinSignups)
+                ModelState.AddModelError("MaxSignups", "Max deltagare måste vara större än minsta antalet deltagare.");
+            // TODO: Priset måste ha ett max-value (så det inte kraschar)
+            if (evm.Price > decimal.MaxValue)
+            {
+                ModelState.AddModelError("Price", "Priset är för högt!");
+                evm.Price = null;
+            }
+            // TODO: StartDatum måste vara tidigare än SlutDatum
+            if (evm.StartDate < evm.EndDate) { }
+            ModelState.AddModelError("StartDate", "StartDatum måste vara tidigare än SlutDatum.");
+            // TODO: Max image-size = 3mb, should maybe accept null with default Image!
+            if (evm.Image.ContentLength > 3000000)
+                ModelState.AddModelError("Image", "Max 3 mb!");
         }
 
         private void AddNewTagsToDb(List<Tag> tagsToAdd)
