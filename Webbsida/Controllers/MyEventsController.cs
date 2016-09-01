@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
+using DatabaseObjects;
 using Microsoft.AspNet.Identity;
 using Webbsida.Models;
 using Webbsida.ViewModels;
@@ -17,16 +17,31 @@ namespace Webbsida.Controllers
             var user = _db.Users.Find(User.Identity.GetUserId());
             var profileId = user.Profile.Id;
 
-            var userEventUsers = _db.EventUsers.Where(x => x.ProfileId == profileId).ToList();
+            var query = (
+                from eventUser in _db.EventUsers
+                join @event in _db.Events
+                    on eventUser.EventId equals @event.Id
+                where eventUser.ProfileId == profileId
+                select new Event
+                {
+                    Name = @event.Name,
+                    Description = @event.Description,
+                    ImagePath = @event.ImagePath,
+                    StartDate = @event.StartDate,
+                    EndDate = @event.EndDate,
+                    Price = @event.Price,
+                    Id = @event.Id,
+                    EventTags = @event.EventTags,
+                    Latitude = @event.Latitude,
+                    Longitude = @event.Longitude,
+                    MinSignups = @event.MinSignups,
+                    MaxSignups = @event.MaxSignups,
+                    EventUsers = @event.EventUsers
+                }).ToList();
 
-            var rawOwnedEvents = userEventUsers.Where(x => x.IsOwner).Select(y => y.Event).ToList();
-            var rawBookedEvents = userEventUsers.Where(x => !x.IsOwner).Select(y => y.Event).ToList();
 
-            var results = new MyEventsViewModel();
-
-            var bookedEvents = new List<IndexEventViewModel>();
-
-            var ownedEvents = rawOwnedEvents.Select(rawEvent => new IndexEventViewModel
+            var ownedEvents = query.Where(e => e.GetOwner().Id == profileId)
+                .Select(rawEvent => new IndexEventViewModel
             {
                 Id = rawEvent.Id,
                 EventUsers = rawEvent.EventUsers,
@@ -42,7 +57,8 @@ namespace Webbsida.Controllers
                 MaxSignups = rawEvent.MaxSignups
             }).ToList();
 
-            ownedEvents.AddRange(rawBookedEvents.Select(rawEvent => new IndexEventViewModel
+            var bookedEvents = query.Where(e => e.GetOwner().Id != profileId)
+                .Select(rawEvent => new IndexEventViewModel
             {
                 Id = rawEvent.Id,
                 EventUsers = rawEvent.EventUsers,
@@ -56,11 +72,14 @@ namespace Webbsida.Controllers
                 ImagePath = rawEvent.ImagePath,
                 MinSignups = rawEvent.MinSignups,
                 MaxSignups = rawEvent.MaxSignups
-            }));
+            }).ToList();
 
-            results.UserName = _db.Users.Find(profileId).UserName;
-            results.EventsOwned = ownedEvents;
-            results.EventsBooked = bookedEvents;
+            var results = new MyEventsViewModel
+            {
+                UserName = _db.Users.Find(profileId).UserName,
+                EventsOwned = ownedEvents,
+                EventsBooked = bookedEvents
+            };
 
             return View(results);
         }
