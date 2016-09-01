@@ -51,18 +51,34 @@ a{color:#0060aa}
     text-shadow: 2px 2px 1px #004172;
 }
 
-/*#EventSearch { margin-top: 5px; }*/
+#EventSearch {border-radius: 5px; }
 
 #EventSearchBox 
 {
-    margin: 13px 0 0 0;
-    padding: 3px 10px 0 0;
+    margin: 8px 0 0 0;
+    padding: 5px 10px 5px 5px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    border-radius: 5px 0 0 5px;
 }
 
 #SearchButton 
 {
-    margin: 0 0 0 0;
-    padding: 0 3px;
+    margin: -1px 0 0 -4px;
+    padding: 3px 6px 6px 6px;
+    display: inline-block;
+    border-radius: 0 5px 5px 0;
+    background: #004172;
+}
+
+#SearchButton:hover 
+{
+    background: #0090ff;
+}
+
+#SearchButton span {
+    margin-right: 7px;
 }
 
 .navbar-brand:visited { color: white !important }
