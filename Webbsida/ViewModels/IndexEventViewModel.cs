@@ -42,7 +42,7 @@ namespace Webbsida.ViewModels
 
         public double Distance { get; set; }
 
-        public int OwnerId { get; set; }
+        public bool IsMyEventsUserOwner { get; set; }
 
         public double GetOrder => SpotsRemaining + Distance + (StartDate - DateTime.Now).Days;
 

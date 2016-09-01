@@ -11,6 +11,7 @@ namespace Webbsida.Controllers
     {
         private readonly ApplicationDbContext _db = new ApplicationDbContext();
 
+        [Authorize]
         public ActionResult Index()
         {
             //my events
@@ -37,12 +38,11 @@ namespace Webbsida.Controllers
                     MinSignups = @event.MinSignups,
                     MaxSignups = @event.MaxSignups,
                     EventUsers = @event.EventUsers,
-                    OwnerId = @event.EventUsers.Where(x => x.IsOwner == true)
-                    .Select(x => x.Profile).FirstOrDefault().Id
+                    IsMyEventsUserOwner = eventUser.IsOwner
             }).ToList();
 
 
-            var ownedEvents = query.Where(e => e.OwnerId == profileId)
+            var ownedEvents = query.Where(e => e.IsMyEventsUserOwner)
                 .Select(rawEvent => new IndexEventViewModel
             {
                 Id = rawEvent.Id,
@@ -57,9 +57,9 @@ namespace Webbsida.Controllers
                 ImagePath = rawEvent.ImagePath,
                 MinSignups = rawEvent.MinSignups,
                 MaxSignups = rawEvent.MaxSignups
-            }).ToList();
+            }).OrderBy(x => x.Name).ToList();
 
-            var bookedEvents = query.Where(e => e.OwnerId != profileId)
+            var bookedEvents = query.Where(e => !e.IsMyEventsUserOwner)
                 .Select(rawEvent => new IndexEventViewModel
             {
                 Id = rawEvent.Id,
@@ -74,7 +74,7 @@ namespace Webbsida.Controllers
                 ImagePath = rawEvent.ImagePath,
                 MinSignups = rawEvent.MinSignups,
                 MaxSignups = rawEvent.MaxSignups
-            }).ToList();
+            }).OrderBy(x => x.Name).ToList();
 
             var results = new MyEventsViewModel
             {

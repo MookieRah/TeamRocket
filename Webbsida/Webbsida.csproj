@@ -473,10 +473,6 @@
     <Content Include="Views\Shared\_Error.cshtml" />
     <Content Include="Views\Home\_TagNames.cshtml" />
     <Content Include="Views\Shared\_Processing.cshtml" />
-    <Content Include="Views\MyEvents\Create.cshtml" />
-    <Content Include="Views\MyEvents\Delete.cshtml" />
-    <Content Include="Views\MyEvents\Details.cshtml" />
-    <Content Include="Views\MyEvents\Edit.cshtml" />
     <Content Include="Views\MyEvents\Index.cshtml" />
     <Content Include="Views\Profiles\Create.cshtml" />
     <Content Include="Views\Profiles\Delete.cshtml" />
