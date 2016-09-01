@@ -217,24 +217,27 @@ namespace Webbsida.Controllers
 
         private void ValidateInput(CreateEventViewModel evm)
         {
-            // TODO: Man kan sätta negativa MaxSignups Och MinSignups
+            // Man kan sätta negativa MaxSignups Och MinSignups
             if (evm.MaxSignups < 1)
                 ModelState.AddModelError("MaxSignups", "Max deltagare måste lämnas tom eller vara minst 1.");
             if (evm.MinSignups < 1)
                 ModelState.AddModelError("MinSignups", "Min deltagare måste lämnas tom eller vara minst 1.");
-            // TODO: Man kan sätta fler MinSignups Än MaxSignups
+            // Man kan sätta fler MinSignups Än MaxSignups
             if (evm.MaxSignups < evm.MinSignups)
                 ModelState.AddModelError("MaxSignups", "Max deltagare måste vara större än minsta antalet deltagare.");
-            // TODO: Priset måste ha ett max-value (så det inte kraschar)
+            // Priset måste ha ett max-value (så det inte kraschar)
             if (evm.Price > decimal.MaxValue)
             {
                 ModelState.AddModelError("Price", "Priset är för högt!");
                 evm.Price = null;
             }
-            // TODO: StartDatum måste vara tidigare än SlutDatum
-            if (evm.StartDate < evm.EndDate) { }
-            ModelState.AddModelError("StartDate", "StartDatum måste vara tidigare än SlutDatum.");
-            // TODO: Max image-size = 3mb, should maybe accept null with default Image!
+            // TODO: Disabled to make it faster to create an event
+            //if (evm.StartDate > evm.EndDate)
+            //{ 
+            //ModelState.AddModelError("StartDate", "StartDatum måste vara tidigare än SlutDatum.");
+            //}
+
+            // Max image-size = 3mb, should maybe accept null with default Image!
             if (evm.Image.ContentLength > 3000000)
                 ModelState.AddModelError("Image", "Max 3 mb!");
         }
@@ -261,6 +264,10 @@ namespace Webbsida.Controllers
 
         private static List<Tag> GenerateEventTags(CreateEventViewModel evm)
         {
+            if (evm.Tags == null)
+                return new List<Tag>();
+
+
             var eventTags = evm.Tags.Split(',');
             for (int i = 0; i < eventTags.Length; i++)
             {
