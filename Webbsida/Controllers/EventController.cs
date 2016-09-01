@@ -34,7 +34,7 @@ namespace Webbsida.Controllers
 
             var eventUserData = db.EventUsers
                 .Where(d => d.EventId == id)
-                .Select(g => g.EventId).FirstOrDefault();
+                .Select(g => g.ProfileId).FirstOrDefault();
 
             var userDataFirstName =
                 db.Profiles.Where(d => d.Id == eventUserData).Select(f => f.FirstName).SingleOrDefault();
@@ -107,6 +107,23 @@ namespace Webbsida.Controllers
             return RedirectToAction("GetEvent", new { id = bevm.EventId });
         }
 
+        //[Authorize]
+        //[HttpDelete]
+        //public ActionResult UnBookEvent(BookEventViewModel bevm)
+        //{
+        //    var loggedInUserId = User.Identity.GetUserId();
+        //    var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+
+        //    var unBookEvent = db.EventUsers.Remove(new EventUser
+        //    {
+        //        Id = bevm.EventId,
+        //        ProfileId = bevm.ProfileId
+        //    });
+        //    db.EventUsers.Remove(unBookEvent);
+        //    db.SaveChanges();
+
+        //    return RedirectToAction("GetEvent");
+        //}
 
         // GET: Events/Create
         public ActionResult Create()
