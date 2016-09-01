@@ -12,32 +12,20 @@
 
 @section Scripts {
     <script>
-        $(function() {
+        $(function () {
             // Fetch the users position and save it to localStorage!
-            //GoogleMapsEventController.getUserPosition();
+            GoogleMapsEventController.getUserPosition();
 
             // TODO: Make a real callback here!
-            //console.log("Starting getUserPostion...");
-
-            $.when(GoogleMapsEventController.getUserPosition()).then(setLocationAndPost());
-
-            function setLocationAndPost() {
+            if (localStorage.getItem("pos_lat") == null || localStorage.getItem("pos_long") == null) {
+                $("#latitude").val("63.825356");
+                $("#longitude").val("20.262926");
+            } else {
                 $("#latitude").val(localStorage.getItem("pos_lat"));
                 $("#longitude").val(localStorage.getItem("pos_long"));
-                //$("#positionForm").submit();
-            };
-                console.log(localStorage.getItem("pos_lat"));
-                console.log(localStorage.getItem("pos_long"));
+            }
 
-            //if (localStorage.getItem("pos_lat") == null || localStorage.getItem("pos_long") == null) {
-            //    $("#latitude").val("63.825356");
-            //    $("#longitude").val("20.262926");
-            //} else {
-            //    $("#latitude").val(localStorage.getItem("pos_lat"));
-            //    $("#longitude").val(localStorage.getItem("pos_long"));
-            //}
-
-            
+            $("#positionForm").submit();
         });
     </script>
 
