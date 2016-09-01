@@ -180,11 +180,27 @@ namespace Webbsida.Models
 
             var dummyImages = new List<string>
             {
-                pathToFile + "Mewtwo1.png",
-                pathToFile + "Mewtwo2.jpg",
-                pathToFile + "Mewtwo3.jpg",
-                pathToFile + "Mewtwo4.jpg",
-                pathToFile + "Psyduck.png"
+                pathToFile + "pic1.jpg",
+                pathToFile + "pic2.jpg",
+                pathToFile + "pic3.jpg",
+                pathToFile + "pic4.jpg",
+                pathToFile + "pic5.jpg",
+                pathToFile + "pic6.jpg",
+                pathToFile + "pic7.jpg",
+                pathToFile + "pic8.jpg",
+                pathToFile + "pic9.jpg",
+                pathToFile + "pic10.jpg",
+                pathToFile + "pic11.jpg",
+                pathToFile + "pic12.jpg",
+                pathToFile + "pic13.jpg",
+                pathToFile + "pic14.jpg",
+                pathToFile + "pic15.jpg",
+                pathToFile + "pic16.jpg",
+                pathToFile + "pic17.jpg",
+                pathToFile + "pic18.jpg",
+                pathToFile + "pic19.jpg",
+                pathToFile + "png1.png",
+                pathToFile + "png2.png"
             };
 
             //var gratis = context.Tags.FirstOrDefault(x => x.Name == "gratis");
