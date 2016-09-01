@@ -39,12 +39,15 @@ namespace Webbsida.ViewModels
         [Required(ErrorMessage = " ")]
         public float Longitude { get; set; }
 
+        //[Range(1, int.MaxValue)]
         [Display(Name = "Max antal deltagare")]
         public int? MaxSignups { get; set; }
+        //[Range(0, int.MaxValue)]
         [Display(Name = "Minsta antal deltagare")]
         public int? MinSignups { get; set; }
 
         [Display(Name = "Eventuell kostnad")]
+        //[Range(0d, decimal.MaxValue)]
         public decimal? Price { get; set; }
 
         [Display(Name = "Taggar")]
