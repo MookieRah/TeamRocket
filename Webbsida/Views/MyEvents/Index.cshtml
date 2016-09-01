@@ -1,0 +1,21 @@
+﻿@model Webbsida.ViewModels.MyEventsViewModel
+
+@{
+    ViewBag.Title = "My Events";
+}
+
+<p>@Html.ActionLink("Create New", "Create", "Event")</p>
+
+<h2>@Model.UserName</h2>
+<h3>Owned Events</h3>
+@foreach (var @event in Model.EventsOwned)
+{
+    @Html.Partial("_EventSummary", @event)
+}
+
+<hr/>
+<h3>Booked Events</h3>
+@foreach (var @event in Model.EventsBooked)
+{
+    @Html.Partial("_EventSummary", @event)
+}
