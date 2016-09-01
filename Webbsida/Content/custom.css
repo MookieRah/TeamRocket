@@ -13,7 +13,7 @@ a{color:#0060aa}
 .navbar { background-color: #0060aa }
 
 /*Controls the login links.*/
-#registerLink, #loginLink { color: white; font-size: 1.25em; }
+#LoginNav .LoginStuff { color: white; font-size: 1.25em; }
 
 /*This overrides the css of the div that holds the logo, login, and other navigation.*/
 .navbar-brand 
@@ -48,7 +48,7 @@ a{color:#0060aa}
     text-decoration: none;
     font-family: 'coiny';
     font-size: 4em;
-    text-shadow: 2px 2px 1px #004172;
+    text-shadow: 2px 2px 1px rgba(0,0,0,0.2);
 }
 
 #EventSearch {border-radius: 5px; }
@@ -90,7 +90,7 @@ a{color:#0060aa}
 .navbar-collapse a 
 { 
     color: white;     
-    text-shadow: 2px 2px 1px #004172;
+    text-shadow: 2px 2px 1px rgba(0,0,0,0.2);
 }
 
 /*This overrides the css of the body content.*/
@@ -114,7 +114,7 @@ a{color:#0060aa}
     display: inline-block;
     border: 1px solid #c9c9c9;
     margin-top: 2em;
-    box-shadow: 2px 2px 1px #d3d3d3;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     flex-flow: row wrap;
 }
 

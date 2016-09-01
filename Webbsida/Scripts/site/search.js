@@ -2,9 +2,11 @@
     var url = "/Home/GetEventsBySearch";
     var table = $("#EventSummaryContainer");
 
+    //Loads the "Processing" partial view.
     table.load("/Home/GetProcessing");
-
-    table.load(url, { filter: "" });
+    
+    //Loads all the events.
+    table.load(url, { filter: "", lat: parseFloat(localStorage.getItem("pos_lat")), lng: parseFloat(localStorage.getItem("pos_long")) });
 
     PopulateDropDown();
 });
@@ -27,7 +29,7 @@ function PopulateDropDown() {
         }
     };
     $.ajax(options);
-};
+}
 
 function LoadFromInput() {
     var table = $("#EventSummaryContainer");
@@ -35,13 +37,13 @@ function LoadFromInput() {
     var url = "/Home/GetEventsBySearch";
 
 
-    if (raw != undefined) {
+    if (raw !== undefined) {
         table.load(url, { filter: raw });
     }
 }
 
 function LoadOnEnter(e) {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
         LoadFromInput();
     }
 }
