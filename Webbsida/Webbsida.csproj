@@ -208,6 +208,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MyEventsController.cs" />
+    <Compile Include="Controllers\ProfilesController.cs" />
     <Compile Include="Controllers\TempController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -358,6 +359,11 @@
     <Content Include="Views\MyEvents\Details.cshtml" />
     <Content Include="Views\MyEvents\Edit.cshtml" />
     <Content Include="Views\MyEvents\Index.cshtml" />
+    <Content Include="Views\Profiles\Create.cshtml" />
+    <Content Include="Views\Profiles\Delete.cshtml" />
+    <Content Include="Views\Profiles\Details.cshtml" />
+    <Content Include="Views\Profiles\Edit.cshtml" />
+    <Content Include="Views\Profiles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
