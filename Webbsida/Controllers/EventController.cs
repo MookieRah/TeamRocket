@@ -75,7 +75,12 @@ namespace Webbsida.Controllers
                 Event = eventDetails,
                 AlreadyBookedOnThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id),
                 IsOwnerOfThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
-                LoggedInUser = loggedInUser
+                LoggedInUser = loggedInUser,
+
+                //DEBUG
+                BookedUsers = db.EventUsers.Where(n => n.EventId == eventData.Id && n.IsOwner == false).Select(n => n.Profile).ToList(),
+                OwnerUsers = db.EventUsers.Where(n => n.EventId == eventData.Id && n.IsOwner).Select(n => n.Profile).ToList()
+
             };
 
             return View(result);
