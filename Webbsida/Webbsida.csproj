@@ -245,21 +245,27 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
-    <Content Include="Content\EventImages\Mewtwo1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\EventImages\Mewtwo2.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\EventImages\Mewtwo3.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\EventImages\Mewtwo4.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\EventImages\Psyduck.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Content\EventImages\pic1.jpg" />
+    <Content Include="Content\EventImages\pic10.jpg" />
+    <Content Include="Content\EventImages\pic11.jpg" />
+    <Content Include="Content\EventImages\pic12.jpg" />
+    <Content Include="Content\EventImages\pic13.jpg" />
+    <Content Include="Content\EventImages\pic14.jpg" />
+    <Content Include="Content\EventImages\pic15.jpg" />
+    <Content Include="Content\EventImages\pic16.jpg" />
+    <Content Include="Content\EventImages\pic17.jpg" />
+    <Content Include="Content\EventImages\pic18.jpg" />
+    <Content Include="Content\EventImages\pic19.jpg" />
+    <Content Include="Content\EventImages\pic2.jpg" />
+    <Content Include="Content\EventImages\pic3.jpg" />
+    <Content Include="Content\EventImages\pic4.jpg" />
+    <Content Include="Content\EventImages\pic5.jpg" />
+    <Content Include="Content\EventImages\pic6.jpg" />
+    <Content Include="Content\EventImages\pic7.jpg" />
+    <Content Include="Content\EventImages\pic8.jpg" />
+    <Content Include="Content\EventImages\pic9.jpg" />
+    <Content Include="Content\EventImages\png1.png" />
+    <Content Include="Content\EventImages\png2.png" />
     <Content Include="Content\fonts\AnyPickerIconFont.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\images\processing.gif">
@@ -406,6 +412,7 @@
     <Content Include="Content\images\processing.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
