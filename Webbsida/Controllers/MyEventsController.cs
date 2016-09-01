@@ -17,12 +17,13 @@ namespace Webbsida.Controllers
             var user = _db.Users.Find(User.Identity.GetUserId());
             var profileId = user.Profile.Id;
 
-            var query = (
+            var query = 
+            (
                 from eventUser in _db.EventUsers
                 join @event in _db.Events
                     on eventUser.EventId equals @event.Id
                 where eventUser.ProfileId == profileId
-                select new Event
+                select new IndexEventViewModel()
                 {
                     Name = @event.Name,
                     Description = @event.Description,
@@ -31,16 +32,17 @@ namespace Webbsida.Controllers
                     EndDate = @event.EndDate,
                     Price = @event.Price,
                     Id = @event.Id,
-                    EventTags = @event.EventTags,
                     Latitude = @event.Latitude,
                     Longitude = @event.Longitude,
                     MinSignups = @event.MinSignups,
                     MaxSignups = @event.MaxSignups,
-                    EventUsers = @event.EventUsers
-                }).ToList();
+                    EventUsers = @event.EventUsers,
+                    OwnerId = @event.EventUsers.Where(x => x.IsOwner == true)
+                    .Select(x => x.Profile).FirstOrDefault().Id
+            }).ToList();
 
 
-            var ownedEvents = query.Where(e => e.GetOwner().Id == profileId)
+            var ownedEvents = query.Where(e => e.OwnerId == profileId)
                 .Select(rawEvent => new IndexEventViewModel
             {
                 Id = rawEvent.Id,
@@ -57,7 +59,7 @@ namespace Webbsida.Controllers
                 MaxSignups = rawEvent.MaxSignups
             }).ToList();
 
-            var bookedEvents = query.Where(e => e.GetOwner().Id != profileId)
+            var bookedEvents = query.Where(e => e.OwnerId != profileId)
                 .Select(rawEvent => new IndexEventViewModel
             {
                 Id = rawEvent.Id,
@@ -76,7 +78,7 @@ namespace Webbsida.Controllers
 
             var results = new MyEventsViewModel
             {
-                UserName = _db.Users.Find(profileId).UserName,
+                UserName = user.UserName,
                 EventsOwned = ownedEvents,
                 EventsBooked = bookedEvents
             };

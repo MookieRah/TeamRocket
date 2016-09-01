@@ -42,10 +42,7 @@ namespace Webbsida.ViewModels
 
         public double Distance { get; set; }
 
-        public Profile GetOwner()
-        {
-            return EventUsers.Where(x => x.IsOwner == true).Select(x => x.Profile).FirstOrDefault();
-        }
+        public int OwnerId { get; set; }
 
         public double GetOrder => SpotsRemaining + Distance + (StartDate - DateTime.Now).Days;
 
