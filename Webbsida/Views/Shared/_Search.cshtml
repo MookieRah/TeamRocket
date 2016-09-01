@@ -1,6 +1,6 @@
 ﻿<li role="presentation">
         <fieldset id="EventSearch">
-            <input type="text" id="EventSearchBox" onkeyup="PopulateDropDown()" list="SearchDropDown" />
+            <input type="text" id="EventSearchBox" onkeyup="PopulateDropDown()" onkeydown="LoadOnEnter(event)" list="SearchDropDown" />
             <datalist id="SearchDropDown"></datalist>
             <div id="SearchButton" onclick="LoadFromInput()">
                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>

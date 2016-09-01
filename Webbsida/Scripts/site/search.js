@@ -29,7 +29,6 @@ function PopulateDropDown() {
     $.ajax(options);
 };
 
-
 function LoadFromInput() {
     var table = $("#EventSummaryContainer");
     var raw = $("#EventSearchBox").val();
@@ -38,5 +37,11 @@ function LoadFromInput() {
 
     if (raw != undefined) {
         table.load(url, { filter: raw });
+    }
+}
+
+function LoadOnEnter(e) {
+    if (e.keyCode == 13) {
+        LoadFromInput();
     }
 }
