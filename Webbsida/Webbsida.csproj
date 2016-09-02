@@ -222,6 +222,8 @@
     <Compile Include="Controllers\api\GeoDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MyEventsController.cs" />
+    <Compile Include="Controllers\ProfilesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -229,6 +231,7 @@
     <Compile Include="Models\AgilaMetoderProjektDbInitializer.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="ViewModels\EventViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -237,6 +240,7 @@
     <Compile Include="ViewModels\EventDetailsViewModel.cs" />
     <Compile Include="ViewModels\GetEventViewModel.cs" />
     <Compile Include="ViewModels\IndexEventViewModel.cs" />
+    <Compile Include="ViewModels\MyEventsViewModel.cs" />
     <Compile Include="ViewModels\TagsNamesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -469,6 +473,12 @@
     <Content Include="Views\Shared\_Error.cshtml" />
     <Content Include="Views\Home\_TagNames.cshtml" />
     <Content Include="Views\Shared\_Processing.cshtml" />
+    <Content Include="Views\MyEvents\Index.cshtml" />
+    <Content Include="Views\Profiles\Create.cshtml" />
+    <Content Include="Views\Profiles\Delete.cshtml" />
+    <Content Include="Views\Profiles\Details.cshtml" />
+    <Content Include="Views\Profiles\Edit.cshtml" />
+    <Content Include="Views\Profiles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

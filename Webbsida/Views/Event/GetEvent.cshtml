@@ -7,18 +7,21 @@
 
 <div id="Main">
 
-
-    <h1>Debug:</h1>
-    <span class="alert alert-info">
-        @if (Model.LoggedInUser != null)
+    @*<div class="alert alert-info">You are: @Model.LoggedInProfile.FirstName + @Model.LoggedInProfile.LastName</div>*@
+    <h3>Anmälda:</h3>
+    <ul>
+        @foreach (var user in Model.BookedUsers)
         {
-            @Model.LoggedInUser.Email
+            <li>@user.FirstName @user.LastName</li>
         }
-        else
+    </ul>
+    @*<h3>OwnerUsers:</h3>
+    <ul>
+        @foreach (var user in Model.OwnerUsers)
         {
-            <text>Not logged in.</text>
+            <li>@user.FirstName @user.LastName</li>
         }
-    </span>
+    </ul>*@
     <hr />
     <dl class="dl-horizontal">
         <dt>

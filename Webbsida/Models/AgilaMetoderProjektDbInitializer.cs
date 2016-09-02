@@ -168,7 +168,7 @@ namespace Webbsida.Models
             context.SaveChanges();
 
             // EventProfiles
-            var eventUsers = Builder<EventUser>.CreateListOfSize(20)
+            var eventUsers = Builder<EventUser>.CreateListOfSize(200)
 
                 .All()
                     .With(n => n.Profile = Pick<Profile>.RandomItemFrom(profiles))
