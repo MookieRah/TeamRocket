@@ -7,21 +7,21 @@
 
 <div id="Main">
 
-    <div class="alert alert-info">You are: @Model.LoggedInProfile.FirstName + @Model.LoggedInProfile.LastName</div>
-    <h3>BookedUsers:</h3>
+    @*<div class="alert alert-info">You are: @Model.LoggedInProfile.FirstName + @Model.LoggedInProfile.LastName</div>*@
+    <h3>Anmälda:</h3>
     <ul>
         @foreach (var user in Model.BookedUsers)
         {
             <li>@user.FirstName @user.LastName</li>
         }
     </ul>
-    <h3>OwnerUsers:</h3>
+    @*<h3>OwnerUsers:</h3>
     <ul>
         @foreach (var user in Model.OwnerUsers)
         {
             <li>@user.FirstName @user.LastName</li>
         }
-    </ul>
+    </ul>*@
     <hr />
     <dl class="dl-horizontal">
         <dt>
