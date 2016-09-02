@@ -69,13 +69,14 @@ namespace Webbsida.Controllers
             };
             var loggedInUserId = User.Identity.GetUserId();
             var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+            var loggedInProfile = db.Profiles.SingleOrDefault(n => n.Id == loggedInUser.Profile.Id);
 
             var result = new GetEventViewModel()
             {
                 Event = eventDetails,
                 AlreadyBookedOnThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id),
                 IsOwnerOfThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
-                LoggedInUser = loggedInUser,
+                LoggedInProfile = loggedInProfile,
 
                 //DEBUG
                 BookedUsers = db.EventUsers.Where(n => n.EventId == eventData.Id && n.IsOwner == false).Select(n => n.Profile).ToList(),

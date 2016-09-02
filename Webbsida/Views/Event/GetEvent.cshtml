@@ -7,7 +7,7 @@
 
 <div id="Main">
 
-
+    <div class="alert alert-info">You are: @Model.LoggedInProfile.FirstName + @Model.LoggedInProfile.LastName</div>
     <h3>BookedUsers:</h3>
     <ul>
         @foreach (var user in Model.BookedUsers)
