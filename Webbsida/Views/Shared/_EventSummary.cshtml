@@ -10,6 +10,11 @@
                 <h1>@Model.Name</h1>
                 <p>@Model.GetPartialDescription(30)</p>
             </div>
+            @if (string.Equals(ViewBag.Title, "My Events"))
+            {
+                <button>FUCKNUGGET</button>
+            }
+
         </a>
     </div>
 }
