@@ -34,14 +34,13 @@ namespace Webbsida.Controllers
                 .Select(p => p.PhoneNumber).SingleOrDefault();
 
             var eventUserData = db.EventUsers
-                .Where(d => d.EventId == id)
-                .Select(g => g.EventId).FirstOrDefault();
+                            .Where(d => d.EventId == id)
+                            .Select(g => g.EventId).FirstOrDefault();
 
             var userDataFirstName =
                 db.Profiles.Where(d => d.Id == eventUserData).Select(f => f.FirstName).SingleOrDefault();
             var userDataLastName =
                 db.Profiles.Where(d => d.Id == eventUserData).Select(f => f.LastName).SingleOrDefault();
-
 
 
             //Creating a Model usning the Event Data holer
@@ -114,6 +113,22 @@ namespace Webbsida.Controllers
             return RedirectToAction("GetEvent", new { id = bevm.EventId });
         }
 
+        [Authorize]
+        public ActionResult UnBookEvent(BookEventViewModel bevm)
+        {
+            var loggedInUserId = User.Identity.GetUserId();
+            var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+            var loggedInUserProfile = db.Profiles.SingleOrDefault(n => n.Id == loggedInUser.Profile.Id);
+
+            if (loggedInUser == null)
+                throw new Exception("Du måste vara inloggad för att avboka en event");
+            var findBokedEvent = db.EventUsers.SingleOrDefault(s => s.EventId == bevm.EventId && s.ProfileId == loggedInUserProfile.Id);
+            var unBookEvent = db.EventUsers.Remove(findBokedEvent);
+            db.EventUsers.Remove(unBookEvent);
+            db.SaveChanges();
+
+            return RedirectToAction("GetEvent", new { id = bevm.EventId});
+        }
 
         // GET: Events/Create
         [Authorize]

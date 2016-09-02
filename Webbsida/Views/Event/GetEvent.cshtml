@@ -103,22 +103,6 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Event.Latitude)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.Latitude)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.Longitude)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.Longitude)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.Event.PhoneNumber)
         </dt>
 
@@ -148,6 +132,18 @@
     {
         <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
         <p class="alert alert-success">Du är bokad på eventet.</p>
+
+        using (Html.BeginForm("UnBookEvent", "Event", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
+            <div class="form-group">
+                <div class="col-md-12">
+                    <button class="btn btn-danger">Avboka din anmälan!</button>
+                </div>
+            </div>
+        }
+
     }
     else
     {
