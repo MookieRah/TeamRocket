@@ -232,6 +232,17 @@ namespace Webbsida.Models
                 context.EventUsers.Add(eventUser);
             context.SaveChanges();
 
+            var companyInfo = new CompanyInformation
+            {
+                Address = "Tvistevägen 48",
+                Description = "Vi är ett företag som arbetar för att människor ska kunna knyta nya kontakter via egengjorda event. ",
+                Phonenumber = "090.232424",
+                Latitude = 63.817444,
+                Longitude = 20.316255
+            };
+
+            context.CompanyInformations.Add(companyInfo);
+            context.SaveChanges();
 
             base.Seed(context);
         }
