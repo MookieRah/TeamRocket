@@ -7,7 +7,7 @@
 
 <div id="Main">
 
-    @*<div class="alert alert-info">You are: @Model.LoggedInProfile.FirstName  @Model.LoggedInProfile.LastName</div>*@
+    @*<div class="alert alert-info">You are: @Model.LoggedInProfile.FirstName + @Model.LoggedInProfile.LastName</div>*@
     <h3>Anmälda:</h3>
     <ul>
         @foreach (var user in Model.BookedUsers)
@@ -128,19 +128,6 @@
     {
         <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
         <p class="alert alert-success">Du är bokad på eventet.</p>
-
-        using (Html.BeginForm("UnBookEvent", "Event", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
-            <div class="form-group">
-                <div class="col-md-12">
-                    <button class="btn btn-danger">Avboka din anmälan!</button>
-
-                </div>
-
-            </div>
-        }
     }
     else
     {
@@ -159,7 +146,18 @@
         }
     }
 
+    using (Html.BeginForm("UnBookEvent", "Event", FormMethod.Post))
+    {
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
+    <div class="form-group">
+        <div class="col-md-12">
+            <button class="btn btn-danger">Avboka din anmälan!</button>
 
+        </div>
+
+    </div>
+    }
 
     <div id="map"></div>
 </div>
@@ -170,7 +168,7 @@
 
     <script>
         $(function() {
-            $("#AddressPlaceHolder").load("/api/GeoData/RequestAddressFromCoordinates"  "?latitude="  @Model.Event.Latitude  "&longitude="  @Model.Event.Longitude);
+            $("#AddressPlaceHolder").load("/api/GeoData/RequestAddressFromCoordinates" + "?latitude=" + @Model.Event.Latitude + "&longitude=" + @Model.Event.Longitude);
         });
     </script>
 
