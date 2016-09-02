@@ -89,17 +89,21 @@
     @Scripts.Render("~/scripts")
     @Styles.Render("~/Content/anypicker-all.min.css")
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         $(document).ready(function() {
             $("#DateOfBirth").AnyPicker(
             {
                 mode: "datetime",
                 dateTimeFormat: "yyyy/MM/dd",
-                theme: "iOS"
+                theme: "Default",
+                minValue: "1900/01/01",
+                maxValue: "2001/12/31",
+                selectedDate: "1985/01/01"
+
+
             });
         });
-
 
         //$(document).ready(function () {
         //    $('input[type=datetime]').datepicker({
@@ -113,5 +117,5 @@
         //    });
 
         //});
-    </script>
+</script>
 }
