@@ -107,23 +107,22 @@ namespace Webbsida.Controllers
             return RedirectToAction("GetEvent", new { id = bevm.EventId });
         }
 
-        //[Authorize]
-        //[HttpDelete]
-        //public ActionResult UnBookEvent(BookEventViewModel bevm)
-        //{
-        //    var loggedInUserId = User.Identity.GetUserId();
-        //    var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+        [Authorize]
+        public ActionResult UnBookEvent(BookEventViewModel bevm)
+        {
+            var loggedInUserId = User.Identity.GetUserId();
+            var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+            var loggedInUserProfile = db.Profiles.SingleOrDefault(n => n.Id == loggedInUser.Profile.Id);
 
-        //    var unBookEvent = db.EventUsers.Remove(new EventUser
-        //    {
-        //        Id = bevm.EventId,
-        //        ProfileId = bevm.ProfileId
-        //    });
-        //    db.EventUsers.Remove(unBookEvent);
-        //    db.SaveChanges();
+            if (loggedInUser == null)
+                throw new Exception("Du måste vara inloggad för att avboka en event");
+            var findBokedEvent = db.EventUsers.SingleOrDefault(s => s.EventId == bevm.EventId && s.ProfileId == loggedInUserProfile.Id);
+            var unBookEvent = db.EventUsers.Remove(findBokedEvent);
+            db.EventUsers.Remove(unBookEvent);
+            db.SaveChanges();
 
-        //    return RedirectToAction("GetEvent");
-        //}
+            return RedirectToAction("GetEvent", new { id = bevm.EventId});
+        }
 
         // GET: Events/Create
         public ActionResult Create()
