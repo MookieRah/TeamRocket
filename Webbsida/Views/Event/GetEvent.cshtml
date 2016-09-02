@@ -7,18 +7,21 @@
 
 <div id="Main">
 
-
-    <h1>Debug:</h1>
-    <span class="alert alert-info">
-        @if (Model.LoggedInUser != null)
+    @*<div class="alert alert-info">You are: @Model.LoggedInProfile.FirstName + @Model.LoggedInProfile.LastName</div>*@
+    <h3>Anmälda:</h3>
+    <ul>
+        @foreach (var user in Model.BookedUsers)
         {
-            @Model.LoggedInUser.Email
+            <li>@user.FirstName @user.LastName</li>
         }
-        else
+    </ul>
+    @*<h3>OwnerUsers:</h3>
+    <ul>
+        @foreach (var user in Model.OwnerUsers)
         {
-            <text>Not logged in.</text>
+            <li>@user.FirstName @user.LastName</li>
         }
-    </span>
+    </ul>*@
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -50,17 +53,21 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Event.StartDate)
+            <span class="Startdate">
+                @Html.DisplayFor(model => model.Event.StartDate)
+            </span>
         </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Event.EndDate)
         </dt>
-
+        
         <dd>
-            @Html.DisplayFor(model => model.Event.EndDate)
+            <span class="Enddate">
+                @Html.DisplayFor(model => model.Event.EndDate)
+            </span>
         </dd>
-
+        
         <dt>
             @Html.DisplayNameFor(model => model.Event.MaxSignups)
         </dt>
@@ -106,6 +113,14 @@
     </dl>
     <div id="Spotsleft">
         @Html.Action("GetSpotsLeft", "Event")
+    </div>
+
+    <div class="well well-sm">
+        <span class="glyphicon glyphicon-tags">&nbsp;</span>
+        @foreach (var tag in @Model.Event.Tags)
+        {
+            <span class="label label-info">@tag.Name</span>
+        }
     </div>
 
     @if (Model.IsOwnerOfThisEvent)
@@ -158,4 +173,32 @@
 @section Scripts {
     <script src="~/Scripts/site/geoScriptsV2.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=GoogleMapsEventController.initSingleEventDisplayingMap"></script>
+
+
+
+@*@Scripts.Render("~/scripts")
+@Styles.Render("~/Content/anypicker-all.min.css")
+
+<script type="text/javascript">
+        $(document).ready(function() {
+            $(".Startdate").AnyPicker(
+            {
+                mode: "datetime",
+                dateTimeFormat: "yyyy/MM/dd hh:mm",
+                theme: "iOS"
+            }).prop('readonly', true);;
+        });
+
+        $(document).ready(function () {
+            $(".Enddate").AnyPicker(
+            {
+                mode: "datetime",
+                dateTimeFormat: "yyyy/MM/dd hh:mm",
+                theme: "iOS"
+            }).prop('readonly', true);;
+        });
+
+</script>*@
+
+
 }

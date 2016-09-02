@@ -2,9 +2,13 @@
     var url = "/Home/GetEventsBySearch";
     var table = $("#EventSummaryContainer");
 
-    table.load(url, { filter: "" });
+    //Loads the "Processing" partial view.
+    table.load("/Home/GetProcessing");
+    
+    //Loads all the events.
+    table.load(url, { filter: "", lat: parseFloat(localStorage.getItem("pos_lat")), lng: parseFloat(localStorage.getItem("pos_long")) });
 
-    PopulateDropDown()
+    PopulateDropDown();
 });
 
 function PopulateDropDown() {
@@ -25,38 +29,21 @@ function PopulateDropDown() {
         }
     };
     $.ajax(options);
-};
-
-
-//function PopulateDropDown() {
-//    var url = "/Home/GetTagsAndNamesBySearch";
-//    var table = $("#SearchDropDown");
-//    var raw = $("#EventSearchBox").val();
-
-//    console.log(raw);
-
-//    if (raw != undefined) {
-//        table.load(url, { filer: raw });
-//    }
-//}
+}
 
 function LoadFromInput() {
-
     var table = $("#EventSummaryContainer");
     var raw = $("#EventSearchBox").val();
     var url = "/Home/GetEventsBySearch";
 
-    console.log(raw);
 
-    if (raw != undefined) {
+    if (raw !== undefined) {
         table.load(url, { filter: raw });
     }
 }
 
-//function LoadFromInput() {
-
-//    var table = $("#EventSummaryContainer");
-//    var url = "/Home/GetEventsBySearch";
-
-//    table.load(url);
-//}
+function LoadOnEnter(e) {
+    if (e.keyCode === 13) {
+        LoadFromInput();
+    }
+}

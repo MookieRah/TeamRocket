@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using DatabaseObjects;
 using Webbsida.Models;
@@ -33,14 +31,19 @@ namespace Webbsida.Controllers
             return Json(tagNames, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetEventsBySearch(string filter)
+        public ActionResult GetEventsBySearch(string filter, double latitude = 0.0d, double longitude = 0.0d )
         {
-            IEnumerable<Event> rawEvents = null;
+            List<Event> rawEvents = new List<Event>();
 
             try
             {
-                rawEvents = filter == "" ? _db.Events.ToList() :
-                    _db.Events.Where(e => e.EventTags.Any(t => t.Tag.Name.StartsWith(filter))).ToList();
+                var rawEventsFromTags = filter == "" ? _db.Events.ToList() : _db.Events.Where(e => e.EventTags.Any(t => t.Tag.Name.StartsWith(filter))).ToList();
+                var rawEventsFromName = filter == "" ? null : _db.Events.Where(e => e.Name.StartsWith(filter)).ToList();
+
+                rawEvents.AddRange(rawEventsFromTags);
+
+                if(rawEventsFromName != null)
+                    rawEvents.AddRange(rawEventsFromName);
 
                 var events = new List<IndexEventViewModel>();
 
@@ -63,7 +66,29 @@ namespace Webbsida.Controllers
                     });
                 }
 
-                return PartialView("_DisplayEventSummary", events);
+                var userLocation = new Location {Latitude = latitude, Longitude = longitude};
+
+                foreach (var @event in events)
+                {
+                    @event.Distance = GetDistance(userLocation,
+                        new Location() {Latitude = @event.Latitude, Longitude = @event.Longitude});
+                }
+
+                Debug.WriteLine(userLocation.Latitude + " " + userLocation.Longitude);
+
+                var orderedEvents = events.OrderBy(e => e.GetOrder).ToList();
+
+                if (orderedEvents.Count % 4 != 0)
+                {
+                    int toAdd = orderedEvents.Count % 4;
+
+                    for (int i = 0; i < toAdd; i++)
+                    {
+                        orderedEvents.Add(new IndexEventViewModel());
+                    }
+                }
+
+                return PartialView("_DisplayEventSummary", orderedEvents);
             }
             catch (Exception ex)
             {
@@ -71,6 +96,11 @@ namespace Webbsida.Controllers
 
                 return PartialView("_Error", ex);
             }
+        }
+
+        public ActionResult GetProcessing()
+        {
+            return PartialView("_Processing");
         }
 
         //[HttpPost]

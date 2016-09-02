@@ -13,13 +13,17 @@ a{color:#0060aa}
 .navbar { background-color: #0060aa }
 
 /*Controls the login links.*/
-#registerLink, #loginLink { color: white; font-size: 1.25em; }
+#LoginNav .LoginStuff { color: white; font-size: 1.25em; }
 
 /*This overrides the css of the div that holds the logo, login, and other navigation.*/
 .navbar-brand 
 {
     margin: 40px 0 30px 0;
     padding: 0;
+}
+
+.navbar-brand input {
+    font-family: sans-serif;
 }
 
 .navbar-brand ul 
@@ -34,7 +38,7 @@ a{color:#0060aa}
 .navbar-brand li 
 {
     float: left;
-    margin: 0 2em 0 0;
+    margin: 0 1.5em 0 0;
     padding: 0;
 }
 
@@ -44,9 +48,37 @@ a{color:#0060aa}
     text-decoration: none;
     font-family: 'coiny';
     font-size: 4em;
+    text-shadow: 2px 2px 1px rgba(0,0,0,0.2);
 }
 
-#EventSearch { margin-top: 5px; }
+#EventSearch {border-radius: 5px; }
+
+#EventSearchBox 
+{
+    margin: 8px 0 0 0;
+    padding: 5px 10px 5px 5px;
+    border: 0;
+    outline: none;
+    text-shadow: none;
+    box-shadow: none;
+    border-radius: 5px 0 0 0;
+}
+
+#SearchButton 
+{
+    margin: 0 0 0 -4px;
+    padding: 2px 6px 6px 6px;
+    display: inline-block;
+    border: none;
+    outline: none;
+    border-radius: 0 5px 5px 0;
+    background: #004172;
+    height: 32px;
+}
+
+#SearchDropDown { border: 0; outline: none; }
+
+#SearchButton:hover { background: #00428a; }
 
 .navbar-brand:visited { color: white !important }
 .navbar-default-color { color: white !important }
@@ -54,8 +86,12 @@ a{color:#0060aa}
 
 
 /*This overrides the css of the login information.*/
-.navbar-collapse { margin: 3em 0 0 0; }
-.navbar-collapse a {color:white}
+.navbar-collapse { margin: 3.25em 0 0 0; }
+.navbar-collapse a 
+{ 
+    color: white;     
+    text-shadow: 2px 2px 1px rgba(0,0,0,0.2);
+}
 
 /*This overrides the css of the body content.*/
 .body-content 
@@ -78,7 +114,7 @@ a{color:#0060aa}
     display: inline-block;
     border: 1px solid #c9c9c9;
     margin-top: 2em;
-    box-shadow: 2px 2px 1px #d3d3d3;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     flex-flow: row wrap;
 }
 
@@ -122,4 +158,25 @@ a{color:#0060aa}
 {
     max-width: inherit;
     font-style: italic;
+}
+
+#Processing 
+{
+    margin: 25px 0;
+    display: flex;
+}
+
+#Processing img 
+{
+    width: 50px;
+    height: 50px;
+    margin-right: 1em;
+}
+
+#Processing p 
+{
+    font-family: 'coiny';
+    font-size: 2em;
+    color: #0060aa;
+    margin-top: 7px;
 }

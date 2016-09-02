@@ -222,6 +222,8 @@
     <Compile Include="Controllers\api\GeoDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MyEventsController.cs" />
+    <Compile Include="Controllers\ProfilesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -229,6 +231,7 @@
     <Compile Include="Models\AgilaMetoderProjektDbInitializer.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="ViewModels\EventViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -237,6 +240,7 @@
     <Compile Include="ViewModels\EventDetailsViewModel.cs" />
     <Compile Include="ViewModels\GetEventViewModel.cs" />
     <Compile Include="ViewModels\IndexEventViewModel.cs" />
+    <Compile Include="ViewModels\MyEventsViewModel.cs" />
     <Compile Include="ViewModels\TagsNamesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -245,23 +249,32 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
-    <Content Include="Content\EventImages\Mewtwo1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\EventImages\Mewtwo2.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\EventImages\Mewtwo3.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\EventImages\Mewtwo4.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\EventImages\Psyduck.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Content\EventImages\pic1.jpg" />
+    <Content Include="Content\EventImages\pic10.jpg" />
+    <Content Include="Content\EventImages\pic11.jpg" />
+    <Content Include="Content\EventImages\pic12.jpg" />
+    <Content Include="Content\EventImages\pic13.jpg" />
+    <Content Include="Content\EventImages\pic14.jpg" />
+    <Content Include="Content\EventImages\pic15.jpg" />
+    <Content Include="Content\EventImages\pic16.jpg" />
+    <Content Include="Content\EventImages\pic17.jpg" />
+    <Content Include="Content\EventImages\pic18.jpg" />
+    <Content Include="Content\EventImages\pic19.jpg" />
+    <Content Include="Content\EventImages\pic2.jpg" />
+    <Content Include="Content\EventImages\pic3.jpg" />
+    <Content Include="Content\EventImages\pic4.jpg" />
+    <Content Include="Content\EventImages\pic5.jpg" />
+    <Content Include="Content\EventImages\pic6.jpg" />
+    <Content Include="Content\EventImages\pic7.jpg" />
+    <Content Include="Content\EventImages\pic8.jpg" />
+    <Content Include="Content\EventImages\pic9.jpg" />
+    <Content Include="Content\EventImages\png1.png" />
+    <Content Include="Content\EventImages\png2.png" />
     <Content Include="Content\fonts\AnyPickerIconFont.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\images\processing.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\TempImages\animated-work-in-progress-image-0020.gif" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -400,6 +413,9 @@
     <Content Include="Content\fonts\AnyPickerIconFont.eot" />
     <Content Include="Content\fonts\AnyPickerIconFont.ttf" />
     <Content Include="Content\fonts\AnyPickerIconFont.woff" />
+    <Content Include="Content\images\processing.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -456,6 +472,13 @@
     <Content Include="Views\Shared\_Search.cshtml" />
     <Content Include="Views\Shared\_Error.cshtml" />
     <Content Include="Views\Home\_TagNames.cshtml" />
+    <Content Include="Views\Shared\_Processing.cshtml" />
+    <Content Include="Views\MyEvents\Index.cshtml" />
+    <Content Include="Views\Profiles\Create.cshtml" />
+    <Content Include="Views\Profiles\Delete.cshtml" />
+    <Content Include="Views\Profiles\Details.cshtml" />
+    <Content Include="Views\Profiles\Edit.cshtml" />
+    <Content Include="Views\Profiles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

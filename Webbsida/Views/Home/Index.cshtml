@@ -1,5 +1,5 @@
 ﻿@using (Html.BeginForm("Index", "Home", FormMethod.Post,
-                new { enctype = "multipart/form-data", id = "positionForm" }))
+                            new { enctype = "multipart/form-data", id = "positionForm" }))
 {
     @Html.Hidden("latitude", new { id = "latitude" });
     @Html.Hidden("longitude", new { id = "longitude" });

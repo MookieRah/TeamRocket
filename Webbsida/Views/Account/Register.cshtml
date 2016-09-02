@@ -8,7 +8,7 @@
 
 
   
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
@@ -78,7 +78,7 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
+            <input type="submit" class="btn btn-default" value="Registera" />
         </div>
     </div>
 }
@@ -89,17 +89,21 @@
     @Scripts.Render("~/scripts")
     @Styles.Render("~/Content/anypicker-all.min.css")
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         $(document).ready(function() {
             $("#DateOfBirth").AnyPicker(
             {
                 mode: "datetime",
                 dateTimeFormat: "yyyy/MM/dd",
-                theme: "iOS"
+                theme: "Default",
+                minValue: "1900/01/01",
+                maxValue: "2001/12/31",
+                selectedDate: "1985/01/01"
+
+
             });
         });
-
 
         //$(document).ready(function () {
         //    $('input[type=datetime]').datepicker({
@@ -113,5 +117,5 @@
         //    });
 
         //});
-    </script>
+</script>
 }
