@@ -128,6 +128,19 @@
     {
         <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
         <p class="alert alert-success">Du är bokad på eventet.</p>
+
+        using (Html.BeginForm("UnBookEvent", "Event", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
+            <div class="form-group">
+                <div class="col-md-12">
+                    <button class="btn btn-danger">Avboka din anmälan!</button>
+
+                </div>
+
+            </div>
+        }
     }
     else
     {
@@ -146,18 +159,7 @@
         }
     }
 
-    using (Html.BeginForm("UnBookEvent", "Event", FormMethod.Post))
-    {
-    @Html.AntiForgeryToken()
-    <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
-    <div class="form-group">
-        <div class="col-md-12">
-            <button class="btn btn-danger">Avboka din anmälan!</button>
 
-        </div>
-
-    </div>
-    }
 
     <div id="map"></div>
 </div>
