@@ -33,14 +33,13 @@ namespace Webbsida.Controllers
                 .Select(p => p.PhoneNumber).SingleOrDefault();
 
             var eventUserData = db.EventUsers
-                .Where(d => d.EventId == id)
-                .Select(g => g.ProfileId).FirstOrDefault();
+                            .Where(d => d.EventId == id)
+                            .Select(g => g.EventId).FirstOrDefault();
 
             var userDataFirstName =
                 db.Profiles.Where(d => d.Id == eventUserData).Select(f => f.FirstName).SingleOrDefault();
             var userDataLastName =
                 db.Profiles.Where(d => d.Id == eventUserData).Select(f => f.LastName).SingleOrDefault();
-
 
 
             //Creating a Model usning the Event Data holer
