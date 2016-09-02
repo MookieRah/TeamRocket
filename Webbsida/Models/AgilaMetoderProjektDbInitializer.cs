@@ -129,7 +129,7 @@ namespace Webbsida.Models
                 new Tag {Name = "mat"},
                 new Tag {Name = "friluftsliv"},
                 new Tag {Name = "dator"},
-                new Tag {Name = "nya bekantskaper"},
+                new Tag {Name = "nya vänner"},
                 new Tag {Name = "festival"}
             };
 

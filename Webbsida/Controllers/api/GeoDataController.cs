@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
+using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
+using System.Net.Http;
+using System.Text;
+using System.Web;
 using System.Web.Http;
-using System.Web.Http.Description;
-using DatabaseObjects;
+using System.Xml.Linq;
 using Webbsida.Models;
 
 namespace Webbsida.Controllers.api
@@ -34,7 +33,7 @@ namespace Webbsida.Controllers.api
                 .Where(n => n.Latitude < latitudeParsed + 1 && n.Latitude > latitudeParsed - 1)
                 .Where(n => n.Longitude < longitudeParsed + 1 && n.Longitude > longitudeParsed - 1)
                 .Where(n => n.StartDate > DateTime.Now)
-                .Select(n => new {n.Id, n.Latitude, n.Longitude});
+                .Select(n => new { n.Id, n.Latitude, n.Longitude });
 
             var resultDict = new Dictionary<int, double>();
             foreach (var happening in fromDb)
@@ -58,6 +57,44 @@ namespace Webbsida.Controllers.api
             }
 
             return returnData;
+        }
+
+        [HttpGet]
+        public HttpResponseMessage RequestAddressFromCoordinates(double latitude, double longitude)
+        {
+            var requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?latlng={0},{1}&sensor=false", // &language=sv || &language=se
+                Uri.EscapeDataString(latitude.ToString(CultureInfo.InvariantCulture)), Uri.EscapeDataString(longitude.ToString(CultureInfo.InvariantCulture)));
+
+
+            string addressResult = string.Empty;
+
+            using (WebClient wc = new WebClient())
+            {
+                wc.Encoding = Encoding.UTF8;
+
+                string result = wc.DownloadString(requestUri);
+                var xmlElm = XElement.Parse(result);
+                var status = (from elm in xmlElm.Descendants()
+                              where
+                                elm.Name == "status"
+                              select elm).FirstOrDefault();
+                if (status.Value.ToLower() == "ok")
+                {
+                    var res = (from elm in xmlElm.Descendants()
+                               where
+                                elm.Name == "formatted_address"
+                               select elm).FirstOrDefault();
+
+                    addressResult = res.Value;
+                }
+            }
+
+
+            return new HttpResponseMessage()
+            {
+                Content = new StringContent(addressResult, Encoding.UTF8, "text/html")
+            };
+
         }
 
         private double ToRad(double input)
@@ -84,84 +121,6 @@ namespace Webbsida.Controllers.api
             public double Longitude { get; set; }
         }
 
-        //// GET: api/GeoData/5
-        //[ResponseType(typeof(Event))]
-        //public async Task<IHttpActionResult> GetEvent(int id)
-        //{
-        //    Event @event = await db.Events.FindAsync(id);
-        //    if (@event == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(@event);
-        //}
-
-        //// PUT: api/GeoData/5
-        //[ResponseType(typeof(void))]
-        //public async Task<IHttpActionResult> PutEvent(int id, Event @event)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    if (id != @event.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    db.Entry(@event).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await db.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!EventExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return StatusCode(HttpStatusCode.NoContent);
-        //}
-
-        //// POST: api/GeoData
-        //[ResponseType(typeof(Event))]
-        //public async Task<IHttpActionResult> PostEvent(Event @event)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    db.Events.Add(@event);
-        //    await db.SaveChangesAsync();
-
-        //    return CreatedAtRoute("DefaultApi", new { id = @event.Id }, @event);
-        //}
-
-        //// DELETE: api/GeoData/5
-        //[ResponseType(typeof(Event))]
-        //public async Task<IHttpActionResult> DeleteEvent(int id)
-        //{
-        //    Event @event = await db.Events.FindAsync(id);
-        //    if (@event == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    db.Events.Remove(@event);
-        //    await db.SaveChangesAsync();
-
-        //    return Ok(@event);
-        //}
 
         protected override void Dispose(bool disposing)
         {
@@ -184,13 +143,4 @@ namespace Webbsida.Controllers.api
         public double Distance { get; set; }
     }
 
-    //public class EventApiViewModel
-    //{
-    //    public int Id { get; set; }
-
-    //    public string Name { get; set; }
-
-    //    public double Latitude { get; set; }
-    //    public double Longitude { get; set; }
-    //}
 }
