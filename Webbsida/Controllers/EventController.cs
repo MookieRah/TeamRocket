@@ -88,20 +88,20 @@ namespace Webbsida.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult BookEvent(BookEventViewModel bevm)
+        public ActionResult BookEvent(int eventId)
         {
-            var loggedInUser = GetTheLoggedInUserAndCheckForNull();
+            var loggedInUser = GetLoggedInStatus();
 
             var theBooking = new EventUser()
             {
-                EventId = bevm.EventId,
+                EventId = eventId,
                 ProfileId = loggedInUser.Profile.Id,
                 Status = "Confirmed",
                 IsOwner = false,
             };
 
             var alreadyBooked =
-                db.EventUsers.Any(n => n.EventId == bevm.EventId && n.ProfileId == loggedInUser.Profile.Id);
+                db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id);
 
             if (alreadyBooked)
                 throw new Exception("Du är redan bokad på eventet.");
@@ -109,12 +109,18 @@ namespace Webbsida.Controllers
             db.EventUsers.Add(theBooking);
             db.SaveChanges();
 
-            // TODO: Make this add the booking without changing page.
-            return RedirectToAction("GetEvent", new { id = bevm.EventId });
+
+            return PartialView("_BookingSystemPartial", new BookingSystemViewModel()
+            {
+                AlreadyBookedOnThisEvent = db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id),
+                IsOwnerOfThisEvent = db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
+                SpotsLeft = GetSpotsLeft(eventId),
+                BookedUsers = db.EventUsers.Where(n => n.EventId == eventId && n.IsOwner == false).Select(n => n.Profile).ToList()
+            });
         }
 
         [Authorize]
-        public ActionResult UnBookEvent(BookEventViewModel bevm)
+        public ActionResult UnBookEvent(int eventId)
         {
             var loggedInUserId = User.Identity.GetUserId();
             var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
@@ -122,12 +128,18 @@ namespace Webbsida.Controllers
 
             if (loggedInUser == null)
                 throw new Exception("Du måste vara inloggad för att avboka en event");
-            var findBokedEvent = db.EventUsers.SingleOrDefault(s => s.EventId == bevm.EventId && s.ProfileId == loggedInUserProfile.Id);
+            var findBokedEvent = db.EventUsers.SingleOrDefault(s => s.EventId == eventId && s.ProfileId == loggedInUserProfile.Id);
             var unBookEvent = db.EventUsers.Remove(findBokedEvent);
             db.EventUsers.Remove(unBookEvent);
             db.SaveChanges();
 
-            return RedirectToAction("GetEvent", new { id = bevm.EventId});
+            return PartialView("_BookingSystemPartial", new BookingSystemViewModel()
+            {
+                AlreadyBookedOnThisEvent = db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id),
+                IsOwnerOfThisEvent = db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
+                SpotsLeft = GetSpotsLeft(eventId),
+                BookedUsers = db.EventUsers.Where(n => n.EventId == eventId && n.IsOwner == false).Select(n => n.Profile).ToList()
+            });
         }
 
         // GET: Events/Create
@@ -208,6 +220,20 @@ namespace Webbsida.Controllers
             return View(evm);
         }
 
+        public ActionResult GetBookingData(int eventId)
+        {
+            var loggedInUser = GetLoggedInStatus();
+
+            return PartialView("_BookingSystemPartial", new BookingSystemViewModel()
+            {
+                AlreadyBookedOnThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id),
+                IsOwnerOfThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
+                SpotsLeft = GetSpotsLeft(eventId),
+                BookedUsers = db.EventUsers.Where(n => n.EventId == eventId && n.IsOwner == false).Select(n => n.Profile).ToList()
+            });
+        }
+
+
         private ApplicationUser GetTheLoggedInUserAndCheckForNull()
         {
             var loggedInUserId = User.Identity.GetUserId();
@@ -215,6 +241,14 @@ namespace Webbsida.Controllers
 
             if (loggedInUser == null)
                 throw new Exception("Du måste vara inloggad för denna funktion!");
+            return loggedInUser;
+        }
+
+        private ApplicationUser GetLoggedInStatus()
+        {
+            var loggedInUserId = User.Identity.GetUserId();
+            var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+
             return loggedInUser;
         }
 
@@ -238,16 +272,17 @@ namespace Webbsida.Controllers
             // NOTICE! Have to savechanges later!
         }
 
-        public ActionResult GetSpotsLeft(int id)
+        private int? GetSpotsLeft(int id)
         {
             //var result1 = db.EventUsers.Local.Count(s => s.EventId == id);
             var result1 = db.EventUsers.Count(s => s.EventId == id);
             var maxSignups = db.Events.Find(id).MaxSignups + 1;
-            if (maxSignups == null) return PartialView((int?)null);
-            var result = maxSignups.Value - result1;
-            return PartialView("GetSpotsLeft", result);
-        }
+            if (maxSignups == null)
+                return null;
 
+            var result = maxSignups.Value - result1;
+            return result;
+        }
 
         protected override void Dispose(bool disposing)
         {
