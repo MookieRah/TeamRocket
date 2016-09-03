@@ -16,28 +16,20 @@
         }
     </ul>
     @*<h3>OwnerUsers:</h3>
-    <ul>
-        @foreach (var user in Model.OwnerUsers)
-        {
-            <li>@user.FirstName @user.LastName</li>
-        }
-    </ul>*@
+        <ul>
+            @foreach (var user in Model.OwnerUsers)
+            {
+                <li>@user.FirstName @user.LastName</li>
+            }
+        </ul>*@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Event.Firstname)
+            @Html.DisplayNameFor(model => model.Event.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Event.Firstname)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.LastName)
+            @Html.DisplayFor(model => model.Event.Name)
         </dd>
 
         <dt>
@@ -61,13 +53,13 @@
         <dt>
             @Html.DisplayNameFor(model => model.Event.EndDate)
         </dt>
-        
+
         <dd>
             <span class="Enddate">
                 @Html.DisplayFor(model => model.Event.EndDate)
             </span>
         </dd>
-        
+
         <dt>
             @Html.DisplayNameFor(model => model.Event.MaxSignups)
         </dt>
@@ -85,6 +77,13 @@
         </dd>
 
         <dt>
+            Adress:
+        </dt>
+        <dd>
+            <span id="AddressPlaceHolder"></span>
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Event.Price)
         </dt>
 
@@ -95,27 +94,8 @@
             }
             else
             {
-                <p>GRATIS!!!!</p>
+                <span>GRATIS!!!!</span>
             }
-
-
-
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.Latitude)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.Latitude)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.Longitude)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.Longitude)
         </dd>
 
         <dt>
@@ -148,6 +128,19 @@
     {
         <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
         <p class="alert alert-success">Du är bokad på eventet.</p>
+
+        using (Html.BeginForm("UnBookEvent", "Event", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
+            <div class="form-group">
+                <div class="col-md-12">
+                    <button class="btn btn-danger">Avboka din anmälan!</button>
+
+                </div>
+
+            </div>
+        }
     }
     else
     {
@@ -168,41 +161,42 @@
 
 
 
-
-    <div id="map">
-
-    </div>
+    <div id="map"></div>
 </div>
 
 @section Scripts {
     <script src="~/Scripts/site/geoScriptsV2.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=GoogleMapsEventController.initSingleEventDisplayingMap"></script>
 
-
-
-@*@Scripts.Render("~/scripts")
-@Styles.Render("~/Content/anypicker-all.min.css")
-
-<script type="text/javascript">
-        $(document).ready(function() {
-            $(".Startdate").AnyPicker(
-            {
-                mode: "datetime",
-                dateTimeFormat: "yyyy/MM/dd hh:mm",
-                theme: "iOS"
-            }).prop('readonly', true);;
+    <script>
+        $(function() {
+            $("#AddressPlaceHolder").load("/api/GeoData/RequestAddressFromCoordinates" + "?latitude=" + @Model.Event.Latitude + "&longitude=" + @Model.Event.Longitude);
         });
+    </script>
 
-        $(document).ready(function () {
-            $(".Enddate").AnyPicker(
-            {
-                mode: "datetime",
-                dateTimeFormat: "yyyy/MM/dd hh:mm",
-                theme: "iOS"
-            }).prop('readonly', true);;
-        });
+    @*@Scripts.Render("~/scripts")
+        @Styles.Render("~/Content/anypicker-all.min.css")
 
-</script>*@
+        <script type="text/javascript">
+                $(document).ready(function() {
+                    $(".Startdate").AnyPicker(
+                    {
+                        mode: "datetime",
+                        dateTimeFormat: "yyyy/MM/dd hh:mm",
+                        theme: "iOS"
+                    }).prop('readonly', true);;
+                });
+
+                $(document).ready(function () {
+                    $(".Enddate").AnyPicker(
+                    {
+                        mode: "datetime",
+                        dateTimeFormat: "yyyy/MM/dd hh:mm",
+                        theme: "iOS"
+                    }).prop('readonly', true);;
+                });
+
+        </script>*@
 
 
 }

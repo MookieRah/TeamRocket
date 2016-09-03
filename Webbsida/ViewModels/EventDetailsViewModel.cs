@@ -7,6 +7,7 @@ namespace Webbsida.ViewModels
 {
     public class EventDetailsViewModel
     {
+        //TODO: Display(Name = "") på alla
         public string Firstname { get; set; }
         public string LastName { get; set; }
         public string EventName { get; set; }
@@ -26,5 +27,8 @@ namespace Webbsida.ViewModels
         public int Id { get; set; }
 
         public List<Tag> Tags { get; set; }
+
+        [Display(Name = "Skapare")]
+        public string Name => Firstname + " " + LastName;
     }
 }

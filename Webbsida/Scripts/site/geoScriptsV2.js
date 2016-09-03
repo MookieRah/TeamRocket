@@ -199,7 +199,7 @@ var GoogleMapsEventController = function () {
 
         var queryString = "latitude=" + localStorage.getItem("pos_lat") + "&longitude=" + localStorage.getItem("pos_long");
         //var result = [];
-        $.get("/api/GeoData", queryString, function (data) {
+        $.get("/api/GeoData/GetEvents", queryString, function (data) {
 
             $.each(data, function (id, event) {
 
