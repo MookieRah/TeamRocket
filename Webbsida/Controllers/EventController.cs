@@ -214,7 +214,7 @@ namespace Webbsida.Controllers
                 db.EventUsers.Add(eventOwner);
                 db.SaveChanges();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("GetEvent", new { id = result.Id });
             }
 
             return View(evm);
