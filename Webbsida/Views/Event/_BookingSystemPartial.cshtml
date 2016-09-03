@@ -1,0 +1,58 @@
+﻿@model Webbsida.ViewModels.BookingSystemViewModel
+
+<div class="well well-sm">
+    @if (Model.SpotsLeft != null)
+    {
+        <p>Lediga platser: <span class="badge">@Model.SpotsLeft</span></p>
+    }
+
+    @if (User.Identity.IsAuthenticated)
+    {
+
+        if (Model.IsOwnerOfThisEvent)
+        {
+            <p>Detta är ditt event.</p>
+        }
+        else if (Model.AlreadyBookedOnThisEvent)
+        {
+            <button id="unbookButton" class="btn btn-danger">Avboka din anmälan!</button>
+        }
+        else
+        {
+            //TODO: Make a dropdownlist with status for the booking?
+
+            <button id="bookButton" class="btn btn-success">Anmäl dig!</button>
+        }
+    }
+    else
+    {
+        <p>Logga in för att boka detta event!</p>
+    }
+
+    @foreach (var user in Model.BookedUsers)
+    {
+
+    }
+
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Namn</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int counter = 0;
+            }
+            @foreach (var user in Model.BookedUsers)
+            {
+                counter++;
+                <tr>
+                    <td>@counter</td>
+                    <td>@user.FirstName @user.LastName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
