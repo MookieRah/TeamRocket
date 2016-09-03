@@ -7,21 +7,6 @@
 
 <div id="Main">
 
-    @*<div class="alert alert-info">You are: @Model.LoggedInProfile.FirstName + @Model.LoggedInProfile.LastName</div>*@
-    <h3>Anmälda:</h3>
-    <ul>
-        @foreach (var user in Model.BookedUsers)
-        {
-            <li>@user.FirstName @user.LastName</li>
-        }
-    </ul>
-    @*<h3>OwnerUsers:</h3>
-        <ul>
-            @foreach (var user in Model.OwnerUsers)
-            {
-                <li>@user.FirstName @user.LastName</li>
-            }
-        </ul>*@
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -107,60 +92,20 @@
         </dd>
 
     </dl>
-    <div id="Spotsleft">
-        @Html.Action("GetSpotsLeft", "Event")
-    </div>
 
     <div class="well well-sm">
         <span class="glyphicon glyphicon-tags">&nbsp;</span>
         @foreach (var tag in @Model.Event.Tags)
-        {
+            {
             <span class="label label-info">@tag.Name</span>
         }
     </div>
 
-    @if (Model.IsOwnerOfThisEvent)
-    {
-        <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
-        <p class="alert alert-info">Detta är ditt event.</p>
-    }
-    else if (Model.AlreadyBookedOnThisEvent)
-    {
-        <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
-        <p class="alert alert-success">Du är bokad på eventet.</p>
+    <div id="bookingSystem">
+        @Html.Action("GetBookingData", new { eventId = @Model.Event.Id })
+    </div>
 
-        using (Html.BeginForm("UnBookEvent", "Event", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
-            <div class="form-group">
-                <div class="col-md-12">
-                    <button class="btn btn-danger">Avboka din anmälan!</button>
-
-                </div>
-
-            </div>
-        }
-    }
-    else
-    {
-
-        using (Html.BeginForm("BookEvent", "Event", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-
-            <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
-            //TODO: Make a dropdownlist with status for the booking?
-            <div class="form-group">
-                <div class="col-md-12">
-                    <button class="btn btn-success">Anmäl dig!</button>
-                </div>
-            </div>
-        }
-    }
-
-
-
+    <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
     <div id="map"></div>
 </div>
 
@@ -171,6 +116,30 @@
     <script>
         $(function() {
             $("#AddressPlaceHolder").load("/api/GeoData/RequestAddressFromCoordinates" + "?latitude=" + @Model.Event.Latitude + "&longitude=" + @Model.Event.Longitude);
+
+
+            $("body").on("click", "#bookButton", function() {
+                $.ajax({
+                    url: "/Event/BookEvent",
+                    type: "post",
+                    data: { eventId: @Model.Event.Id }, //if you need to post Model data, use this
+                    success: function(result) {
+                        $("#bookingSystem").html(result);
+                    }
+                });
+            });
+
+            $("body").on("click", "#unbookButton", function() {
+                $.ajax({
+                    url: "/Event/UnBookEvent",
+                    type: "post",
+                    data: { eventId: @Model.Event.Id }, //if you need to post Model data, use this
+                    success: function(result) {
+                        $("#bookingSystem").html(result);
+                    }
+                });
+            });
+
         });
     </script>
 
