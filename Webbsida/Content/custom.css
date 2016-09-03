@@ -182,3 +182,15 @@ a{color:#0060aa}
     color: #0060aa;
     margin-top: 7px;
 }
+
+/*Create Event Page*/
+#CreateEventWithGlyph 
+{
+    display: flex;
+    max-width: 280px;
+}
+
+#SetMarkerFromAddressButton 
+{
+    width: 5px;
+}
