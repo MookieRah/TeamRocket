@@ -480,7 +480,7 @@
     <Content Include="Views\Profiles\Edit.cshtml" />
     <Content Include="Views\Profiles\Index.cshtml" />
     <Content Include="Views\Event\_BookingSystemPartial.cshtml" />
-    <Content Include="Views\Shared\_EventSummaryAvboka.cshtml" />
+    <Content Include="Views\MyEvents\_EventSummaryAvboka.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
