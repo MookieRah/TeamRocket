@@ -21,8 +21,10 @@ namespace Webbsida.Models
     //public class AgilaMetoderProjektDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
     public class AgilaMetoderProjektDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
     {
+        private const string PathToEventImages = @"\Content\EventImages\";
         private readonly RandomGenerator _randomGenerator = new RandomGenerator();
         private readonly Random _random = new Random();
+
 
         private UserStore<ApplicationUser> _userStore;
         private UserManager<ApplicationUser> _userManager;
@@ -33,22 +35,6 @@ namespace Webbsida.Models
             //Setup userstore&manager
             _userStore = new UserStore<ApplicationUser>(context);
             _userManager = new UserManager<ApplicationUser>(_userStore);
-
-
-            // Profiles
-            var profiles = Builder<Profile>.CreateListOfSize(20)
-                .All()
-                    .With(n => n.FirstName = Faker.Name.First())
-                    .With(n => n.LastName = Faker.Name.Last())
-                    .With(n => n.DateOfBirth = GenerateRandomBirthDate())
-                    .With(n => n.IsPrivate = (Faker.RandomNumber.Next(0, 5) > 1))
-                //.Random(15)
-                //.With(n => n.FirstName = Faker.Name.First())
-                .Build();
-
-            foreach (var profile in profiles)
-                context.Profiles.Add(profile);
-            context.SaveChanges();
 
 
             // ROLES
@@ -62,9 +48,6 @@ namespace Webbsida.Models
                 }
             }
 
-
-            var uniqueUserList = profiles.ToArray();
-
             // ADMINUSER
             if (!context.Users.Any(u => u.UserName == "admin@admin.com"))
             {
@@ -72,9 +55,14 @@ namespace Webbsida.Models
                 {
                     UserName = "admin@admin.com",
                     Email = "admin@admin.com",
-                    Profile = uniqueUserList[0],
-                    PhoneNumber = Faker.Phone.Number(),
-                    //Pick<Profile>.RandomItemFrom(profiles)
+                    Profile = new Profile()
+                    {
+                        DateOfBirth = GenerateRandomBirthDate(),
+                        FirstName = "Admin",
+                        LastName = "Adminsson",
+                        IsPrivate = true
+                    },
+                    PhoneNumber = GenerateRandomPhoneNr(),
                 };
 
                 _userManager.Create(user, "password");
@@ -88,30 +76,41 @@ namespace Webbsida.Models
                 {
                     UserName = "user@user.com",
                     Email = "user@user.com",
-                    Profile = uniqueUserList[1],
-                    PhoneNumber = Faker.Phone.Number(),
+                    Profile = new Profile()
+                    {
+                        DateOfBirth = GenerateRandomBirthDate(),
+                        FirstName = "User",
+                        LastName = "Usersson",
+                        IsPrivate = true
+                    },
+                    PhoneNumber = GenerateRandomPhoneNr(),
                 };
 
                 _userManager.Create(user, "password");
                 _userManager.AddToRole(user.Id, "User");
             }
 
-
-            // THE REST OF THE USERS
-            for (int index = 2; index < uniqueUserList.Length; index++)
+            // JoinUser
+            if (!context.Users.Any(u => u.UserName == "joiner@joiner.com"))
             {
-                var profile = uniqueUserList[index];
-                var tempEmail = Faker.Internet.Email();
-                var userToInsert = new ApplicationUser
+                var user = new ApplicationUser
                 {
-                    UserName = tempEmail,
-                    Email = tempEmail,
-                    Profile = profile,
-                    PhoneNumber = Faker.Phone.Number(),
+                    UserName = "joiner@joiner.com",
+                    Email = "joiner@joiner.com",
+                    Profile = new Profile()
+                    {
+                        DateOfBirth = GenerateRandomBirthDate(),
+                        FirstName = "Joiner",
+                        LastName = "Joinersson",
+                        IsPrivate = true
+                    },
+                    PhoneNumber = GenerateRandomPhoneNr(),
                 };
-                _userManager.Create(userToInsert, "password");
-                _userManager.AddToRole(userToInsert.Id, "User");
+
+                _userManager.Create(user, "password");
+                _userManager.AddToRole(user.Id, "User");
             }
+
             context.SaveChanges();
 
 
@@ -135,118 +134,12 @@ namespace Webbsida.Models
             };
 
             foreach (var tag in tags)
-            {
                 context.Tags.Add(tag);
-            }
+
             context.SaveChanges();
-            
+
+
             // Events
-            var events = Builder<Event>.CreateListOfSize(10)
-                .All()
-                    .With(n => n.Description = Faker.Lorem.Paragraph())
-                    //.With(n => n.GetOwner = Pick<Profile>.RandomItemFrom(profiles))    //.Where(a => a.IsPrivate == true).ToList()
-                    .With(n => n.Latitude = GenerateRandomLatitude())
-                    .With(n => n.Longitude = GenerateRandomLongitude())
-                    .With(n => n.MinSignups = _random.Next(0, 4))
-                    .With(n => n.MaxSignups = _random.Next(1, 100))
-                    .With(n => n.Price = GenerateRandomPrice())
-                .Build();
-
-            foreach (var @event in events)
-                context.Events.Add(@event);
-            context.SaveChanges();
-
-            //EventTags
-            var eventTags = Builder<EventTag>.CreateListOfSize(20)
-
-                .All()
-                    .With(n => n.Tag = Pick<Tag>.RandomItemFrom(tags))
-                    .With(n => n.Event = Pick<Event>.RandomItemFrom(events))
-                .Build();
-
-            foreach (var eventTag in eventTags)
-                context.EventTags.Add(eventTag);
-            context.SaveChanges();
-
-            // EventProfiles
-            var eventUsers = Builder<EventUser>.CreateListOfSize(200)
-
-                .All()
-                    .With(n => n.Profile = Pick<Profile>.RandomItemFrom(profiles))
-                    .With(n => n.Event = Pick<Event>.RandomItemFrom(events))
-                    .With(n => n.Status = (Faker.RandomNumber.Next(0, 2) == 1) ? "Pending" : "Confirmed")
-                .Build();
-
-            var pathToFile = @"\Content\EventImages\"; 
-
-            var dummyImages = new List<string>
-            {
-                pathToFile + "pic1.jpg",
-                pathToFile + "pic2.jpg",
-                pathToFile + "pic3.jpg",
-                pathToFile + "pic4.jpg",
-                pathToFile + "pic5.jpg",
-                pathToFile + "pic6.jpg",
-                pathToFile + "pic7.jpg",
-                pathToFile + "pic8.jpg",
-                pathToFile + "pic9.jpg",
-                pathToFile + "pic10.jpg",
-                pathToFile + "pic11.jpg",
-                pathToFile + "pic12.jpg",
-                pathToFile + "pic13.jpg",
-                pathToFile + "pic14.jpg",
-                pathToFile + "pic15.jpg",
-                pathToFile + "pic16.jpg",
-                pathToFile + "pic17.jpg",
-                pathToFile + "pic18.jpg",
-                pathToFile + "pic19.jpg",
-                pathToFile + "png1.png",
-                pathToFile + "png2.png"
-            };
-
-            //var gratis = context.Tags.FirstOrDefault(x => x.Name == "gratis");
-
-            foreach (var @event in events)
-            {
-                var randomEventUser = eventUsers.ElementAt(_random.Next(0, eventUsers.Count));
-
-                while (randomEventUser.EventId != @event.Id)
-                {
-                    randomEventUser = eventUsers.ElementAt(_random.Next(0, eventUsers.Count));
-                }
-
-                randomEventUser.IsOwner = true;
-
-                @event.ImagePath = dummyImages.ElementAt(_random.Next(0, dummyImages.Count()));
-            }
-
-            //foreach (var @event in events)
-            //{
-            //    @event.EventTags.Add(new EventTag
-            //    {
-            //        Event = @event,
-            //        Tag = tags.FirstOrDefault(x => x.Name == "test")
-            //    });
-            //}
-
-            foreach (var eventUser in eventUsers)
-                context.EventUsers.Add(eventUser);
-            context.SaveChanges();
-            // Ger information till Kontakta oss sidan
-            var companyInfo = new CompanyInformation
-            {
-                Address = "Tvistevägen 48",
-                Description = "Vi är ett företag som arbetar för att människor ska kunna knyta nya kontakter via egengjorda event. ",
-                Phonenumber = "090.232424",
-                Latitude = GenerateRandomLatitude(),
-                Longitude = GenerateRandomLongitude()
-            };
-
-            context.CompanyInformations.Add(companyInfo);
-            context.SaveChanges();
-
-            // Ger information till olika events.
-
             var ec = new Event
             {
                 Name = "Hundpromenad",
@@ -258,8 +151,27 @@ namespace Webbsida.Models
                 MaxSignups = 20,
                 MinSignups = 5,
                 Price = 0,
-                ImagePath = pathToFile + "hund.png"
+                ImagePath = PathToEventImages + "hund.png",
             };
+            ec.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "hund"),
+                    Event = ec,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "djur"),
+                    Event = ec,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "gratis"),
+                    Event = ec,
+                }
+            };
+
             var ec1 = new Event
             {
                 Name = "Svampplockning",
@@ -271,8 +183,17 @@ namespace Webbsida.Models
                 MaxSignups = 30,
                 MinSignups = 5,
                 Price = 40,
-                ImagePath = pathToFile + "images.png"
+                ImagePath = PathToEventImages + "images.png"
             };
+            ec1.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "friluftsliv"),
+                    Event = ec1,
+                },
+            };
+
             var ec2 = new Event
             {
                 Name = "Lunchföreläsning",
@@ -284,8 +205,17 @@ namespace Webbsida.Models
                 MaxSignups = 50,
                 MinSignups = 20,
                 Price = 40,
-                ImagePath = pathToFile + "lunch.png"
+                ImagePath = PathToEventImages + "lunch.png"
             };
+            ec2.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "mat"),
+                    Event = ec2,
+                },
+            };
+
             var ec3 = new Event
             {
                 Name = "Dockteater",
@@ -297,8 +227,17 @@ namespace Webbsida.Models
                 MaxSignups = 500,
                 MinSignups = 100,
                 Price = 50,
-                ImagePath = pathToFile + "dockteater.png"
+                ImagePath = PathToEventImages + "dockteater.png"
             };
+            ec3.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "barn"),
+                    Event = ec3,
+                },
+            };
+
             var ec4 = new Event
             {
                 Name = "Företagsjippo",
@@ -310,8 +249,27 @@ namespace Webbsida.Models
                 MaxSignups = 350,
                 MinSignups = 35,
                 Price = 20,
-                ImagePath = pathToFile + "Karusell.png"
+                ImagePath = PathToEventImages + "Karusell.png"
             };
+            ec4.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "barn"),
+                    Event = ec4,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "tonåring"),
+                    Event = ec4,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "vuxen"),
+                    Event = ec4,
+                },
+            };
+
             var ec5 = new Event
             {
                 Name = "Företagspresentation",
@@ -323,8 +281,22 @@ namespace Webbsida.Models
                 MaxSignups = 500,
                 MinSignups = 35,
                 Price = 0,
-                ImagePath = pathToFile + "fore-img.png"
+                ImagePath = PathToEventImages + "fore-img.png"
             };
+            ec5.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "vuxen"),
+                    Event = ec5,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "gratis"),
+                    Event = ec5,
+                },
+            };
+
             var ec6 = new Event
             {
                 Name = "Älgkontakt",
@@ -336,8 +308,27 @@ namespace Webbsida.Models
                 MaxSignups = 30,
                 MinSignups = 10,
                 Price = 40,
-                ImagePath = pathToFile + "älghus.png"
+                ImagePath = PathToEventImages + "älghus.png"
             };
+            ec6.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "djur"),
+                    Event = ec6,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "barn"),
+                    Event = ec6,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "tonåring"),
+                    Event = ec6,
+                },
+            };
+
             var ec7 = new Event
             {
                 Name = "Språkskola",
@@ -349,8 +340,22 @@ namespace Webbsida.Models
                 MaxSignups = 1,
                 MinSignups = 1,
                 Price = 550,
-                ImagePath = pathToFile + "sprak.png"
+                ImagePath = PathToEventImages + "sprak.png"
             };
+            ec7.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "vuxen"),
+                    Event = ec7,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "nya vänner"),
+                    Event = ec7,
+                },
+            };
+
             var ec8 = new Event
             {
                 Name = "pubafton",
@@ -362,8 +367,27 @@ namespace Webbsida.Models
                 MaxSignups = 10,
                 MinSignups = 1,
                 Price = 0,
-                ImagePath = pathToFile + "party.png"
+                ImagePath = PathToEventImages + "party.png"
             };
+            ec8.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "vuxen"),
+                    Event = ec8,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "nya vänner"),
+                    Event = ec8,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "fest"),
+                    Event = ec8,
+                },
+            };
+
             var ec9 = new Event
             {
                 Name = "Picknink med allsång",
@@ -375,8 +399,27 @@ namespace Webbsida.Models
                 MaxSignups = 85,
                 MinSignups = 25,
                 Price = 0,
-                ImagePath = pathToFile + "allsång.png"
+                ImagePath = PathToEventImages + "allsång.png"
             };
+            ec9.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "mat"),
+                    Event = ec9,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "festival"),
+                    Event = ec9,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "musik"),
+                    Event = ec9,
+                },
+            };
+
             var ec10 = new Event
             {
                 Name = "Istid för barnen",
@@ -388,7 +431,20 @@ namespace Webbsida.Models
                 MaxSignups = 50,
                 MinSignups = 15,
                 Price = 0,
-                ImagePath = pathToFile + "björklöven.png"
+                ImagePath = PathToEventImages + "björklöven.png"
+            };
+            ec10.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "barn"),
+                    Event = ec10,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "nya vänner"),
+                    Event = ec10,
+                },
             };
 
             var ec11 = new Event
@@ -402,7 +458,20 @@ namespace Webbsida.Models
                 MaxSignups = 70,
                 MinSignups = 25,
                 Price = 0,
-                ImagePath = pathToFile + "nolia.png"
+                ImagePath = PathToEventImages + "nolia.png"
+            };
+            ec11.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "barn"),
+                    Event = ec11,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "nya vänner"),
+                    Event = ec11,
+                },
             };
 
             var listOfEvents = new List<Event>{
@@ -420,10 +489,169 @@ namespace Webbsida.Models
                 ec11
             };
             context.Events.AddRange(listOfEvents);
-            context.SaveChanges();
-            base.Seed(context);
-            
 
+
+
+            // EventProfiles
+            var eventUsers = new List<EventUser>
+            {
+                new EventUser()
+                {
+                    Event = ec,
+                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    IsOwner = true
+                },
+                new EventUser()
+                {
+                    Event = ec,
+                    Profile = context.Profiles.First(n => n.FirstName == "Joiner"),
+                    IsOwner = false
+                },
+
+
+                new EventUser()
+                {
+                    Event = ec1,
+                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    IsOwner = true
+                },
+                new EventUser()
+                {
+                    Event = ec1,
+                    Profile = context.Profiles.First(n => n.FirstName == "Joiner"),
+                    IsOwner = false
+                },
+                new EventUser()
+                {
+                    Event = ec1,
+                    Profile = context.Profiles.First(n => n.FirstName == "User"),
+                    IsOwner = false
+                },
+
+
+                new EventUser()
+                {
+                    Event = ec2,
+                    Profile = context.Profiles.First(n => n.FirstName == "User"),
+                    IsOwner = true
+                },
+                new EventUser()
+                {
+                    Event = ec2,
+                    Profile = context.Profiles.First(n => n.FirstName == "Joiner"),
+                    IsOwner = false
+                },
+
+
+                new EventUser()
+                {
+                    Event = ec3,
+                    Profile = context.Profiles.First(n => n.FirstName == "User"),
+                    IsOwner = true
+                },
+                new EventUser()
+                {
+                    Event = ec3,
+                    Profile = context.Profiles.First(n => n.FirstName == "Joiner"),
+                    IsOwner = false
+                },
+
+                new EventUser()
+                {
+                    Event = ec4,
+                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    IsOwner = true
+                },
+                new EventUser()
+                {
+                    Event = ec4,
+                    Profile = context.Profiles.First(n => n.FirstName == "Joiner"),
+                    IsOwner = false
+                },
+
+
+                new EventUser()
+                {
+                    Event = ec5,
+                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    IsOwner = true
+                },
+
+
+                new EventUser()
+                {
+                    Event = ec6,
+                    Profile = context.Profiles.First(n => n.FirstName == "User"),
+                    IsOwner = true
+                },
+
+
+                new EventUser()
+                {
+                    Event = ec7,
+                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    IsOwner = true
+                },
+
+
+                new EventUser()
+                {
+                    Event = ec8,
+                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    IsOwner = true
+                },
+
+
+                new EventUser()
+                {
+                    Event = ec9,
+                    Profile = context.Profiles.First(n => n.FirstName == "User"),
+                    IsOwner = true
+                },
+
+
+                new EventUser()
+                {
+                    Event = ec10,
+                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    IsOwner = true
+                },
+
+
+                new EventUser()
+                {
+                    Event = ec11,
+                    Profile = context.Profiles.First(n => n.FirstName == "User"),
+                    IsOwner = true
+                },
+            };
+
+
+            context.EventUsers.AddRange(eventUsers);
+            context.SaveChanges();
+
+
+            // Ger information till Kontakta oss sidan
+            var companyInfo = new CompanyInformation
+            {
+                Address = "Tvistevägen 48",
+                Description = "Vi är ett företag som arbetar för att människor ska kunna knyta nya kontakter via egengjorda event. ",
+                Phonenumber = "090.232424",
+                Latitude = GenerateRandomLatitude(),
+                Longitude = GenerateRandomLongitude()
+            };
+
+            context.CompanyInformations.Add(companyInfo);
+            context.SaveChanges();
+
+
+            base.Seed(context);
+        }
+
+        private string GenerateRandomPhoneNr()
+        {
+            return "070" + _random.Next(0, 10) + _random.Next(0, 10) + _random.Next(0, 10) + _random.Next(0, 10) +
+                   _random.Next(0, 10) + _random.Next(0, 10) + _random.Next(0, 10);
         }
 
         private decimal? GenerateRandomPrice()
@@ -437,7 +665,7 @@ namespace Webbsida.Models
         private double GenerateRandomLatitude()
         {
             //63.710-63.900
-            return Math.Round(63f + _random.Next(710,901) / 1000f, 3);
+            return Math.Round(63f + _random.Next(710, 901) / 1000f, 3);
         }
 
         private double GenerateRandomLongitude()
