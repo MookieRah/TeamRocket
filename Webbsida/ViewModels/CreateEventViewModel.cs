@@ -29,7 +29,7 @@ namespace Webbsida.ViewModels
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Du måste sätta ett startdatum")]
-        [Display(Name = "Startdatum")]
+        [Display(Name = "StartDatum")]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "Du måste sätta ett slutdatum")]
@@ -57,7 +57,7 @@ namespace Webbsida.ViewModels
 
         [Required(ErrorMessage = "Vänligen välj en bild för eventet")]
         [DataType(DataType.Upload)]
-        [Display(Name = "Bild")]
+        [Display(Name = "Event-foto")]
         public HttpPostedFileBase Image { get; set; }
 
         public void ValidateInput(EventController eventController)
