@@ -76,6 +76,26 @@ namespace Webbsida.Controllers
                 MaxSignups = rawEvent.MaxSignups
             }).OrderBy(x => x.Name).ToList();
 
+            if (ownedEvents.Count % 4 != 0)
+            {
+                int toAdd = ownedEvents.Count % 4;
+
+                for (int i = 0; i < toAdd; i++)
+                {
+                    ownedEvents.Add(new IndexEventViewModel());
+                }
+            }
+
+            if (bookedEvents.Count % 4 != 0)
+            {
+                int toAdd = bookedEvents.Count % 4;
+
+                for (int i = 0; i < toAdd; i++)
+                {
+                    bookedEvents.Add(new IndexEventViewModel());
+                }
+            }
+            
             var results = new MyEventsViewModel
             {
                 UserName = user.UserName,
