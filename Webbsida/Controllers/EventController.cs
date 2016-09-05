@@ -146,11 +146,7 @@ namespace Webbsida.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            var result = new CreateEventViewModel()
-            {
-                ExampleTags = db.Tags.OrderBy(n => Guid.NewGuid()).Take(4)
-            };
-            return View(result);
+            return View();
         }
 
         // POST: Events/Create

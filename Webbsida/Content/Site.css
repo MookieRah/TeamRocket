@@ -31,7 +31,3 @@ textarea {
 #map {
     height: 400px;
 }
-
-.exampleTags:hover {
-    cursor: pointer;
-}

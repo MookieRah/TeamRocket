@@ -12,9 +12,6 @@ namespace Webbsida.ViewModels
 {
     public class CreateEventViewModel
     {
-        public IEnumerable<Tag> ExampleTags { get; set; }
-
-
         public int Id { get; set; }
 
         //public virtual List<EventUser> EventUsers { get; set; }
