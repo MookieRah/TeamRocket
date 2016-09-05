@@ -1,0 +1,40 @@
+﻿@model IEnumerable<DatabaseObjects.CompanyInformation>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    
+    @foreach (var item in Model) {
+
+                   @Html.DisplayNameFor(model => model.Address)
+                @Html.DisplayFor(modelItem => item.Address)
+                <br />
+
+                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayFor(modelItem => item.Description)
+                <br />
+
+                @Html.DisplayNameFor(model => model.Longitude)
+                @Html.DisplayFor(modelItem => item.Longitude)
+
+                <br />
+                @Html.DisplayNameFor(model => model.Latitude)
+                @Html.DisplayFor(modelItem => item.Latitude)
+
+                <br />
+                @Html.DisplayNameFor(model => model.Phonenumber)
+                @Html.DisplayFor(modelItem => item.Phonenumber)
+
+                <br />
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) 
+
+
+    }
+
+</body>
+</html>
