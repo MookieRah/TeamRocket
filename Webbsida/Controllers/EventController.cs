@@ -120,7 +120,7 @@ namespace Webbsida.Controllers
         }
 
         [Authorize]
-        public ActionResult UnBookEvent(int eventId ,string fromPage = "GetEvent")
+        public ActionResult UnBookEvent(int eventId ,string fromPage )
         {
             var loggedInUserId = User.Identity.GetUserId();
             var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
@@ -148,7 +148,8 @@ namespace Webbsida.Controllers
                             .ToList()
                 });
             }
-            return PartialView("_EventSummary");
+
+            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
         }
 
         // GET: Events/Create

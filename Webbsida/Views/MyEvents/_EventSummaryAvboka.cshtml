@@ -11,7 +11,14 @@
                     <p>@Model.GetPartialDescription(30)</p>
                 </div>
             </a>
-        <button>Avboka</button>
+        
+        @using (Html.BeginForm("UnBookEvent", "Event", FormMethod.Post))
+        { 
+            <input type="hidden" name="EventId" id="Id1" value="@Model.Id" />
+            <input type="hidden" name="fromPage" id="Id2" value="EventSumary" />
+            <button type="submit" value="@Model.Id" class="btn btn-danger">AvBoka</button>
+        }
+        
     </div>
 }
 else
