@@ -10,6 +10,7 @@ using DatabaseObjects;
 using FizzWare.NBuilder;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections;
 
 namespace Webbsida.Models
 {
@@ -231,7 +232,7 @@ namespace Webbsida.Models
             foreach (var eventUser in eventUsers)
                 context.EventUsers.Add(eventUser);
             context.SaveChanges();
-
+            // Ger information till Kontakta oss sidan
             var companyInfo = new CompanyInformation
             {
                 Address = "Tvistevägen 48",
@@ -244,7 +245,184 @@ namespace Webbsida.Models
             context.CompanyInformations.Add(companyInfo);
             context.SaveChanges();
 
+            // Ger information till olika events.
+
+            var ec = new Event {
+                Name = "Hubdpromenad",
+                Description = "Vi träffas utanför Ålens och går runt och tittar på olika konstverk",
+                StartDate = new DateTime(2016, 09, 10, 12, 00, 00),
+                EndDate = new DateTime(2016, 09, 10, 16, 00, 00),
+                Latitude = 20.344535345,
+                Longitude = 60.345345534,
+                MaxSignups = 20,
+                MinSignups = 5,
+                Price = 0,
+                ImagePath ="Content/Eventimages/hund.png" 
+            };
+            var ec1 =  new Event
+            {
+                Name = "Svampplockning",
+                Description = "Vi träffas på mariehemscentrum och åker ett par mil utanför Umeå",
+                StartDate = new DateTime(2016, 09, 10, 09, 00, 00),
+                EndDate = new DateTime(2016, 09, 10, 16, 00, 00),
+                Latitude = 20.344535345,
+                Longitude = 60.345345534,
+                MaxSignups = 30,
+                MinSignups = 5,
+                Price = 40,
+                ImagePath = "Content/Eventimages/images.png"
+            };
+            var ec2 = new Event
+            {
+                Name = "Lunchföreläsning",
+                Description = "Vi träffas på vårt kontor mitt i stan på Skolgatan 38",
+                StartDate = new DateTime(2016, 09, 12, 12, 00, 00),
+                EndDate = new DateTime(2016, 09, 12, 13, 00, 00),
+                Latitude = 20.344535345,
+                Longitude = 60.345345534,
+                MaxSignups = 50,
+                MinSignups = 20,
+                Price = 40,
+                ImagePath = "Content/Eventimages/lunch.png"
+            };
+            var ec3 = new Event
+            {
+                Name = "Dockteater",
+                Description = "Vi på Norrlandsooperan kommmer att hålla dockteatrar alla torsdagskvöllar under oktober månad, med start den 6/10 kl 19:00 ",
+                StartDate = new DateTime(2016, 10, 6, 19, 00, 00),
+                EndDate = new DateTime(2016, 10, 6, 20, 30, 00),
+                Latitude = 20.344535345,
+                Longitude = 60.345345534,
+                MaxSignups = 500,
+                MinSignups = 100,
+                Price = 50,
+                ImagePath = "Content/Eventimages/dockteater.png"
+            };
+            var ec4 = new Event
+            {
+                Name = "Företagsjippo",
+                Description = "Företaget Umeå intresseklubbs företagsjippo kommer i år att hålla till på Norrbyskör, där vi  kommer att ha både tält och karuseller och det kommer i år att vara öppen för allmänheten Vi kommer både att ha karuseller och hoppborg för de yngre.",
+                StartDate = new DateTime(2016, 09, 17, 11, 00, 00),
+                EndDate = new DateTime(2016, 09, 17, 17, 30, 00),
+                Latitude = 20.344535345,
+                Longitude = 60.345345534,
+                MaxSignups = 350,
+                MinSignups = 35,
+                Price = 20,
+                ImagePath = "Content/Eventimages/Karusell.png"
+            };
+            var ec5 = new Event
+            {
+                Name = "Företagspresentation",
+                Description = "Vårt företag, Svenska metaller och plaster, kommer att befinna oss på arbetsförmedlingen under veckosluten för att presentera oss och för att intresserade ska kunna komma och prata med oss, vi söker speciellt ingenjörer som är utbildade inom plast och metallindustrin.  ",
+                StartDate = new DateTime(2016, 09, 23, 18, 00, 00),
+                EndDate = new DateTime(2016, 09, 25, 12, 00, 00),
+                Latitude = 20.344535345,
+                Longitude = 60.345345534,
+                MaxSignups = 500,
+                MinSignups = 35,
+                Price = 0,
+                ImagePath = "Content/Eventimages/fore-img.png"
+            };
+            var ec6 = new Event
+            {
+                Name = "Älgkontakt",
+                Description = "Vårt företag, Älgens hus, vill att barn och ungdomar ska få en närmare tillvaron i naturen så vi kommer att hålla helgförmiddagarna öppna med både besök i hagen och testa på med workshops med utbildade ledare och naturkännare, kom på en dag för att lära dig mer om den svenska naturen.   ",
+                StartDate = new DateTime(2016, 10, 1, 09, 00, 00),
+                EndDate = new DateTime(2016, 10, 1, 12, 00, 00),
+                Latitude = 20.344535345,
+                Longitude = 60.345345534,
+                MaxSignups = 30,
+                MinSignups = 10,
+                Price = 40,
+                ImagePath = "Content/Eventimages/älghus.png"
+            };
+            var ec7 = new Event
+            {
+                Name = "Språkskola",
+                Description = "Vårt kompisgäng har ansökt om att lära oss engelska, men men det behövs minst 1n till så någon som är manat att läsa engelska får gärna anslta sig till oss. Då vi studerar på umu, så ser vi helst att kursen går på kvällen, och då medelåldern är 25 år, så ser vi gärna att din ålder är i närheten av denna.   ",
+                StartDate = new DateTime(2017, 01, 9, 09, 00, 00),
+                EndDate = new DateTime(2017, 01, 9, 12, 00, 00),
+                Latitude = 20.344535345,
+                Longitude = 60.345345534,
+                MaxSignups = 1,
+                MinSignups = 1,
+                Price = 550,
+                ImagePath = "Content/Eventimages/sprak.png"
+            };
+            var ec8 = new Event
+            {
+                Name = "pubafton",
+                Description = "Jag är ensam, men lust att fsta loss i helgen, är ni några som vill festa loss med mig, så träffas vi på Allstar kl 21:00. ",
+                StartDate = new DateTime(2017, 01, 9, 09, 00, 00),
+                EndDate = new DateTime(2017, 01, 9, 12, 00, 00),
+                Latitude = 20.344535345,
+                Longitude = 60.345345534,
+                MaxSignups = 10,
+                MinSignups = 1,
+                Price = 0,
+                ImagePath = "Content/Eventimages/party.png"
+            };
+            var ec9 = new Event
+            {
+                Name = "Picknink med allsång",
+                Description = "Vi kommer att hålla igång med allsång varje månddag kväll på vänortsparken, det är bara att dyka uppmed en picknickkorg och sjunga med oss.",
+                StartDate = new DateTime(2016, 09, 12, 18, 00, 00),
+                EndDate = new DateTime(2067, 09, 12, 20, 00, 00),
+                Latitude = 20.344535345,
+                Longitude = 60.345345534,
+                MaxSignups = 85,
+                MinSignups = 25,
+                Price = 0,
+                ImagePath = "Content/Eventimages/allsång.png"
+            };
+            var ec10 = new Event
+            {
+                Name = "Istid för barnen",
+                Description = "Dagen innan säsonen börjar kommer det vara istid för barnen, där barn i åldrarna 3-7 år får komma ut på isen och lära sig åka skridskor, vi kommer även sponsra med besök av några av våra a-lagspelare. som visar sina konster.",
+                StartDate = new DateTime(2016, 09, 14, 10, 00, 00),
+                EndDate = new DateTime(2067, 09, 14, 10, 00, 00),
+                Latitude = 20.344535345,
+                Longitude = 60.345345534,
+                MaxSignups = 50,
+                MinSignups = 15,
+                Price = 0,
+                ImagePath = "Content/Eventimages/björklöven.png"
+            };
+
+            var ec11 = new Event
+            {
+                Name = "halltid för barnen",
+                Description = "Dagen innan säsonen börjar kommer det vara istid för barnen, där barn i åldrarna 3-7 år får komma ut på isen och lära sig åka skridskor, vi kommer även sponsra med besök av några av våra a-lagspelare. som visar sina konster.",
+                StartDate = new DateTime(2016, 09, 21, 10, 00, 00),
+                EndDate = new DateTime(2067, 09, 21, 10, 00, 00),
+                Latitude = 20.344535345,
+                Longitude = 60.345345534,
+                MaxSignups = 70,
+                MinSignups = 25,
+                Price = 0,
+                ImagePath = "Content/Eventimages/nolia.png"
+            };
+
+            var listOfEvents = new List<Event>{
+                ec,
+                ec1,
+                ec2,
+                ec3,
+                ec4,
+                ec5,
+                ec6,
+                ec7,
+                ec8,
+                ec9,
+                ec10,
+                ec11
+            };
+            context.Events.AddRange(listOfEvents);
+            context.SaveChanges();
             base.Seed(context);
+            
+
         }
 
         private decimal? GenerateRandomPrice()
