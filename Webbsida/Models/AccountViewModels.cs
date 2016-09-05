@@ -95,6 +95,7 @@ namespace Webbsida.Models
         public DateTime DateOfBirth { get; set; }
 
         [Display(Name = "Telefonnummer")]
+        [Required(ErrorMessage = "Telefonnummer krävs.")]
         public string PhoneNumber { get; set; } 
     }
 
