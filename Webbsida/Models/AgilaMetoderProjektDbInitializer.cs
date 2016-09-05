@@ -248,8 +248,8 @@ namespace Webbsida.Models
             // Ger information till olika events.
 
             var ec = new Event {
-                Name = "Hubdpromenad",
-                Description = "Vi träffas utanför Ålens och går runt och tittar på olika konstverk",
+                Name = "Hundpromenad",
+                Description = "Vi träffas utanför Åhlens och går runt och tittar på olika konstverk",
                 StartDate = new DateTime(2016, 09, 10, 12, 00, 00),
                 EndDate = new DateTime(2016, 09, 10, 16, 00, 00),
                 Latitude = 20.344535345,
@@ -262,7 +262,7 @@ namespace Webbsida.Models
             var ec1 =  new Event
             {
                 Name = "Svampplockning",
-                Description = "Vi träffas på mariehemscentrum och åker ett par mil utanför Umeå",
+                Description = "Vi träffas vid mariehemscentrum och åker ett par mil utanför Umeå",
                 StartDate = new DateTime(2016, 09, 10, 09, 00, 00),
                 EndDate = new DateTime(2016, 09, 10, 16, 00, 00),
                 Latitude = 20.344535345,
@@ -288,7 +288,7 @@ namespace Webbsida.Models
             var ec3 = new Event
             {
                 Name = "Dockteater",
-                Description = "Vi på Norrlandsooperan kommmer att hålla dockteatrar alla torsdagskvöllar under oktober månad, med start den 6/10 kl 19:00 ",
+                Description = "Vi på Norrlandsoperan kommmer att hålla dockteatrar alla torsdagskvöllar under oktober månad, med start den 6/10 kl 19:00 ",
                 StartDate = new DateTime(2016, 10, 6, 19, 00, 00),
                 EndDate = new DateTime(2016, 10, 6, 20, 30, 00),
                 Latitude = 20.344535345,
@@ -301,7 +301,7 @@ namespace Webbsida.Models
             var ec4 = new Event
             {
                 Name = "Företagsjippo",
-                Description = "Företaget Umeå intresseklubbs företagsjippo kommer i år att hålla till på Norrbyskör, där vi  kommer att ha både tält och karuseller och det kommer i år att vara öppen för allmänheten Vi kommer både att ha karuseller och hoppborg för de yngre.",
+                Description = "Företaget Umeå intresseklubbs företagsjippo kommer i år att hålla till på Norrbyskär, där vi kommer att ha både tält och karuseller och det kommer i år att vara öppen för allmänheten. Vi kommer både att ha karuseller och hoppborg för de yngre.",
                 StartDate = new DateTime(2016, 09, 17, 11, 00, 00),
                 EndDate = new DateTime(2016, 09, 17, 17, 30, 00),
                 Latitude = 20.344535345,
@@ -314,7 +314,7 @@ namespace Webbsida.Models
             var ec5 = new Event
             {
                 Name = "Företagspresentation",
-                Description = "Vårt företag, Svenska metaller och plaster, kommer att befinna oss på arbetsförmedlingen under veckosluten för att presentera oss och för att intresserade ska kunna komma och prata med oss, vi söker speciellt ingenjörer som är utbildade inom plast och metallindustrin.  ",
+                Description = "Vårt företag, Svenska metaller och plaster, kommer att befinna oss på arbetsförmedlingen under veckosluten för att presentera oss och för att intresserade ska kunna komma och prata med oss. Vi söker speciellt ingenjörer som är utbildade inom plast och metallindustrin.",
                 StartDate = new DateTime(2016, 09, 23, 18, 00, 00),
                 EndDate = new DateTime(2016, 09, 25, 12, 00, 00),
                 Latitude = 20.344535345,
@@ -327,7 +327,7 @@ namespace Webbsida.Models
             var ec6 = new Event
             {
                 Name = "Älgkontakt",
-                Description = "Vårt företag, Älgens hus, vill att barn och ungdomar ska få en närmare tillvaron i naturen så vi kommer att hålla helgförmiddagarna öppna med både besök i hagen och testa på med workshops med utbildade ledare och naturkännare, kom på en dag för att lära dig mer om den svenska naturen.   ",
+                Description = "Vårt företag, Älgens hus, vill att barn och ungdomar ska få en närmare tillvaron till naturen så vi kommer att hålla helgförmiddagarna öppna med både besök i hagen och testa på med workshops med utbildade ledare och naturkännare. Kom på en dag för att lära dig mer om den svenska naturen.   ",
                 StartDate = new DateTime(2016, 10, 1, 09, 00, 00),
                 EndDate = new DateTime(2016, 10, 1, 12, 00, 00),
                 Latitude = 20.344535345,
@@ -340,7 +340,7 @@ namespace Webbsida.Models
             var ec7 = new Event
             {
                 Name = "Språkskola",
-                Description = "Vårt kompisgäng har ansökt om att lära oss engelska, men men det behövs minst 1n till så någon som är manat att läsa engelska får gärna anslta sig till oss. Då vi studerar på umu, så ser vi helst att kursen går på kvällen, och då medelåldern är 25 år, så ser vi gärna att din ålder är i närheten av denna.   ",
+                Description = "Vårt kompisgäng har ansökt om att lära oss spanska, men men det behövs minst 1n till så någon som är manat att läsa spanska får gärna ansluta sig till oss. Då vi studerar på umu, så ser vi helst att kursen går på kvällen, och då medelåldern är 25 år, så ser vi gärna att din ålder är i närheten av detta.   ",
                 StartDate = new DateTime(2017, 01, 9, 09, 00, 00),
                 EndDate = new DateTime(2017, 01, 9, 12, 00, 00),
                 Latitude = 20.344535345,
@@ -353,7 +353,7 @@ namespace Webbsida.Models
             var ec8 = new Event
             {
                 Name = "pubafton",
-                Description = "Jag är ensam, men lust att fsta loss i helgen, är ni några som vill festa loss med mig, så träffas vi på Allstar kl 21:00. ",
+                Description = "Jag är ensam, men lust att festa loss i helgen, är ni några som vill festa loss med mig, så träffas vi på Allstar kl 21:00. ",
                 StartDate = new DateTime(2017, 01, 9, 09, 00, 00),
                 EndDate = new DateTime(2017, 01, 9, 12, 00, 00),
                 Latitude = 20.344535345,
@@ -366,7 +366,7 @@ namespace Webbsida.Models
             var ec9 = new Event
             {
                 Name = "Picknink med allsång",
-                Description = "Vi kommer att hålla igång med allsång varje månddag kväll på vänortsparken, det är bara att dyka uppmed en picknickkorg och sjunga med oss.",
+                Description = "Vi kommer att hålla igång med allsång varje månddag kväll på vänortsparken, det är bara att dyka upp med en picknickkorg och sjunga med oss.",
                 StartDate = new DateTime(2016, 09, 12, 18, 00, 00),
                 EndDate = new DateTime(2067, 09, 12, 20, 00, 00),
                 Latitude = 20.344535345,
@@ -379,7 +379,7 @@ namespace Webbsida.Models
             var ec10 = new Event
             {
                 Name = "Istid för barnen",
-                Description = "Dagen innan säsonen börjar kommer det vara istid för barnen, där barn i åldrarna 3-7 år får komma ut på isen och lära sig åka skridskor, vi kommer även sponsra med besök av några av våra a-lagspelare. som visar sina konster.",
+                Description = "Dagen innan säsonen börjar kommer det vara istid för barnen, där barn i åldrarna 3-7 år får komma ut på isen och lära sig åka skridskor, vi kommer även sponsra med besök av några av våra a-lagspelare, som visar sina konster.",
                 StartDate = new DateTime(2016, 09, 14, 10, 00, 00),
                 EndDate = new DateTime(2067, 09, 14, 10, 00, 00),
                 Latitude = 20.344535345,
@@ -393,7 +393,7 @@ namespace Webbsida.Models
             var ec11 = new Event
             {
                 Name = "halltid för barnen",
-                Description = "Dagen innan säsonen börjar kommer det vara istid för barnen, där barn i åldrarna 3-7 år får komma ut på isen och lära sig åka skridskor, vi kommer även sponsra med besök av några av våra a-lagspelare. som visar sina konster.",
+                Description = "Dagen innan säsonen börjar kommer det vara istid för barnen, där barn i åldrarna 3-7 år får komma och lära sig olika bollsporter.",
                 StartDate = new DateTime(2016, 09, 21, 10, 00, 00),
                 EndDate = new DateTime(2067, 09, 21, 10, 00, 00),
                 Latitude = 20.344535345,
