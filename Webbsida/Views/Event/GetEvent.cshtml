@@ -96,7 +96,7 @@
     <div class="well well-sm">
         <span class="glyphicon glyphicon-tags">&nbsp;</span>
         @foreach (var tag in @Model.Event.Tags)
-            {
+        {
             <span class="label label-info">@tag.Name</span>
         }
     </div>
@@ -104,7 +104,7 @@
     <div id="bookingSystem">
         @Html.Action("GetBookingData", new { eventId = @Model.Event.Id })
     </div>
-
+}
     <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
     <div id="map"></div>
 </div>
