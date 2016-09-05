@@ -162,6 +162,7 @@ namespace Webbsida.Controllers
             var loggedInUser = GetTheLoggedInUserAndCheckForNull();
 
             evm.ValidateInput(this);
+            evm.ExampleTags = db.Tags.OrderBy(n => Guid.NewGuid()).Take(4);
 
             if (ModelState.IsValid)
             {
