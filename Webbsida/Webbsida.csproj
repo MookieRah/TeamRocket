@@ -227,6 +227,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609052010075_InitialCreate.cs" />
+    <Compile Include="Migrations\201609052010075_InitialCreate.Designer.cs">
+      <DependentUpon>201609052010075_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AgilaMetoderProjektDbInitializer.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -516,6 +521,11 @@
       <Project>{ca371e0e-8ce3-4e02-bb2d-5782c86ff8c2}</Project>
       <Name>DatabaseObjects</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201609052010075_InitialCreate.resx">
+      <DependentUpon>201609052010075_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -14,11 +14,6 @@ using System.Collections;
 
 namespace Webbsida.Models
 {
-    //
-    // -> Use DropCreateDatabaseIfModelChanges if you want db-data to persist between builds!
-    //
-
-    //public class AgilaMetoderProjektDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
     public class AgilaMetoderProjektDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
     {
         private const string PathToEventImages = @"\Content\EventImages\";
