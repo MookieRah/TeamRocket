@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompanyInformation.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventTag.cs" />
     <Compile Include="EventUser.cs" />

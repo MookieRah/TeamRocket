@@ -14,6 +14,8 @@ namespace Webbsida.ViewModels
     {
         public int Id { get; set; }
 
+        public IEnumerable<Tag> ExampleTags { get; set; }
+
         //public virtual List<EventUser> EventUsers { get; set; }
 
         [StringLength(25, ErrorMessage = "Eventnamnet måste vara mellan 2 och 25 tecken"), MinLength(2, ErrorMessage = "Eventnamnet måste vara mellan 2 och 25 tecken")]
