@@ -101,7 +101,7 @@ a{color:#0060aa}
     margin-top: 60px;
 }
 
-#EventSummaryContainer 
+#EventSummaryContainer, .EventSummaryContainer 
 {
     display: inline-flex;
     flex-flow: row wrap;
