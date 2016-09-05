@@ -6,6 +6,9 @@
     @Html.AntiForgeryToken()
 
     <ul id="LoginNav" class="nav navbar-nav navbar-right">
+        <li>
+            @Html.ActionLink("Event nära dig", "Index", "Geo", routeValues: null, htmlAttributes: new { title = "Manage", @class = "LoginStuff" })
+        </li>
         <li>@Html.ActionLink("Create Event", "Create", "Event", routeValues: null, htmlAttributes: new { title = "Manage", @class = "LoginStuff" })</li>
           <li>
             @Html.ActionLink("Min sida", "Index", "MyEvents", routeValues: null, htmlAttributes: new {title = "Manage", @class = "LoginStuff"})
