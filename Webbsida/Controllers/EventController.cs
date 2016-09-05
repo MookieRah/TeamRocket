@@ -120,7 +120,7 @@ namespace Webbsida.Controllers
         }
 
         [Authorize]
-        public ActionResult UnBookEvent(int eventId)
+        public ActionResult UnBookEvent(int eventId ,string fromPage = "GetEvent")
         {
             var loggedInUserId = User.Identity.GetUserId();
             var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
@@ -132,14 +132,23 @@ namespace Webbsida.Controllers
             var unBookEvent = db.EventUsers.Remove(findBokedEvent);
             db.EventUsers.Remove(unBookEvent);
             db.SaveChanges();
-
-            return PartialView("_BookingSystemPartial", new BookingSystemViewModel()
+            if (fromPage == "GetEvent")
             {
-                AlreadyBookedOnThisEvent = db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id),
-                IsOwnerOfThisEvent = db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
-                SpotsLeft = GetSpotsLeft(eventId),
-                BookedUsers = db.EventUsers.Where(n => n.EventId == eventId && n.IsOwner == false).Select(n => n.Profile).ToList()
-            });
+                return PartialView("_BookingSystemPartial", new BookingSystemViewModel()
+                {
+                    AlreadyBookedOnThisEvent =
+                        db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id),
+                    IsOwnerOfThisEvent =
+                        db.EventUsers.Any(
+                            n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
+                    SpotsLeft = GetSpotsLeft(eventId),
+                    BookedUsers =
+                        db.EventUsers.Where(n => n.EventId == eventId && n.IsOwner == false)
+                            .Select(n => n.Profile)
+                            .ToList()
+                });
+            }
+            return PartialView("_EventSummary");
         }
 
         // GET: Events/Create

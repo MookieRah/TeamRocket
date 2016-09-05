@@ -108,21 +108,16 @@ a{color:#0060aa}
     justify-content: space-between;
 }
 
-#EventSummary 
+#EventSummary, #EventSummary #Avboka
 {
     max-width: 24%;
     max-height: 50%;
     min-width: 24%;
     display: inline-block;
     border: 1px solid #c9c9c9;
-    margin-top: 2em;
+    margin: 1em 0;
     box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     flex-flow: row wrap;
-}
-
-#EventSummary > * 
-{
-    vertical-align: middle;
 }
 
 #EventSummary a 
