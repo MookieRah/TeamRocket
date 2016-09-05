@@ -34,5 +34,5 @@ namespace Webbsida.Models
         public DbSet<Tag> Tags { get; set; }
         public DbSet<EventTag> EventTags { get; set; }
         public DbSet<CompanyInformation> CompanyInformations { get; set; }
-    }
+     }
 }
