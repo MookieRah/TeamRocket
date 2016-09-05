@@ -133,7 +133,7 @@
                 $.ajax({
                     url: "/Event/UnBookEvent",
                     type: "post",
-                    data: { eventId: @Model.Event.Id }, //if you need to post Model data, use this
+                    data: { eventId: @Model.Event.Id ,fromPage: "string"}, //if you need to post Model data, use this
                     success: function(result) {
                         $("#bookingSystem").html(result);
                     }
