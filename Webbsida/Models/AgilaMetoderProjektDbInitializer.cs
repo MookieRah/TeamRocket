@@ -288,7 +288,7 @@ namespace Webbsida.Models
             var ec3 = new Event
             {
                 Name = "Dockteater",
-                Description = "Vi på Norrlandsoperan kommmer att hålla dockteatrar alla torsdagskvöllar under oktober månad, med start den 6/10 kl 19:00 ",
+                Description = "Vi på Norrlandsoperan kommmer att hålla dockteatrar alla torsdagskvällar under oktober månad, med start den 6/10 kl 19:00 ",
                 StartDate = new DateTime(2016, 10, 6, 19, 00, 00),
                 EndDate = new DateTime(2016, 10, 6, 20, 30, 00),
                 Latitude = 20.344535345,
@@ -340,7 +340,7 @@ namespace Webbsida.Models
             var ec7 = new Event
             {
                 Name = "Språkskola",
-                Description = "Vårt kompisgäng har ansökt om att lära oss spanska, men men det behövs minst 1n till så någon som är manat att läsa spanska får gärna ansluta sig till oss. Då vi studerar på umu, så ser vi helst att kursen går på kvällen, och då medelåldern är 25 år, så ser vi gärna att din ålder är i närheten av detta.   ",
+                Description = "Vårt kompisgäng har ansökt om att lära oss spanska, men men det behövs minst 1 till, så någon som är manat att lära sig spanska får gärna ansluta sig till oss. Då vi studerar på umu, så ser vi helst att kursen går på kvällen, och då medelåldern är 25 år, så ser vi gärna att din ålder är i närheten av detta.   ",
                 StartDate = new DateTime(2017, 01, 9, 09, 00, 00),
                 EndDate = new DateTime(2017, 01, 9, 12, 00, 00),
                 Latitude = 20.344535345,
@@ -366,7 +366,7 @@ namespace Webbsida.Models
             var ec9 = new Event
             {
                 Name = "Picknink med allsång",
-                Description = "Vi kommer att hålla igång med allsång varje månddag kväll på vänortsparken, det är bara att dyka upp med en picknickkorg och sjunga med oss.",
+                Description = "Vi kommer att hålla igång med allsång varje måndag kväll på vänortsparken, det är bara att dyka upp med en picknickkorg och sjunga med oss.",
                 StartDate = new DateTime(2016, 09, 12, 18, 00, 00),
                 EndDate = new DateTime(2067, 09, 12, 20, 00, 00),
                 Latitude = 20.344535345,
@@ -379,7 +379,7 @@ namespace Webbsida.Models
             var ec10 = new Event
             {
                 Name = "Istid för barnen",
-                Description = "Dagen innan säsonen börjar kommer det vara istid för barnen, där barn i åldrarna 3-7 år får komma ut på isen och lära sig åka skridskor, vi kommer även sponsra med besök av några av våra a-lagspelare, som visar sina konster.",
+                Description = "Dagen innan säsongen börjar kommer det vara istid för barnen, där barn i åldrarna 3-7 år får komma ut på isen och lära sig åka skridskor, vi kommer även sponsra med besök av några av våra a-lagspelare. som visar sina konster.",
                 StartDate = new DateTime(2016, 09, 14, 10, 00, 00),
                 EndDate = new DateTime(2067, 09, 14, 10, 00, 00),
                 Latitude = 20.344535345,
@@ -393,7 +393,7 @@ namespace Webbsida.Models
             var ec11 = new Event
             {
                 Name = "halltid för barnen",
-                Description = "Dagen innan säsonen börjar kommer det vara istid för barnen, där barn i åldrarna 3-7 år får komma och lära sig olika bollsporter.",
+                Description = "Dagen innan säsonen börjar kommer det vara full ös i Noliahallarna av barn mellan 3-7 år som får komma och lära sig olika bollsporter.",
                 StartDate = new DateTime(2016, 09, 21, 10, 00, 00),
                 EndDate = new DateTime(2067, 09, 21, 10, 00, 00),
                 Latitude = 20.344535345,

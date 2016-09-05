@@ -13,9 +13,16 @@
         {
             <p>Detta är ditt event.</p>
         }
+        
         else if (Model.AlreadyBookedOnThisEvent)
         {
             <button id="unbookButton" class="btn btn-danger">Avboka din anmälan!</button>
+        }
+        
+        else if (@Model.SpotsLeft <= 0)
+        {
+            <p>Det Fins inga lediga platser</p>
+            
         }
         else
         {
