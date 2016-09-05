@@ -14,6 +14,8 @@ namespace Webbsida.ViewModels
     {
         public int Id { get; set; }
 
+        public IEnumerable<Tag> ExampleTags { get; set; }
+
         //public virtual List<EventUser> EventUsers { get; set; }
 
         [StringLength(25, ErrorMessage = "Eventnamnet måste vara mellan 2 och 25 tecken"), MinLength(2, ErrorMessage = "Eventnamnet måste vara mellan 2 och 25 tecken")]
@@ -27,7 +29,7 @@ namespace Webbsida.ViewModels
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Du måste sätta ett startdatum")]
-        [Display(Name = "Startdatum")]
+        [Display(Name = "StartDatum")]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "Du måste sätta ett slutdatum")]
@@ -55,7 +57,7 @@ namespace Webbsida.ViewModels
 
         [Required(ErrorMessage = "Vänligen välj en bild för eventet")]
         [DataType(DataType.Upload)]
-        [Display(Name = "Bild")]
+        [Display(Name = "Event-foto")]
         public HttpPostedFileBase Image { get; set; }
 
         public void ValidateInput(EventController eventController)
