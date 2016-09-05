@@ -75,7 +75,7 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
-                <span>Exempel: tonåring, nya bekantskaper, musik</span>
+                <span>Exempel: tonåring, nya vänner, musik</span>
             </div>
         </div>
 
@@ -151,24 +151,41 @@
     @Styles.Render("~/Content/anypicker-all.min.css")
 
 
-        <script type="text/javascript">
-        $(document).ready(function() {
-            $("#StartDate").AnyPicker(
-            {
-                mode: "datetime",
-                dateTimeFormat: "yyyy/MM/dd hh:mm",
-                theme: "iOS"
-            });
-        });
+     <script type="text/javascript">
 
-        $(document).ready(function () {
+        function GetFormattedDate() {
+            var rawDate = new Date();
+            var month = rawDate.getMonth() + 1;
+            var formattedMonth = ("0" + month).slice(-2);
+            var formattedDays = ("0" + rawDate.getDate()).slice(-2);
+            var formattedMinutes = ("0" + rawDate.getMinutes()).slice(-2);
+            var formattedHours = ("0" + rawDate.getHours()).slice(-2);
+            var result = rawDate.getFullYear() + "/" + formattedMonth + "/" + formattedDays + " " + formattedHours + ":" + formattedMinutes;
+            return result.toString();
+        }
+
+            var todaysDate = GetFormattedDate();
+
+            $(document).ready(function() {
+                $("#StartDate").AnyPicker(
+                {
+                    mode: "datetime",
+                    dateTimeFormat: "yyyy/MM/dd HH:mm",
+                    theme: "Default",
+                    minValue: todaysDate
+
+                });
+            });
+
+        $(document).ready(function() {
             $("#EndDate").AnyPicker(
             {
                 mode: "datetime",
-                dateTimeFormat: "yyyy/MM/dd hh:mm",
-                theme: "iOS"
+                dateTimeFormat: "yyyy/MM/dd HH:mm",
+                theme: "Default"
+
             });
         });
 
-    </script>
+</script>
 }

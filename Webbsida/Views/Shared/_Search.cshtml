@@ -1,9 +1,9 @@
 ﻿<li role="presentation">
-    <div id="EventSearch">
-        <input type="text" id="EventSearchBox" onkeyup="PopulateDropDown()" list="SearchDropDown"/>
-        <datalist id="SearchDropDown"></datalist>
-        <button id="SearchButton" onclick="LoadFromInput()">
-            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-        </button>
-    </div>
+        <fieldset id="EventSearch">
+            <input type="text" id="EventSearchBox" onkeyup="PopulateDropDown()" onkeydown="LoadOnEnter(event)" list="SearchDropDown" />
+            <datalist id="SearchDropDown"></datalist>
+            <div id="SearchButton" onclick="LoadFromInput()">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </div>
+        </fieldset>
 </li>

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using DatabaseObjects;
 using Webbsida.Models;
@@ -33,7 +31,7 @@ namespace Webbsida.Controllers
             return Json(tagNames, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetEventsBySearch(string filter)
+        public ActionResult GetEventsBySearch(string filter, double latitude = 0.0d, double longitude = 0.0d )
         {
             List<Event> rawEvents = new List<Event>();
 
@@ -68,17 +66,29 @@ namespace Webbsida.Controllers
                     });
                 }
 
-                if (events.Count%4 != 0)
+                var userLocation = new Location {Latitude = latitude, Longitude = longitude};
+
+                foreach (var @event in events)
                 {
-                    int toAdd = events.Count%4;
+                    @event.Distance = GetDistance(userLocation,
+                        new Location() {Latitude = @event.Latitude, Longitude = @event.Longitude});
+                }
+
+                Debug.WriteLine(userLocation.Latitude + " " + userLocation.Longitude);
+
+                var orderedEvents = events.OrderBy(e => e.GetOrder).ToList();
+
+                if (orderedEvents.Count % 4 != 0)
+                {
+                    int toAdd = orderedEvents.Count % 4;
 
                     for (int i = 0; i < toAdd; i++)
                     {
-                        events.Add(new IndexEventViewModel());
+                        orderedEvents.Add(new IndexEventViewModel());
                     }
                 }
 
-                return PartialView("_DisplayEventSummary", events);
+                return PartialView("_DisplayEventSummary", orderedEvents);
             }
             catch (Exception ex)
             {

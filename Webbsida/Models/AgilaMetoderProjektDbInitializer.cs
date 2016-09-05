@@ -129,7 +129,7 @@ namespace Webbsida.Models
                 new Tag {Name = "mat"},
                 new Tag {Name = "friluftsliv"},
                 new Tag {Name = "dator"},
-                new Tag {Name = "nya bekantskaper"},
+                new Tag {Name = "nya vänner"},
                 new Tag {Name = "festival"}
             };
 
@@ -168,7 +168,7 @@ namespace Webbsida.Models
             context.SaveChanges();
 
             // EventProfiles
-            var eventUsers = Builder<EventUser>.CreateListOfSize(20)
+            var eventUsers = Builder<EventUser>.CreateListOfSize(200)
 
                 .All()
                     .With(n => n.Profile = Pick<Profile>.RandomItemFrom(profiles))

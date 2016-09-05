@@ -7,34 +7,14 @@
 
 <div id="Main">
 
-
-    <h1>Debug:</h1>
-    <span class="alert alert-info">
-        @if (Model.LoggedInUser != null)
-        {
-            @Model.LoggedInUser.Email
-        }
-        else
-        {
-            <text>Not logged in.</text>
-        }
-    </span>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Event.Firstname)
+            @Html.DisplayNameFor(model => model.Event.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Event.Firstname)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.LastName)
+            @Html.DisplayFor(model => model.Event.Name)
         </dd>
 
         <dt>
@@ -58,13 +38,13 @@
         <dt>
             @Html.DisplayNameFor(model => model.Event.EndDate)
         </dt>
-        
+
         <dd>
             <span class="Enddate">
                 @Html.DisplayFor(model => model.Event.EndDate)
             </span>
         </dd>
-        
+
         <dt>
             @Html.DisplayNameFor(model => model.Event.MaxSignups)
         </dt>
@@ -82,6 +62,13 @@
         </dd>
 
         <dt>
+            Adress:
+        </dt>
+        <dd>
+            <span id="AddressPlaceHolder"></span>
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Event.Price)
         </dt>
 
@@ -92,27 +79,8 @@
             }
             else
             {
-                <p>GRATIS!!!!</p>
+                <span>GRATIS!!!!</span>
             }
-
-
-
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.Latitude)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.Latitude)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.Longitude)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.Longitude)
         </dd>
 
         <dt>
@@ -124,82 +92,80 @@
         </dd>
 
     </dl>
-    <div id="Spotsleft">
-        @Html.Action("GetSpotsLeft", "Event")
-    </div>
 
     <div class="well well-sm">
         <span class="glyphicon glyphicon-tags">&nbsp;</span>
         @foreach (var tag in @Model.Event.Tags)
-        {
+            {
             <span class="label label-info">@tag.Name</span>
         }
     </div>
 
-    @if (Model.IsOwnerOfThisEvent)
-    {
-        <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
-        <p class="alert alert-info">Detta är ditt event.</p>
-    }
-    else if (Model.AlreadyBookedOnThisEvent)
-    {
-        <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
-        <p class="alert alert-success">Du är bokad på eventet.</p>
-    }
-    else
-    {
-
-        using (Html.BeginForm("BookEvent", "Event", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-
-            <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
-            //TODO: Make a dropdownlist with status for the booking?
-            <div class="form-group">
-                <div class="col-md-12">
-                    <button class="btn btn-success">Anmäl dig!</button>
-                </div>
-            </div>
-        }
-    }
-
-
-
-
-    <div id="map">
-
+    <div id="bookingSystem">
+        @Html.Action("GetBookingData", new { eventId = @Model.Event.Id })
     </div>
+
+    <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
+    <div id="map"></div>
 </div>
 
 @section Scripts {
     <script src="~/Scripts/site/geoScriptsV2.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=GoogleMapsEventController.initSingleEventDisplayingMap"></script>
 
+    <script>
+        $(function() {
+            $("#AddressPlaceHolder").load("/api/GeoData/RequestAddressFromCoordinates" + "?latitude=" + @Model.Event.Latitude + "&longitude=" + @Model.Event.Longitude);
 
 
-@Scripts.Render("~/scripts")
-@Styles.Render("~/Content/anypicker-all.min.css")
+            $("body").on("click", "#bookButton", function() {
+                $.ajax({
+                    url: "/Event/BookEvent",
+                    type: "post",
+                    data: { eventId: @Model.Event.Id }, //if you need to post Model data, use this
+                    success: function(result) {
+                        $("#bookingSystem").html(result);
+                    }
+                });
+            });
 
-<script type="text/javascript">
-        $(document).ready(function() {
-            $(".Startdate").AnyPicker(
-            {
-                mode: "datetime",
-                dateTimeFormat: "yyyy/MM/dd hh:mm",
-                theme: "iOS"
-            }).prop('readonly', true);;
+            $("body").on("click", "#unbookButton", function() {
+                $.ajax({
+                    url: "/Event/UnBookEvent",
+                    type: "post",
+                    data: { eventId: @Model.Event.Id }, //if you need to post Model data, use this
+                    success: function(result) {
+                        $("#bookingSystem").html(result);
+                    }
+                });
+            });
+
         });
+    </script>
 
-        $(document).ready(function () {
-            $(".Enddate").AnyPicker(
-            {
-                mode: "datetime",
-                dateTimeFormat: "yyyy/MM/dd hh:mm",
-                theme: "iOS"
-            }).prop('readonly', true);;
-        });
+    @*@Scripts.Render("~/scripts")
+        @Styles.Render("~/Content/anypicker-all.min.css")
 
-</script>
+        <script type="text/javascript">
+                $(document).ready(function() {
+                    $(".Startdate").AnyPicker(
+                    {
+                        mode: "datetime",
+                        dateTimeFormat: "yyyy/MM/dd hh:mm",
+                        theme: "iOS"
+                    }).prop('readonly', true);;
+                });
+
+                $(document).ready(function () {
+                    $(".Enddate").AnyPicker(
+                    {
+                        mode: "datetime",
+                        dateTimeFormat: "yyyy/MM/dd hh:mm",
+                        theme: "iOS"
+                    }).prop('readonly', true);;
+                });
+
+        </script>*@
 
 
 }

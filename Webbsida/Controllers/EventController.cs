@@ -34,14 +34,13 @@ namespace Webbsida.Controllers
                 .Select(p => p.PhoneNumber).SingleOrDefault();
 
             var eventUserData = db.EventUsers
-                .Where(d => d.EventId == id)
-                .Select(g => g.EventId).FirstOrDefault();
+                            .Where(d => d.EventId == id)
+                            .Select(g => g.EventId).FirstOrDefault();
 
             var userDataFirstName =
                 db.Profiles.Where(d => d.Id == eventUserData).Select(f => f.FirstName).SingleOrDefault();
             var userDataLastName =
                 db.Profiles.Where(d => d.Id == eventUserData).Select(f => f.LastName).SingleOrDefault();
-
 
 
             //Creating a Model usning the Event Data holer
@@ -69,13 +68,19 @@ namespace Webbsida.Controllers
             };
             var loggedInUserId = User.Identity.GetUserId();
             var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+            //var loggedInProfile = db.Profiles.SingleOrDefault(n => n.Id == loggedInUser.Profile.Id);
 
             var result = new GetEventViewModel()
             {
                 Event = eventDetails,
                 AlreadyBookedOnThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id),
                 IsOwnerOfThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
-                LoggedInUser = loggedInUser
+                //LoggedInProfile = (loggedInUser == null) ? new Profile(){FirstName = "Not logged in"} : loggedInProfile,
+
+                //DEBUG
+                BookedUsers = db.EventUsers.Where(n => n.EventId == eventData.Id && n.IsOwner == false).Select(n => n.Profile).ToList(),
+                OwnerUsers = db.EventUsers.Where(n => n.EventId == eventData.Id && n.IsOwner).Select(n => n.Profile).ToList()
+
             };
 
             return View(result);
@@ -83,25 +88,20 @@ namespace Webbsida.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult BookEvent(BookEventViewModel bevm)
+        public ActionResult BookEvent(int eventId)
         {
-            var loggedInUserId = User.Identity.GetUserId();
-            var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
-
-            if (loggedInUser == null)
-                throw new Exception("Du måste vara inloggad för att anmäla dig på ett event.");
-            //return View("Error");
+            var loggedInUser = GetLoggedInStatus();
 
             var theBooking = new EventUser()
             {
-                EventId = bevm.EventId,
+                EventId = eventId,
                 ProfileId = loggedInUser.Profile.Id,
                 Status = "Confirmed",
                 IsOwner = false,
             };
 
             var alreadyBooked =
-                db.EventUsers.Any(n => n.EventId == bevm.EventId && n.ProfileId == loggedInUser.Profile.Id);
+                db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id);
 
             if (alreadyBooked)
                 throw new Exception("Du är redan bokad på eventet.");
@@ -109,12 +109,41 @@ namespace Webbsida.Controllers
             db.EventUsers.Add(theBooking);
             db.SaveChanges();
 
-            // TODO: Make this add the booking without changing page.
-            return RedirectToAction("GetEvent", new { id = bevm.EventId });
+
+            return PartialView("_BookingSystemPartial", new BookingSystemViewModel()
+            {
+                AlreadyBookedOnThisEvent = db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id),
+                IsOwnerOfThisEvent = db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
+                SpotsLeft = GetSpotsLeft(eventId),
+                BookedUsers = db.EventUsers.Where(n => n.EventId == eventId && n.IsOwner == false).Select(n => n.Profile).ToList()
+            });
         }
 
+        [Authorize]
+        public ActionResult UnBookEvent(int eventId)
+        {
+            var loggedInUserId = User.Identity.GetUserId();
+            var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+            var loggedInUserProfile = db.Profiles.SingleOrDefault(n => n.Id == loggedInUser.Profile.Id);
+
+            if (loggedInUser == null)
+                throw new Exception("Du måste vara inloggad för att avboka en event");
+            var findBokedEvent = db.EventUsers.SingleOrDefault(s => s.EventId == eventId && s.ProfileId == loggedInUserProfile.Id);
+            var unBookEvent = db.EventUsers.Remove(findBokedEvent);
+            db.EventUsers.Remove(unBookEvent);
+            db.SaveChanges();
+
+            return PartialView("_BookingSystemPartial", new BookingSystemViewModel()
+            {
+                AlreadyBookedOnThisEvent = db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id),
+                IsOwnerOfThisEvent = db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
+                SpotsLeft = GetSpotsLeft(eventId),
+                BookedUsers = db.EventUsers.Where(n => n.EventId == eventId && n.IsOwner == false).Select(n => n.Profile).ToList()
+            });
+        }
 
         // GET: Events/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -126,90 +155,101 @@ namespace Webbsida.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateEventViewModel evm)
         {
-            // TODO: Model-Validation (and optional file uploaded)!
+            var loggedInUser = GetTheLoggedInUserAndCheckForNull();
 
-            if (evm.Image.ContentLength > 3000000)
-                ModelState.AddModelError("", "Max 3 mb!");
+            evm.ValidateInput(this);
 
             if (ModelState.IsValid)
             {
                 // TODO: Use a default image if none is supplied by the user.
+
                 // TODO: Make sure this path will be correct in the db!!
                 var path = Path.Combine(Server.MapPath("/Content/EventImages/"), evm.Image.FileName);
+                evm.Image.SaveAs(path);
+                // TODO: Connect with path instead.
+                string pathToSaveInDb = @"\Content\EventImages\" + evm.Image.FileName;
 
-                var fileExtension = Path.GetExtension(evm.Image.FileName).ToLower();
-                if (fileExtension == ".png" || fileExtension == ".jpg" || fileExtension == ".gif" || fileExtension == ".jpeg" || fileExtension == ".jpe" || fileExtension == ".jfif")
+
+                // TODO: Refactor this code if there is time
+                var tagsToAdd = evm.GenerateEventTags;
+
+                AddNewTagsToDb(tagsToAdd);
+
+                var result = new Event()
                 {
-                    evm.Image.SaveAs(path);
+                    Name = evm.Name,
+                    Description = evm.Description,
+                    StartDate = evm.StartDate,
+                    EndDate = evm.EndDate,
+                    MinSignups = evm.MinSignups,
+                    MaxSignups = evm.MaxSignups,
+                    Price = evm.Price,
+                    Latitude = evm.Latitude,
+                    Longitude = evm.Longitude,
 
+                    ImagePath = pathToSaveInDb,
+                };
 
-                    // TODO: Connect with path instead.
-                    string pathToSaveInDb = @"\Content\EventImages\" + evm.Image.FileName;
-                    // Shall update filetype
+                //Debug for just adding correct Tags to db.Tags
+                db.Events.Add(result);
+                db.SaveChanges();
 
-
-                    // TODO: BUG: ONLY returns nonexisting tags, and duplicates in that list too! ;)
-                    var tagsToAdd = GenerateEventTags(evm);
-
-                    AddNewTagsToDb(tagsToAdd);
-
-                    var result = new Event()
-                    {
-                        Name = evm.Name,
-                        Description = evm.Description,
-                        StartDate = evm.StartDate,
-                        EndDate = evm.EndDate,
-                        MinSignups = evm.MinSignups,
-                        MaxSignups = evm.MaxSignups,
-                        Price = evm.Price,
-                        Latitude = evm.Latitude,
-                        Longitude = evm.Longitude,
-
-                        ImagePath = pathToSaveInDb,
-
-                    };
-
-                    //Debug for just adding correct Tags to db.Tags
-                    db.Events.Add(result);
-                    db.SaveChanges();
-
-                    foreach (var tag in tagsToAdd)
-                    {
-                        db.EventTags.Add(new EventTag()
-                        {
-                            Tag = db.Tags.SingleOrDefault(n=> n.Name == tag.Name),
-                            EventId = result.Id
-                        });
-                    }
-
-                    var loggedInUserId = User.Identity.GetUserId();
-                    var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
-
-                    if (loggedInUser == null)
-                        throw new Exception("Du måste vara inloggad för att skapa event!");
-
-                    var eventOwner = new EventUser()
-                    {
-                        Event = result,
-                        ProfileId = loggedInUser.Profile.Id,
-                        Status = "Confirmed",
-                        IsOwner = true,
-                    };
-                    db.EventUsers.Add(eventOwner);
-
-
-                    db.SaveChanges();
-
-                    return RedirectToAction("Index");
-                }
-                else
+                foreach (var tag in tagsToAdd)
                 {
-                    ModelState.AddModelError("", "Bilden måste vara någon av följande typer; .png, .jpg, .gif, .jpeg, .jpe, .jfif");
-                    //return Content("<script language='javascript' type='text/javascript'>alert('We dont accept your filetype. The filetype we ccept is .PNG, .GIF, .JPG.');</script>");
+                    db.EventTags.Add(new EventTag()
+                    {
+                        Tag = db.Tags.SingleOrDefault(n => n.Name == tag.Name),
+                        EventId = result.Id
+                    });
                 }
+
+
+                var eventOwner = new EventUser()
+                {
+                    Event = result,
+                    ProfileId = loggedInUser.Profile.Id,
+                    Status = "Confirmed",
+                    IsOwner = true,
+                };
+                db.EventUsers.Add(eventOwner);
+                db.SaveChanges();
+
+                return RedirectToAction("GetEvent", new { id = result.Id });
             }
 
             return View(evm);
+        }
+
+        public ActionResult GetBookingData(int eventId)
+        {
+            var loggedInUser = GetLoggedInStatus();
+
+            return PartialView("_BookingSystemPartial", new BookingSystemViewModel()
+            {
+                AlreadyBookedOnThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id),
+                IsOwnerOfThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
+                SpotsLeft = GetSpotsLeft(eventId),
+                BookedUsers = db.EventUsers.Where(n => n.EventId == eventId && n.IsOwner == false).Select(n => n.Profile).ToList()
+            });
+        }
+
+
+        private ApplicationUser GetTheLoggedInUserAndCheckForNull()
+        {
+            var loggedInUserId = User.Identity.GetUserId();
+            var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+
+            if (loggedInUser == null)
+                throw new Exception("Du måste vara inloggad för denna funktion!");
+            return loggedInUser;
+        }
+
+        private ApplicationUser GetLoggedInStatus()
+        {
+            var loggedInUserId = User.Identity.GetUserId();
+            var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
+
+            return loggedInUser;
         }
 
         private void AddNewTagsToDb(List<Tag> tagsToAdd)
@@ -232,36 +272,17 @@ namespace Webbsida.Controllers
             // NOTICE! Have to savechanges later!
         }
 
-        private static List<Tag> GenerateEventTags(CreateEventViewModel evm)
-        {
-            var eventTags = evm.Tags.Split(',');
-            for (int i = 0; i < eventTags.Length; i++)
-            {
-                eventTags[i] = eventTags[i].Trim().ToLower();
-            }
-
-            var result = new List<Tag>();
-            foreach (var eventTag in eventTags.Distinct())
-            {
-                result.Add(new Tag()
-                {
-                    Name = eventTag.ToLower()
-                });
-            }
-
-            return result;
-        }
-
-        public ActionResult GetSpotsLeft(int id)
+        private int? GetSpotsLeft(int id)
         {
             //var result1 = db.EventUsers.Local.Count(s => s.EventId == id);
             var result1 = db.EventUsers.Count(s => s.EventId == id);
             var maxSignups = db.Events.Find(id).MaxSignups + 1;
-            if (maxSignups == null) return PartialView((int?)null);
-            var result = maxSignups.Value - result1;
-            return PartialView("GetSpotsLeft", result);
-        }
+            if (maxSignups == null)
+                return null;
 
+            var result = maxSignups.Value - result1;
+            return result;
+        }
 
         protected override void Dispose(bool disposing)
         {
