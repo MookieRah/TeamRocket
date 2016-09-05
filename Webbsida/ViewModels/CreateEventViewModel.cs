@@ -63,12 +63,20 @@ namespace Webbsida.ViewModels
         public void ValidateInput(EventController eventController)
         {
             // Kolla filändelsen
-            var fileExtension = Path.GetExtension(Image.FileName).ToLower();
-            if (!(fileExtension == ".png" || fileExtension == ".jpg" || fileExtension == ".gif" || fileExtension == ".jpeg" || fileExtension == ".jpe" || fileExtension == ".jfif"))
-                eventController.ModelState.AddModelError("Image", "Bilden måste vara någon av följande typer; .png, .jpg, .gif, .jpeg, .jpe, .jfif");
-            // Max image-size = 3mb, should maybe accept null with default Image!
-            if (Image.ContentLength > 3000000)
-                eventController.ModelState.AddModelError("Image", "Max 3 mb!");
+            if (Image == null)
+            {
+                eventController.ModelState.AddModelError("Image", "Bild krävs för eventet.");
+            }
+            else
+            {
+                var fileExtension = Path.GetExtension(Image.FileName).ToLower();
+                if (!(fileExtension == ".png" || fileExtension == ".jpg" || fileExtension == ".gif" || fileExtension == ".jpeg" || fileExtension == ".jpe" || fileExtension == ".jfif"))
+                    eventController.ModelState.AddModelError("Image", "Bilden måste vara någon av följande typer; .png, .jpg, .gif, .jpeg, .jpe, .jfif");
+                // Max image-size = 3mb, should maybe accept null with default Image!
+                if (Image.ContentLength > 3000000)
+                    eventController.ModelState.AddModelError("Image", "Max 3 mb!");
+            }
+            
             // Man kan sätta negativa MaxSignups Och MinSignups
             if (MaxSignups < 1)
                 eventController.ModelState.AddModelError("MaxSignups", "Max deltagare måste lämnas tom eller vara minst 1.");
@@ -83,6 +91,9 @@ namespace Webbsida.ViewModels
                 eventController.ModelState.AddModelError("Price", "Priset är för högt!");
                 Price = null;
             }
+            if (string.IsNullOrWhiteSpace(Tags))
+                eventController.ModelState.AddModelError("Tags", "Minst en tagg krävs för eventet.");
+
             // TODO: Disabled to make it faster to create an event
             //if (evm.StartDate > evm.EndDate)
             //{ 
