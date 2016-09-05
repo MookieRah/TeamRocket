@@ -20,7 +20,9 @@
             <div class="col-md-10">
                 <div id="CreateEventWithGlyph" class="form-control">
                     <span class="glyphicon-camera"></span>
-                    @Html.TextBoxFor(m => m.Image, new {type = "file"})
+                    @*@Html.TextBoxFor(m => m.Image, new {htmlAttributes = new {@class = "FileUpload", type = "file" }} )*@
+                    <i>Ladda upp foto</i>
+                    <input id="FileUpload" type="file" />
                 </div>
                 @Html.ValidationMessageFor(model => model.Image, "", new {@class = "text-danger"})
             </div>
@@ -34,12 +36,20 @@
             </div>
         </div>
 
+        @Html.HiddenFor(model => model.Latitude)
+        @Html.ValidationMessageFor(model => model.Latitude, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.Longitude)
+        @Html.ValidationMessageFor(model => model.Longitude, "", new { @class = "text-danger" })
+
         <div class="form-group">
             @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div id="CreateEventWithGlyph" class="form-control">
-                <span class="glyphicon-camera"></span>
+            <div class="col-md-10">
+                <div id="CreateEventWithGlyph" class="form-control">
+                    <span class="glyphicon-calendar"></span>
                     @Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {required = "required"}})
-                    @Html.ValidationMessageFor(model => model.StartDate, "", new {@class = "text-danger"})
+                </div>
+                @Html.ValidationMessageFor(model => model.StartDate, "", new {@class = "text-danger"})
             </div>
         </div>
 
@@ -131,11 +141,6 @@
 </div>
 
 
-@Html.HiddenFor(model => model.Latitude)
-@Html.ValidationMessageFor(model => model.Latitude, "", new { @class = "text-danger" })
-
-@Html.HiddenFor(model => model.Longitude)
-@Html.ValidationMessageFor(model => model.Longitude, "", new { @class = "text-danger" })
 
 
 @section Scripts {
@@ -158,7 +163,7 @@
 
         <script type="text/javascript">
         $(document).ready(function() {
-            $("#StartDate").AnyPicker(
+            $('input#StartDate').AnyPicker(
             {
                 mode: "datetime",
                 dateTimeFormat: "yyyy/MM/dd hh:mm",
@@ -167,7 +172,7 @@
         });
 
         $(document).ready(function () {
-            $("#EndDate").AnyPicker(
+            $("input#EndDate").AnyPicker(
             {
                 mode: "datetime",
                 dateTimeFormat: "yyyy/MM/dd hh:mm",
