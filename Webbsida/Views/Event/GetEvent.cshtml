@@ -1,96 +1,71 @@
 ﻿@model Webbsida.ViewModels.GetEventViewModel
 
-<h2>@Html.DisplayFor(model => model.Event.EventName)</h2>
+<div id="GetEventMain">
+    <div id="GetEventMasterPanel">
+        <div id="GetEventMainPanel">
+            <div id="GetEventImagePanel">
+                <img id="GetEventImage" src="@Url.Content(Model.Event.ImagePath)" alt="Image" />
+                <h2>@Html.DisplayFor(model => model.Event.EventName)</h2>
+            </div>
+            <div id="GetEventMoreDetails">
+                <div class="GetEventDetailContainer">
+                    <div>
+                        <p class="bold">@Html.DisplayNameFor(model => model.Event.Name)</p>
+                        <p>@Html.DisplayFor(model => model.Event.Name)</p>
+                    </div>
+                    <div>
+                        <p class="bold">@Html.DisplayNameFor(model => model.Event.PhoneNumber)</p>
+                        <p>@Html.DisplayFor(model => model.Event.PhoneNumber)</p>
+                    </div>
+                    <div>
+                        <p class="bold">Adress</p>
+                        <p>
+                            <span id="AddressPlaceHolder"></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="GetEventDetailContainer">
+                    <div>
+                        <p class="bold">@Html.DisplayNameFor(model => model.Event.StartDate)</p>
+                        <p>@Html.DisplayFor(model => model.Event.StartDate)</p>
+                    </div>
+                    <div>
+                        <p class="bold">@Html.DisplayNameFor(model => model.Event.EndDate)</p>
+                        <p>@Html.DisplayFor(model => model.Event.EndDate)</p>
+                    </div>
+                </div>
+                <div class="GetEventDetailContainer">
+                    <div>
+                        <p class="bold">@Html.DisplayNameFor(model => model.Event.MaxSignups)</p>
+                        <p>@Html.DisplayFor(model => model.Event.MaxSignups)</p>
+                    </div>
+                    <div>
+                        <p class="bold">@Html.DisplayNameFor(model => model.Event.MinSignups)</p>
+                        <p>@Html.DisplayFor(model => model.Event.MinSignups)</p>
+                    </div>
+                    <div>
+                        <p class="bold">@Html.DisplayNameFor(model => model.Event.Price)</p>
+                        <p>
+                            @if (Model.Event.Price != null && Model.Event.Price != 0)
+                            {
+                                @Html.DisplayFor(model => model.Event.Price)
+                            }
+                            else
+                            {
+                                <span>GRATIS!!!!</span>
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<img src="@Url.Content(Model.Event.ImagePath)" alt="Image" />
 
-<div id="Main">
-
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.StartDate)
-        </dt>
-
-        <dd>
-            <span class="Startdate">
-                @Html.DisplayFor(model => model.Event.StartDate)
-            </span>
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.EndDate)
-        </dt>
-
-        <dd>
-            <span class="Enddate">
-                @Html.DisplayFor(model => model.Event.EndDate)
-            </span>
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.MaxSignups)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.MaxSignups)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.MinSignups)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.MinSignups)
-        </dd>
-
-        <dt>
-            Adress:
-        </dt>
-        <dd>
-            <span id="AddressPlaceHolder"></span>
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.Price)
-        </dt>
-
-        <dd>
-            @if (Model.Event.Price != null && Model.Event.Price != 0)
-            {
-                @Html.DisplayFor(model => model.Event.Price)
-            }
-            else
-            {
-                <span>GRATIS!!!!</span>
-            }
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.PhoneNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.PhoneNumber)
-        </dd>
-
-    </dl>
+    <div id="GetEventsDescription">
+        <p>@Html.DisplayNameFor(model => model.Event.Description)</p>
+        <p>@Html.DisplayFor(model => model.Event.Description)</p>
+    </div>
 
     <div class="well well-sm">
         <span class="glyphicon glyphicon-tags">&nbsp;</span>
@@ -101,10 +76,10 @@
     </div>
 
     <div id="bookingSystem">
-        @Html.Action("GetBookingData", new { eventId = @Model.Event.Id })
+        @Html.Action("GetBookingData", new {eventId = @Model.Event.Id})
     </div>
 
-    <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id" />
+    <input type="hidden" name="EventId" id="Id" value="@Model.Event.Id"/>
     <div id="map"></div>
 </div>
 
@@ -132,7 +107,7 @@
                 $.ajax({
                     url: "/Event/UnBookEvent",
                     type: "post",
-                    data: { eventId: @Model.Event.Id, fromPage:"GetEvent"}, //if you need to post Model data, use this
+                    data: { eventId: @Model.Event.Id, fromPage: "GetEvent" }, //if you need to post Model data, use this
                     success: function(result) {
                         $("#bookingSystem").html(result);
                     }
