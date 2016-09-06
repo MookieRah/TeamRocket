@@ -90,6 +90,27 @@ namespace Webbsida.Models
                 _userManager.AddToRole(user.Id, "User");
             }
 
+            if (!context.Users.Any(u => u.UserName == "Chris@wizzerd.com"))
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = "Chris@wizzerd.com",
+                    Email = "Chris@wizzerd.com",
+                    Profile = new Profile()
+                    {
+                        DateOfBirth = GenerateRandomBirthDate(),
+                        FirstName = "Christopher",
+                        LastName = "Guest",
+                        IsPrivate = true
+                    },
+                    PhoneNumber = GenerateRandomPhoneNr(),
+                };
+
+                _userManager.Create(user, "123123");
+                _userManager.AddToRole(user.Id, "User");
+            }
+
+            
             // JoinUser
             if (!context.Users.Any(u => u.UserName == "joiner@joiner.com"))
             {
@@ -130,7 +151,16 @@ namespace Webbsida.Models
                 new Tag {Name = "friluftsliv"},
                 new Tag {Name = "dator"},
                 new Tag {Name = "nya vänner"},
-                new Tag {Name = "festival"}
+                new Tag {Name = "festival"},
+                new Tag {Name ="rollspel" },
+                new Tag {Name ="bord spel" },
+                new Tag {Name ="kvällspel" },
+                new Tag {Name ="öl" },
+                new Tag {Name ="tärningar" },
+                new Tag {Name ="lanparty" },
+                new Tag {Name ="datorspel" },
+                new Tag {Name ="spel" },
+                new Tag {Name ="party" },
             };
 
             foreach (var tag in tags)
@@ -474,6 +504,92 @@ namespace Webbsida.Models
                 },
             };
 
+            var ec12 = new Event
+            {
+                Name = "Rollspels kväll",
+                Description = "Jag ska hålla en Rollspels sektion, men jag behöver andra spellare, skal hållas i en uthyres lokal i Umeå, vill hälst att vi kan vara med minst en gång i väkan",
+                StartDate = new DateTime(2016, 08, 14, 10, 00, 00),
+                EndDate = new DateTime(2016, 08, 14, 10, 00, 00),
+                Latitude = GenerateRandomLatitude(),
+                Longitude = GenerateRandomLongitude(),
+                MaxSignups = 4,
+                MinSignups = 4,
+                Price = 0,
+                ImagePath = PathToEventImages +"Five_ivory_dice.jpg"
+            };
+            ec12.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "rollspel"),
+                    Event = ec12,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "bord spel"),
+                    Event = ec12,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "kvällspel"),
+                    Event = ec12,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "öl"),
+                    Event = ec12,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "tärningar"),
+                    Event = ec12,
+                },
+            };
+            var ec13 = new Event
+            {
+                Name = "Lanparty",
+                Description = "Har hyrt en sall i umeå, och nu ska ha en Lan party där alla får komma, det ända du måste ta med dig är en PC eller en spelconsol ",
+                StartDate = new DateTime(2016, 08, 14, 10, 00, 00),
+                EndDate = new DateTime(2016, 08, 16, 10, 00, 00),
+                Latitude = GenerateRandomLatitude(),
+                Longitude = GenerateRandomLongitude(),
+                Price = 0,
+                ImagePath = PathToEventImages +"lanparty.png"
+            };
+            ec13.EventTags = new List<EventTag>()
+            {
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "kvällspel"),
+                    Event = ec13,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "öl"),
+                    Event = ec13,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "lanparty"),
+                    Event = ec13,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "datorspel"),
+                    Event = ec13,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "spel"),
+                    Event = ec13,
+                },
+                new EventTag()
+                {
+                    Tag = tags.First(n => n.Name == "party"),
+                    Event = ec13,
+                },
+
+            };
             var listOfEvents = new List<Event>{
                 ec,
                 ec1,
@@ -486,7 +602,9 @@ namespace Webbsida.Models
                 ec8,
                 ec9,
                 ec10,
-                ec11
+                ec11,
+                ec12,
+                ec13
             };
             context.Events.AddRange(listOfEvents);
 
@@ -624,6 +742,19 @@ namespace Webbsida.Models
                     Profile = context.Profiles.First(n => n.FirstName == "User"),
                     IsOwner = true
                 },
+                new EventUser()
+                {
+                    Event = ec12,
+                    Profile = context.Profiles.First(n => n.FirstName == "Christopher"),
+                    IsOwner = true
+                },
+                new EventUser()
+                {
+                    Event = ec13,
+                    Profile = context.Profiles.First(n => n.FirstName == "Christopher"),
+                    IsOwner = true
+                },
+
             };
 
 
