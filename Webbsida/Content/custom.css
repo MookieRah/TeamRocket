@@ -313,7 +313,7 @@ ul
     width: 100%;
 }
 
-#GetEventImage
+.crop-height
 {
     width: 100%;
     max-height: 600px;
@@ -321,25 +321,23 @@ ul
     overflow: hidden;
 }
 
-#GetEventImage img.scale 
+.bg-image
 {
-    display: block; 
-    width: 100%; /* corrects obscure Firefox bug */
-    max-width: 100%;
-    /* just in case, to force correct aspect ratio */
-    height: auto !important;
-    display: block; /* corrects small inline gap at bottom of containing div */
-    width: 100%; /* corrects obscure Firefox bug */
-    max-width: 100%;
-    /* just in case, to force correct aspect ratio */
-    height: auto !important;
-    /*width: auto\9; 
-    /* ie8+9 - use modernizr instead of this \9 hack */
-    /* lt ie8 */
-    -ms-interpolation-mode: bicubic;
-    /* optionally force a minimum size if img src size is known: */
-    /* min-height: 320px; /* max-height of .crop-height */
-    /* min-width: 480px; /* proportional to above */ 
+    height: 600px;
+    width: 100%;
+}
+
+#GetEventImage 
+{
+    -ms-background-position-x: center;
+    -ms-background-position-y: bottom;
+    background-position: center bottom;
+    -ms-background-size: cover;
+    background-size: cover;
+    -ms-behavior: url(backgroundsize.min.htc);
+    -ms-background-position-x: center;
+    -ms-background-position-y: bottom;
+    background-position: center bottom;
 }
 
 #GetEventImagePanel 

@@ -1,10 +1,25 @@
 ﻿@model Webbsida.ViewModels.GetEventViewModel
 
+<style>
+    #GetEventImage {
+        background-image: @Url.Content(Model.Event.ImagePath);
+        -ms-background-position-x: center;
+        -ms-background-position-y: bottom;
+        background-position: center bottom;
+        -ms-background-size: cover;
+        background-size: cover;
+        -ms-behavior: url(backgroundsize.min.htc);
+        -ms-background-position-x: center;
+        -ms-background-position-y: bottom;
+        background-position: center bottom;
+    }
+</style>
+
 <div id="GetEventMain">
     <div id="GetEventMasterPanel">
         <div id="GetEventMainPanel">
             <div id="GetEventImagePanel">
-                <img id="GetEventImage" src="@Url.Content(Model.Event.ImagePath)" alt="Image" />
+                <div id="GetEventImage" class="bg-image"></div>
                 <h2>@Html.DisplayFor(model => model.Event.EventName)</h2>
             </div>
             <div id="GetEventMoreDetails">
@@ -88,6 +103,11 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=GoogleMapsEventController.initSingleEventDisplayingMap"></script>
 
     <script>
+        $(document).ready(function()
+        {
+            $('GetEventImage').css('background-image', 'url(' + @Url.Content(Model.Event.ImagePath) + ')');
+        });
+
         $(function() {
             $("#AddressPlaceHolder").load("/api/GeoData/RequestAddressFromCoordinates" + "?latitude=" + @Model.Event.Latitude + "&longitude=" + @Model.Event.Longitude);
 
@@ -113,7 +133,6 @@
                     }
                 });
             });
-
         });
     </script>
 
