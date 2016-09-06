@@ -313,32 +313,13 @@ ul
     width: 100%;
 }
 
-.crop-height
+#GetEventImage
 {
     width: 100%;
-    max-height: 600px;
-    margin: auto;
+    height: 600px;
     overflow: hidden;
 }
 
-.bg-image
-{
-    height: 600px;
-    width: 100%;
-}
-
-#GetEventImage 
-{
-    -ms-background-position-x: center;
-    -ms-background-position-y: bottom;
-    background-position: center bottom;
-    -ms-background-size: cover;
-    background-size: cover;
-    -ms-behavior: url(backgroundsize.min.htc);
-    -ms-background-position-x: center;
-    -ms-background-position-y: bottom;
-    background-position: center bottom;
-}
 
 #GetEventImagePanel 
 {
@@ -391,3 +372,4 @@ ul
 .bold { font-weight: bold; }
 .Left2em { margin-left: 2em;}
 .Bottom2em { margin-bottom: 2em; }
+.centered-and-cropped { object-fit: cover;}

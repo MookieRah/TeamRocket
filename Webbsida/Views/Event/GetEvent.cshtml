@@ -1,25 +1,10 @@
 ﻿@model Webbsida.ViewModels.GetEventViewModel
 
-<style>
-    #GetEventImage {
-        background-image: @Url.Content(Model.Event.ImagePath);
-        -ms-background-position-x: center;
-        -ms-background-position-y: bottom;
-        background-position: center bottom;
-        -ms-background-size: cover;
-        background-size: cover;
-        -ms-behavior: url(backgroundsize.min.htc);
-        -ms-background-position-x: center;
-        -ms-background-position-y: bottom;
-        background-position: center bottom;
-    }
-</style>
-
 <div id="GetEventMain">
     <div id="GetEventMasterPanel">
         <div id="GetEventMainPanel">
             <div id="GetEventImagePanel">
-                <div id="GetEventImage" class="bg-image"></div>
+                <img id="GetEventImage" class="centered-and-cropped" width="1140" height="600" src="@Url.Content(Model.Event.ImagePath)" alt=""/>
                 <h2>@Html.DisplayFor(model => model.Event.EventName)</h2>
             </div>
             <div id="GetEventMoreDetails">
