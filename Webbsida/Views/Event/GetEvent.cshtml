@@ -88,11 +88,6 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=GoogleMapsEventController.initSingleEventDisplayingMap"></script>
 
     <script>
-        $(document).ready(function()
-        {
-            $('GetEventImage').css('background-image', 'url(' + @Url.Content(Model.Event.ImagePath) + ')');
-        });
-
         $(function() {
             $("#AddressPlaceHolder").load("/api/GeoData/RequestAddressFromCoordinates" + "?latitude=" + @Model.Event.Latitude + "&longitude=" + @Model.Event.Longitude);
 
