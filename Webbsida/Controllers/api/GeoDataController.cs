@@ -72,23 +72,32 @@ namespace Webbsida.Controllers.api
             {
                 wc.Encoding = Encoding.UTF8;
 
-                string result = wc.DownloadString(requestUri);
-                var xmlElm = XElement.Parse(result);
-                var status = (from elm in xmlElm.Descendants()
-                              where
-                                elm.Name == "status"
-                              select elm).FirstOrDefault();
-                if (status.Value.ToLower() == "ok")
+                try
                 {
-                    var res = (from elm in xmlElm.Descendants()
-                               where
-                                elm.Name == "formatted_address"
-                               select elm).FirstOrDefault();
+                    string result = wc.DownloadString(requestUri);
+                    var xmlElm = XElement.Parse(result);
+                    var status = (from elm in xmlElm.Descendants()
+                                  where
+                                    elm.Name == "status"
+                                  select elm).FirstOrDefault();
+                    if (status.Value.ToLower() == "ok")
+                    {
+                        var res = (from elm in xmlElm.Descendants()
+                                   where
+                                    elm.Name == "formatted_address"
+                                   select elm).FirstOrDefault();
 
-                    addressResult = res.Value;
+                        addressResult = res.Value;
+                    }
+                }
+                catch (Exception)
+                {
+                    return new HttpResponseMessage()
+                    {
+                        Content = new StringContent("", Encoding.UTF8, "text/html")
+                    };
                 }
             }
-
 
             return new HttpResponseMessage()
             {
