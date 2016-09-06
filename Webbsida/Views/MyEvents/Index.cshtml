@@ -6,9 +6,9 @@
 
 @*<p>@Html.ActionLink("Create New", "Create", "Event")</p>*@
 
-<h2>@(Model.UserName + "'s events")</h2>
+<h2>@(Model.FirstName + " " + Model.LastName +"'s events")</h2>
 
-<h3>Owned Events</h3>
+<h3>Egna Event</h3>
 <div class="EventSummaryContainer">
     @foreach (var @event in Model.EventsOwned)
     {
@@ -17,7 +17,7 @@
 </div>
 <hr/>
 <div id="BookedEventsContainer">
-    <h3>Booked Events</h3>
+    <h3>Bokade Event</h3>
     <div class="EventSummaryContainer">
         @foreach (var @event in Model.EventsBooked)
         {
