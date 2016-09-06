@@ -13,6 +13,15 @@
 <div class="form-horizontal">
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Image, new {type = "file", @class = "custom-file-input"})
+            @Html.ValidationMessageFor(model => model.Image, "", new {@class = "text-danger"})
+        </div>
+    </div>
+
     <div class="form-group">
         @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -85,19 +94,17 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Image, htmlAttributes: new {@class = "control-label col-md-2"})
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Image, new {type = "file", @class = "form-control"})
-            @Html.ValidationMessageFor(model => model.Image, "", new {@class = "text-danger"})
+            <button type="button" id="MapCollapse" value="Visa kartan" class="btn col-md-7" data-toggle="collapse" data-target="#GoogleMaps" onclick="ChangeButtonText()"></button>
         </div>
     </div>
 
     <div class="form-group">
-        <div class="col-md-8" id="map">
-
+        <div class="col-md-10" id="GoogleMaps">
+            <div id="map" class="col-md-7">
+            </div>
         </div>
     </div>
-
 
     @Html.HiddenFor(model => model.Latitude)
     @Html.ValidationMessageFor(model => model.Latitude, "", new { @class = "text-danger" })
@@ -106,96 +113,103 @@
     @Html.ValidationMessageFor(model => model.Longitude, "", new { @class = "text-danger" })
 
     <div class="form-group">
-        <div class="col-md-12">
-            <h4>Markera vart eventet ska hållas på kartan ovan, eller fyll i en adress nedan.</h4>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="input_address" class="control-label col-md-2">Adress:</label>
         <div class="col-md-10">
+            <p>Markera vart eventet ska hållas på kartan ovan, eller fyll i en adress nedan.</p>
+            <label for="input_address" class="control-label col-md-2">Adress:</label>
 
-            <div class="input-group">
+            <div id="CreateEvent" class="input-group col-md-6">
                 <input type="text" id="input_address" class="form-control" />
-                <span>
-                    <button type="button" id="setMarkerFromAddressButton" class="btn btn-default">Sök denna adress!</button>
-                </span>
+                <button type="button" id="setMarkerFromAddressButton" class="btn btn-default">Sök denna adress!</button>
             </div>
-
-
         </div>
     </div>
 
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Skapa event!" class="btn btn-success" />
+        <div class="col-md-10">
+            <button class="btn btn-success col-md-7">Skapa event!</button>
         </div>
     </div>
 </div>
-    }
+}
 
 <div>
-    @Html.ActionLink("Tillbaka", "Index")
+@Html.ActionLink("Tillbaka", "Index")
 </div>
 
 
-    @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+@section Scripts {
+@Scripts.Render("~/bundles/jqueryval")
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlemvE5X2QVIkrj0r4r_rJkLRilNdK9xg&callback=GoogleMapsEventController.initPickerMap"></script>
-<script>
-        $(function () {
-            document.getElementById('setMarkerFromAddressButton').addEventListener('click', function () {
-                GoogleMapsEventController.setMarkerByUserInputAddress();
-            });
 
-            $(".exampleTags").click(function () {
-                //$(this).slideUp();
-                $("#Tags").val($("#Tags").val() + $(this).attr("id") + ", ");
-            });
+<script>
+    $(function () {
+        document.getElementById('setMarkerFromAddressButton').addEventListener('click', function () {
+            GoogleMapsEventController.setMarkerByUserInputAddress();
         });
+
+        $(".exampleTags").click(function () {
+            //$(this).slideUp();
+            $("#Tags").val($("#Tags").val() + $(this).attr("id") + ", ");
+        });
+    });
 
 </script>
 
-    @Scripts.Render("~/scripts")
-    @Styles.Render("~/Content/anypicker-all.min.css")
+@Scripts.Render("~/scripts")
+@Styles.Render("~/Content/anypicker-all.min.css")
 
 
-     <script type="text/javascript">
+<script type="text/javascript">
 
-        function GetFormattedDate() {
-            var rawDate = new Date();
-            var month = rawDate.getMonth() + 1;
-            var formattedMonth = ("0" + month).slice(-2);
-            var formattedDays = ("0" + rawDate.getDate()).slice(-2);
-            var formattedMinutes = ("0" + rawDate.getMinutes()).slice(-2);
-            var formattedHours = ("0" + rawDate.getHours()).slice(-2);
-            var result = rawDate.getFullYear() + "/" + formattedMonth + "/" + formattedDays + " " + formattedHours + ":" + formattedMinutes;
-            return result.toString();
-        }
+    function GetFormattedDate()
+    {
+        var rawDate = new Date();
+        var month = rawDate.getMonth() + 1;
+        var formattedMonth = ("0" + month).slice(-2);
+        var formattedDays = ("0" + rawDate.getDate()).slice(-2);
+        var formattedMinutes = ("0" + rawDate.getMinutes()).slice(-2);
+        var formattedHours = ("0" + rawDate.getHours()).slice(-2);
+        var result = rawDate.getFullYear() + "/" + formattedMonth + "/" + formattedDays + " " + formattedHours + ":" + formattedMinutes;
+        return result.toString();
+    }
 
-            var todaysDate = GetFormattedDate();
+    var todaysDate = GetFormattedDate();
 
-            $(document).ready(function() {
-                $("#StartDate").AnyPicker(
-                {
-                    mode: "datetime",
-                    dateTimeFormat: "yyyy/MM/dd HH:mm",
-                    theme: "Default",
-                    minValue: todaysDate
+    function ChangeButtonText()
+    {
+        var button = document.getElementById("MapCollapse");
 
-                });
-            });
+        if (button.innerHTML === "Visa kartan") button.innerHTML = "Dolj kartan";
+        else button.innerHTML = "Visa kartan";
+    }
 
-        $(document).ready(function() {
-            $("#EndDate").AnyPicker(
-            {
-                mode: "datetime",
-                dateTimeFormat: "yyyy/MM/dd HH:mm",
-                theme: "Default"
+    $(document).ready(function () {
 
-            });
+        var button = $('#MapCollapse');
+        button.click();
+        button.click();
+
+        
+        $("#StartDate").AnyPicker(
+        {
+            mode: "datetime",
+            dateTimeFormat: "yyyy/MM/dd HH:mm",
+            theme: "Default",
+            minValue: todaysDate
         });
 
+        $("#EndDate").AnyPicker(
+        {
+            mode: "datetime",
+            dateTimeFormat: "yyyy/MM/dd HH:mm",
+            theme: "Default"
+        });
+
+        $('#googlemaps').on('shown.bs.collapse', function () {
+            var googleiframe = $('.googlemap iframe');
+            googleiframe.attr('src', googleiframe.attr('src') + '');
+        });
+    });
 </script>
 }
