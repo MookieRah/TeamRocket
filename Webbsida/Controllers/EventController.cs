@@ -27,29 +27,32 @@ namespace Webbsida.Controllers
         public ActionResult GetEvent(int id)
         {
             //Create a Data holders
-            var eventData = db.Events.Find(id);
+            var eventData = db.Events
+                .Include(n => n.EventTags)
+                .Include(n => n.EventUsers)
+                .SingleOrDefault(n => n.Id == id);
 
-            var lePhone = db.Users
-                .Where(s => s.Profile.Id == id)
-                .Select(p => p.PhoneNumber).SingleOrDefault();
+            if (eventData == null)
+                return HttpNotFound("Hittade ej event.");
 
-            var eventUserData = db.EventUsers
-                            .Where(d => d.EventId == id)
-                            .Select(g => g.EventId).FirstOrDefault();
+            var eventOwnerProfileId =
+                db.EventUsers.Where(x => x.IsOwner && x.EventId == id).Select(x => x.Profile.Id).FirstOrDefault();
 
-            var userDataFirstName =
-                db.Profiles.Where(d => d.Id == eventUserData).Select(f => f.FirstName).SingleOrDefault();
-            var userDataLastName =
-                db.Profiles.Where(d => d.Id == eventUserData).Select(f => f.LastName).SingleOrDefault();
+            var ownerApplicationUserData = db.Users
+                .SingleOrDefault(s => s.Profile.Id == eventOwnerProfileId);
+
+            var ownerProfileData = db.Profiles
+                .SingleOrDefault(n => n.Id == eventOwnerProfileId);
+
 
 
             //Creating a Model usning the Event Data holer
             var eventDetails = new EventDetailsViewModel()
             {
                 Id = eventData.Id,
-                Firstname = userDataFirstName,
-                LastName = userDataLastName,
-                PhoneNumber = lePhone,
+                Firstname = ownerProfileData.FirstName,
+                LastName = ownerProfileData.LastName,
+                PhoneNumber = ownerApplicationUserData.PhoneNumber,
                 ImagePath = eventData.ImagePath,
                 EventName = eventData.Name,
                 Description = eventData.Description,
@@ -66,21 +69,20 @@ namespace Webbsida.Controllers
                                 .Select(n => n.Tag)
                                 .ToList()
             };
+
+
             var loggedInUserId = User.Identity.GetUserId();
             var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
-            //var loggedInProfile = db.Profiles.SingleOrDefault(n => n.Id == loggedInUser.Profile.Id);
 
             var result = new GetEventViewModel()
             {
                 Event = eventDetails,
-                AlreadyBookedOnThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id),
-                IsOwnerOfThisEvent = (loggedInUser == null) ? false : db.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
-                //LoggedInProfile = (loggedInUser == null) ? new Profile(){FirstName = "Not logged in"} : loggedInProfile,
+                AlreadyBookedOnThisEvent = (loggedInUser == null) ? false : eventData.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id),
+                IsOwnerOfThisEvent = (loggedInUser == null) ? false : eventData.EventUsers.Any(n => n.EventId == eventData.Id && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
 
                 //DEBUG
-                BookedUsers = db.EventUsers.Where(n => n.EventId == eventData.Id && n.IsOwner == false).Select(n => n.Profile).ToList(),
-                OwnerUsers = db.EventUsers.Where(n => n.EventId == eventData.Id && n.IsOwner).Select(n => n.Profile).ToList()
-
+                BookedUsers = eventData.EventUsers.Select(n => n.Profile).ToList(),
+                //OwnerUsers = db.EventUsers.Where(n => n.EventId == eventData.Id && n.IsOwner).Select(n => n.Profile).ToList()
             };
 
             return View(result);
@@ -91,6 +93,9 @@ namespace Webbsida.Controllers
         public ActionResult BookEvent(int eventId)
         {
             var loggedInUser = GetLoggedInStatus();
+
+            if (loggedInUser == null)
+                throw new Exception("Prova logga in på nytt!");
 
             var theBooking = new EventUser()
             {
@@ -120,7 +125,7 @@ namespace Webbsida.Controllers
         }
 
         [Authorize]
-        public ActionResult UnBookEvent(int eventId)
+        public ActionResult UnBookEvent(int eventId ,string fromPage )
         {
             var loggedInUserId = User.Identity.GetUserId();
             var loggedInUser = db.Users.SingleOrDefault(n => n.Id == loggedInUserId);
@@ -132,14 +137,24 @@ namespace Webbsida.Controllers
             var unBookEvent = db.EventUsers.Remove(findBokedEvent);
             db.EventUsers.Remove(unBookEvent);
             db.SaveChanges();
-
-            return PartialView("_BookingSystemPartial", new BookingSystemViewModel()
+            if (fromPage == "GetEvent")
             {
-                AlreadyBookedOnThisEvent = db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id),
-                IsOwnerOfThisEvent = db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
-                SpotsLeft = GetSpotsLeft(eventId),
-                BookedUsers = db.EventUsers.Where(n => n.EventId == eventId && n.IsOwner == false).Select(n => n.Profile).ToList()
-            });
+                return PartialView("_BookingSystemPartial", new BookingSystemViewModel()
+                {
+                    AlreadyBookedOnThisEvent =
+                        db.EventUsers.Any(n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id),
+                    IsOwnerOfThisEvent =
+                        db.EventUsers.Any(
+                            n => n.EventId == eventId && n.ProfileId == loggedInUser.Profile.Id && n.IsOwner),
+                    SpotsLeft = GetSpotsLeft(eventId),
+                    BookedUsers =
+                        db.EventUsers.Where(n => n.EventId == eventId && n.IsOwner == false)
+                            .Select(n => n.Profile)
+                            .ToList()
+                });
+            }
+
+            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
         }
 
         // GET: Events/Create
@@ -221,6 +236,7 @@ namespace Webbsida.Controllers
                 return RedirectToAction("GetEvent", new { id = result.Id });
             }
 
+            evm.ExampleTags = db.Tags.OrderBy(n => Guid.NewGuid()).Take(4);
             return View(evm);
         }
 

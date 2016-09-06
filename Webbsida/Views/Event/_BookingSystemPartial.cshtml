@@ -8,14 +8,39 @@
 
     @if (User.Identity.IsAuthenticated)
     {
-
         if (Model.IsOwnerOfThisEvent)
         {
-            <p>Detta är ditt event.</p>
+            <p>Detta är ditt event. Listar anmälda:</p>
+
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Namn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int counter = 0;
+                    }
+                    @foreach (var user in Model.BookedUsers)
+                    {
+                        counter++;
+                        <tr>
+                            <td>@counter</td>
+                            <td>@user.FirstName @user.LastName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         }
         else if (Model.AlreadyBookedOnThisEvent)
         {
             <button id="unbookButton" class="btn btn-danger">Avboka din anmälan!</button>
+        }
+        else if (@Model.SpotsLeft <= 0)
+        {
+            <p>Det Fins inga lediga platser</p>
         }
         else
         {
@@ -29,30 +54,4 @@
         <p>Logga in för att boka detta event!</p>
     }
 
-    @foreach (var user in Model.BookedUsers)
-    {
-
-    }
-
-    <table class="table table-condensed">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Namn</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                int counter = 0;
-            }
-            @foreach (var user in Model.BookedUsers)
-            {
-                counter++;
-                <tr>
-                    <td>@counter</td>
-                    <td>@user.FirstName @user.LastName</td>
-                </tr>
-            }
-        </tbody>
-    </table>
 </div>

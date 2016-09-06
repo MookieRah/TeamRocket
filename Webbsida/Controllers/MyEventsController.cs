@@ -99,6 +99,8 @@ namespace Webbsida.Controllers
             var results = new MyEventsViewModel
             {
                 UserName = user.UserName,
+                FirstName = user.Profile.FirstName,
+                LastName = user.Profile.LastName,
                 EventsOwned = ownedEvents,
                 EventsBooked = bookedEvents
             };

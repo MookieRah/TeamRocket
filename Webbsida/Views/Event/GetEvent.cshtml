@@ -1,5 +1,4 @@
-﻿@using Microsoft.Ajax.Utilities
-@model Webbsida.ViewModels.GetEventViewModel
+﻿@model Webbsida.ViewModels.GetEventViewModel
 
 <h2>@Html.DisplayFor(model => model.Event.EventName)</h2>
 
@@ -96,7 +95,7 @@
     <div class="well well-sm">
         <span class="glyphicon glyphicon-tags">&nbsp;</span>
         @foreach (var tag in @Model.Event.Tags)
-            {
+        {
             <span class="label label-info">@tag.Name</span>
         }
     </div>
@@ -133,7 +132,7 @@
                 $.ajax({
                     url: "/Event/UnBookEvent",
                     type: "post",
-                    data: { eventId: @Model.Event.Id }, //if you need to post Model data, use this
+                    data: { eventId: @Model.Event.Id, fromPage:"GetEvent"}, //if you need to post Model data, use this
                     success: function(result) {
                         $("#bookingSystem").html(result);
                     }
