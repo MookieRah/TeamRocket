@@ -369,6 +369,14 @@ ul
 
 #GetEventMoreDetails ul li p {padding: 0;margin: 0;}
 
+#GetEventsDescription 
+{
+    margin-bottom: 1.5em;
+    padding: 1em;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 3px;
+}
+
 .bold { font-weight: bold; }
 .Left2em { margin-left: 2em;}
 .Bottom2em { margin-bottom: 2em; }
