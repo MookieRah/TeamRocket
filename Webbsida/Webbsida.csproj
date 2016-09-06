@@ -254,12 +254,14 @@
     <Content Include="Content\EventImages\björklöven.png" />
     <Content Include="Content\EventImages\dockteater.png" />
     <Content Include="Content\EventImages\download.jpg" />
+    <Content Include="Content\EventImages\Five_ivory_dice.jpg" />
     <Content Include="Content\EventImages\fore-img.png" />
     <Content Include="Content\EventImages\hack-like-pro-linux-basics-for-aspiring-hacker-part-25-inetd-super-daemon.1280x600.jpg" />
     <Content Include="Content\EventImages\hund.gif" />
     <Content Include="Content\EventImages\hund.png" />
     <Content Include="Content\EventImages\images.png" />
     <Content Include="Content\EventImages\karusell.png" />
+    <Content Include="Content\EventImages\lanparty.png" />
     <Content Include="Content\EventImages\lunch.png" />
     <Content Include="Content\EventImages\Monkey.mp4" />
     <Content Include="Content\EventImages\nolia.png" />
