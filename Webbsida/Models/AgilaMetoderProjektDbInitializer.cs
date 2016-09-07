@@ -58,8 +58,8 @@ namespace Webbsida.Models
                     Profile = new Profile()
                     {
                         DateOfBirth = GenerateRandomBirthDate(),
-                        FirstName = "Admin",
-                        LastName = "Adminsson",
+                        FirstName = "Allan",
+                        LastName = "Abrahamsson",
                         IsPrivate = true
                     },
                     PhoneNumber = GenerateRandomPhoneNr(),
@@ -79,8 +79,8 @@ namespace Webbsida.Models
                     Profile = new Profile()
                     {
                         DateOfBirth = GenerateRandomBirthDate(),
-                        FirstName = "User",
-                        LastName = "Usersson",
+                        FirstName = "Josefin",
+                        LastName = "Josefsson",
                         IsPrivate = true
                     },
                     PhoneNumber = GenerateRandomPhoneNr(),
@@ -121,8 +121,8 @@ namespace Webbsida.Models
                     Profile = new Profile()
                     {
                         DateOfBirth = GenerateRandomBirthDate(),
-                        FirstName = "Joiner",
-                        LastName = "Joinersson",
+                        FirstName = "Sara",
+                        LastName = "Sundström",
                         IsPrivate = true
                     },
                     PhoneNumber = GenerateRandomPhoneNr(),
@@ -616,13 +616,13 @@ namespace Webbsida.Models
                 new EventUser()
                 {
                     Event = ec,
-                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Allan"),
                     IsOwner = true
                 },
                 new EventUser()
                 {
                     Event = ec,
-                    Profile = context.Profiles.First(n => n.FirstName == "Joiner"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Sara"),
                     IsOwner = false
                 },
 
@@ -630,19 +630,19 @@ namespace Webbsida.Models
                 new EventUser()
                 {
                     Event = ec1,
-                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Allan"),
                     IsOwner = true
                 },
                 new EventUser()
                 {
                     Event = ec1,
-                    Profile = context.Profiles.First(n => n.FirstName == "Joiner"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Sara"),
                     IsOwner = false
                 },
                 new EventUser()
                 {
                     Event = ec1,
-                    Profile = context.Profiles.First(n => n.FirstName == "User"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Josefin"),
                     IsOwner = false
                 },
 
@@ -650,13 +650,13 @@ namespace Webbsida.Models
                 new EventUser()
                 {
                     Event = ec2,
-                    Profile = context.Profiles.First(n => n.FirstName == "User"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Josefin"),
                     IsOwner = true
                 },
                 new EventUser()
                 {
                     Event = ec2,
-                    Profile = context.Profiles.First(n => n.FirstName == "Joiner"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Sara"),
                     IsOwner = false
                 },
 
@@ -664,26 +664,26 @@ namespace Webbsida.Models
                 new EventUser()
                 {
                     Event = ec3,
-                    Profile = context.Profiles.First(n => n.FirstName == "User"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Josefin"),
                     IsOwner = true
                 },
                 new EventUser()
                 {
                     Event = ec3,
-                    Profile = context.Profiles.First(n => n.FirstName == "Joiner"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Sara"),
                     IsOwner = false
                 },
 
                 new EventUser()
                 {
                     Event = ec4,
-                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Allan"),
                     IsOwner = true
                 },
                 new EventUser()
                 {
                     Event = ec4,
-                    Profile = context.Profiles.First(n => n.FirstName == "Joiner"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Sara"),
                     IsOwner = false
                 },
 
@@ -691,7 +691,7 @@ namespace Webbsida.Models
                 new EventUser()
                 {
                     Event = ec5,
-                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Allan"),
                     IsOwner = true
                 },
 
@@ -699,7 +699,7 @@ namespace Webbsida.Models
                 new EventUser()
                 {
                     Event = ec6,
-                    Profile = context.Profiles.First(n => n.FirstName == "User"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Josefin"),
                     IsOwner = true
                 },
 
@@ -707,7 +707,7 @@ namespace Webbsida.Models
                 new EventUser()
                 {
                     Event = ec7,
-                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Allan"),
                     IsOwner = true
                 },
 
@@ -715,7 +715,7 @@ namespace Webbsida.Models
                 new EventUser()
                 {
                     Event = ec8,
-                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Allan"),
                     IsOwner = true
                 },
 
@@ -723,7 +723,7 @@ namespace Webbsida.Models
                 new EventUser()
                 {
                     Event = ec9,
-                    Profile = context.Profiles.First(n => n.FirstName == "User"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Josefin"),
                     IsOwner = true
                 },
 
@@ -731,7 +731,7 @@ namespace Webbsida.Models
                 new EventUser()
                 {
                     Event = ec10,
-                    Profile = context.Profiles.First(n => n.FirstName == "Admin"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Allan"),
                     IsOwner = true
                 },
 
@@ -739,7 +739,7 @@ namespace Webbsida.Models
                 new EventUser()
                 {
                     Event = ec11,
-                    Profile = context.Profiles.First(n => n.FirstName == "User"),
+                    Profile = context.Profiles.First(n => n.FirstName == "Josefin"),
                     IsOwner = true
                 },
                 new EventUser()
