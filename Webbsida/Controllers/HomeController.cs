@@ -47,22 +47,34 @@ namespace Webbsida.Controllers
 
                 var events = new List<IndexEventViewModel>();
 
-                foreach (var rawEvent in rawEvents)
+                var ids = new List<int>();
+
+                for(int i = 0; i < rawEvents.Count; i++)
                 {
+                    if (ids.Any())
+                    {
+                        foreach (var id in ids.Where(id => rawEvents.ElementAt(i).Id == id))
+                        {
+                            rawEvents.RemoveAt(i);
+                        }
+                    }
+
+                    ids.Add(rawEvents.ElementAt(i).Id);
+
                     events.Add(new IndexEventViewModel
                     {
-                        Id = rawEvent.Id,
-                        EventUsers = rawEvent.EventUsers,
-                        Name = rawEvent.Name,
-                        Description = rawEvent.Description,
-                        StartDate = rawEvent.StartDate,
-                        EndDate = rawEvent.EndDate,
-                        Latitude = rawEvent.Latitude,
-                        Longitude = rawEvent.Longitude,
-                        Price = rawEvent.Price,
-                        ImagePath = rawEvent.ImagePath,
-                        MinSignups = rawEvent.MinSignups,
-                        MaxSignups = rawEvent.MaxSignups
+                        Id = rawEvents.ElementAt(i).Id,
+                        EventUsers = rawEvents.ElementAt(i).EventUsers,
+                        Name = rawEvents.ElementAt(i).Name,
+                        Description = rawEvents.ElementAt(i).Description,
+                        StartDate = rawEvents.ElementAt(i).StartDate,
+                        EndDate = rawEvents.ElementAt(i).EndDate,
+                        Latitude = rawEvents.ElementAt(i).Latitude,
+                        Longitude = rawEvents.ElementAt(i).Longitude,
+                        Price = rawEvents.ElementAt(i).Price,
+                        ImagePath = rawEvents.ElementAt(i).ImagePath,
+                        MinSignups = rawEvents.ElementAt(i).MinSignups,
+                        MaxSignups = rawEvents.ElementAt(i).MaxSignups
                     });
                 }
 
